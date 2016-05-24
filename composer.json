@@ -20,5 +20,16 @@
             "email": "hooman@RTLer.com"
         }
     ],
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "RTLer\\Oauth2\\": "src/"
+        },
+        "autoload-dev": {
+            "psr-4": {
+                "Oauth2Tests\\": "tests/"
+            }
+        },
+
+    }
 }

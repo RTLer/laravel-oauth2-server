@@ -2,6 +2,7 @@
 
 namespace RTLer\Oauth2\Providers;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use RTLer\Oauth2\Authorizer;
 
@@ -9,7 +10,7 @@ class Oauth2ServiceProvider extends ServiceProvider
 {
     protected $options;
 
-    public function __construct(\Illuminate\Contracts\Foundation\Application $app)
+    public function __construct(Application $app)
     {
         $this->options = $app->make('config')->get('oauth2');
 

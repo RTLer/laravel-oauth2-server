@@ -25,11 +25,13 @@ class Oauth2ServiceProvider extends ServiceProvider
     public function boot()
     {
         foreach ($this->options['grants'] as $name => $options) {
-            $name = camel_case('enable_'.$name.'_grant');
+            $name = camel_case('enable_' . $name . '_grant');
 
             $this->app[Authorizer::class]->{$name}($options);
         }
-
+        $this->publishes([
+            __DIR__ . '../publish/config/oauth2.php' => config_path('oauth2.php'),
+        ]);
     }
 
     /**

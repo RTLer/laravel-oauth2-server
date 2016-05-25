@@ -25,9 +25,12 @@ class UserRepository implements UserRepositoryInterface
         ClientEntityInterface $clientEntity
     )
     {
-        
+
         $userEntity = new UserEntity();
-        $userEntity->setIdentifier('testing');
+        $userVerifier = \Oauth2::getOptions()['user_verifier'];
+        $identifier = (new $userVerifier())
+            ->getUserIdentifierByUserCredentials($username, $password, $grantType);
+        $userEntity->setIdentifier($identifier);
         return $userEntity;
     }
 }

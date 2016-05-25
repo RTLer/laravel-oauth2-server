@@ -19,4 +19,15 @@ class UserVerifier implements UserVerifierInterface
     {
         return 'testing';
     }
+
+    /**
+     * get user by identifier
+     *
+     * @param string $identifier
+     * @return null|User
+     */
+    public function getUserByIdentifier($identifier)
+    {
+        // TODO: Implement getUserByIdentifier() method.
+    }
 }

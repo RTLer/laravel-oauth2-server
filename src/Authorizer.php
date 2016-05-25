@@ -23,12 +23,22 @@ class Authorizer
     protected $resourceServer;
     protected $options;
 
+    /**
+     * Authorizer constructor.
+     *
+     * @param $options
+     */
     public function __construct($options)
     {
         $this->options = $options;
 
     }
 
+    /**
+     * setup AuthorizationServer.
+     *
+     * @return AuthorizationServer
+     */
     public function makeAuthorizationServer()
     {
         // Init our repositories
@@ -50,6 +60,11 @@ class Authorizer
         return $this->authorizationServer;
     }
 
+    /**
+     * setup ResourceServer.
+     *
+     * @return ResourceServer
+     */
     public function makeResourceServer()
     {
         // Init our repositories
@@ -64,6 +79,11 @@ class Authorizer
         return $this->resourceServer;
     }
 
+    /**
+     * enable AuthorizationGrants
+     *
+     * @param $options
+     */
     public function enableAuthorizationGrants($options){
         foreach ($options['grants'] as $name => $grantOptions) {
             $name = camel_case('enable_' . $name . '_grant');
@@ -72,6 +92,11 @@ class Authorizer
         }
     }
 
+    /**
+     * enable ClientCredentialsGrant
+     *
+     * @param $options
+     */
     public function enableClientCredentialsGrant($options)
     {
         // Enable the client credentials grant on the server
@@ -81,6 +106,11 @@ class Authorizer
         );
     }
 
+    /**
+     * enable AuthCodeGrant
+     *
+     * @param $options
+     */
     public function enableAuthCodeGrant($options)
     {
         // Init our repositories
@@ -103,6 +133,11 @@ class Authorizer
         );
     }
 
+    /**
+     * enable PasswordGrant
+     *
+     * @param $options
+     */
     public function enablePasswordGrant($options)
     {
         // Init our repositories
@@ -127,6 +162,11 @@ class Authorizer
 
     }
 
+    /**
+     * enable ImplicitGrant
+     *
+     * @param $options
+     */
     public function enableImplicitGrant($options)
     {
         $grant = new ImplicitGrant(
@@ -140,6 +180,11 @@ class Authorizer
         );
     }
 
+    /**
+     * enable RefreshTokenGrant
+     *
+     * @param $options
+     */
     public function enableRefreshTokenGrant($options)
     {
         // Init our repositories
@@ -158,6 +203,8 @@ class Authorizer
     }
 
     /**
+     * get AuthorizationServer
+     *
      * @return AuthorizationServer
      */
     public function getAuthorizationServer()
@@ -171,6 +218,8 @@ class Authorizer
     }
 
     /**
+     * get ResourceServer
+     *
      * @return mixed
      */
     public function getResourceServer()
@@ -179,6 +228,8 @@ class Authorizer
     }
 
     /**
+     * get Options (configs)
+     *
      * @return mixed
      */
     public function getOptions()

@@ -21,25 +21,21 @@ class ResourceServerMiddleware
         $resourceServer = \Oauth2::makeResourceServer();
 
         $serverRequest = $resourceServer->validateAuthenticatedRequest($psrRequest);
-        $environment = \Oauth2::getOptions()['environment'];
 
+        $environment = \Oauth2::getOptions()['environment'];
         $neededScopes = array_slice(func_get_args(), 2);
         $requestedScopes = $serverRequest->getAttribute('oauth_scopes');
+
         $this->validateScopes($neededScopes, $requestedScopes);
 
-        $userVerifier = \Oauth2::getOptions()['user_verifier'];
-        $user = (new $userVerifier())
-            ->getUserByIdentifier($serverRequest->getAttribute('oauth_user_id'));
-        if ($environment == 'laravel') {
-            \Auth::setUser($user);
-        }
-        $request->setUserResolver(function () use ($serverRequest) {
-            return ;
-        });
+        $this->authUser($request, $serverRequest, $environment);
+
         return $next($request);
     }
 
     /**
+     * check if client have right scopes to access the route
+     *
      * @param $neededScopes
      * @param $requestedScopes
      * @throws OAuthServerException
@@ -57,5 +53,25 @@ class ResourceServerMiddleware
                 'you need right scope to access this resource'
             );
         }
+    }
+
+    /**
+     * auth user
+     *
+     * @param $request
+     * @param $serverRequest
+     * @param $environment
+     */
+    protected function authUser($request, $serverRequest, $environment)
+    {
+        $userVerifier = \Oauth2::getOptions()['user_verifier'];
+        $user = (new $userVerifier())
+            ->getUserByIdentifier($serverRequest->getAttribute('oauth_user_id'));
+        if ($environment == 'laravel') {
+            \Auth::setUser($user);
+        }
+        $request->setUserResolver(function () use ($user) {
+            return $user;
+        });
     }
 }

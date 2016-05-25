@@ -8,6 +8,7 @@ use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
+use League\OAuth2\Server\ResourceServer;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\AuthCodeRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
@@ -18,14 +19,17 @@ use RTLer\Oauth2\Repositories\UserRepository;
 class Authorizer
 {
 
-    protected $server;
+    protected $authorizationServer;
+    protected $resourceServer;
+    protected $options;
 
-    public function __construct($privateKey, $publicKey)
+    public function __construct($options)
     {
-        $this->server = $this->getAuthorizationServer($privateKey, $publicKey);
+        $this->options = $options;
+
     }
 
-    public function getAuthorizationServer($privateKey, $publicKey)
+    public function makeAuthorizationServer()
     {
         // Init our repositories
         $clientRepository = new ClientRepository(); // instance of ClientRepositoryInterface
@@ -33,19 +37,45 @@ class Authorizer
         $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
 
         // Setup the authorization server
-        return new AuthorizationServer(
+        $this->authorizationServer = new AuthorizationServer(
             $clientRepository,
             $accessTokenRepository,
             $scopeRepository,
-            $privateKey,
-            $publicKey
+            $this->options['private_key'],
+            $this->options['public_key']
         );
+
+        $this->enableAuthorizationGrants($this->options);
+
+        return $this->authorizationServer;
+    }
+
+    public function makeResourceServer()
+    {
+        // Init our repositories
+        $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
+
+        // Setup the authorization server
+        $this->resourceServer = new ResourceServer(
+            $accessTokenRepository,
+            $this->options['public_key']
+        );
+
+        return $this->resourceServer;
+    }
+
+    public function enableAuthorizationGrants($options){
+        foreach ($options['grants'] as $name => $grantOptions) {
+            $name = camel_case('enable_' . $name . '_grant');
+
+            $this->{$name}($grantOptions);
+        }
     }
 
     public function enableClientCredentialsGrant($options)
     {
         // Enable the client credentials grant on the server
-        $this->server->enableGrantType(
+        $this->authorizationServer->enableGrantType(
             new ClientCredentialsGrant(),
             $this->getDateInterval($options['access_token_ttl']) // access tokens will expire after 1 hour
         );
@@ -67,7 +97,7 @@ class Authorizer
         ); // refresh tokens will expire after 1 month
 
         // Enable the authentication code grant on the server
-        $this->server->enableGrantType(
+        $this->authorizationServer->enableGrantType(
             $grant,
             $this->getDateInterval($options['access_token_ttl']) // access tokens will expire after 1 hour
         );
@@ -89,7 +119,7 @@ class Authorizer
         ); // refresh tokens will expire after 1 month
 
         // Enable the password grant on the server
-        $this->server->enableGrantType(
+        $this->authorizationServer->enableGrantType(
             $grant,
             $this->getDateInterval($options['access_token_ttl']) // access tokens will expire after 1 hour
         );
@@ -104,7 +134,7 @@ class Authorizer
         );
 
         // Enable the implicit grant on the server
-        $this->server->enableGrantType(
+        $this->authorizationServer->enableGrantType(
             $grant,
             $this->getDateInterval($options['access_token_ttl']) // access tokens will expire after 1 hour
         );
@@ -121,7 +151,7 @@ class Authorizer
         ); // new refresh tokens will expire after 1 month
 
         // Enable the refresh token grant on the server
-        $this->server->enableGrantType(
+        $this->authorizationServer->enableGrantType(
             $grant,
             $this->getDateInterval($options['access_token_ttl']) // new access tokens will expire after an hour
         );
@@ -130,13 +160,21 @@ class Authorizer
     /**
      * @return AuthorizationServer
      */
-    public function getServer()
+    public function getAuthorizationServer()
     {
-        return $this->server;
+        return $this->authorizationServer;
     }
 
     protected function getDateInterval($minutes)
     {
         return CarbonInterval::minutes($minutes);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResourceServer()
+    {
+        return $this->resourceServer;
     }
 }

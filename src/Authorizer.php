@@ -177,4 +177,12 @@ class Authorizer
     {
         return $this->resourceServer;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 }

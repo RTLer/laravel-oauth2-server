@@ -14,4 +14,12 @@ interface UserVerifierInterface
      */
     public function getUserIdentifierByUserCredentials($username, $password, $grantType);
 
+    /**
+     * get user by identifier
+     *
+     * @param string $identifier
+     * @return null|User
+     */
+    public function getUserByIdentifier($identifier);
+
 }

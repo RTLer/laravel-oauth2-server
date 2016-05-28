@@ -16,7 +16,7 @@ use RTLer\Oauth2\Repositories\RefreshTokenRepository;
 use RTLer\Oauth2\Repositories\ScopeRepository;
 use RTLer\Oauth2\Repositories\UserRepository;
 
-class Authorizer
+class Oauth2Server
 {
 
     protected $authorizationServer;
@@ -37,9 +37,10 @@ class Authorizer
     /**
      * setup AuthorizationServer.
      *
+     * @param array $grantNames
      * @return AuthorizationServer
      */
-    public function makeAuthorizationServer()
+    public function makeAuthorizationServer($grantNames = [])
     {
         // Init our repositories
         $clientRepository = new ClientRepository(); // instance of ClientRepositoryInterface
@@ -55,7 +56,7 @@ class Authorizer
             $this->options['public_key']
         );
 
-        $this->enableAuthorizationGrants($this->options);
+        $this->enableAuthorizationGrants($grantNames);
 
         return $this->authorizationServer;
     }
@@ -80,16 +81,29 @@ class Authorizer
     }
 
     /**
-     * enable AuthorizationGrants
+     * enable all configured Authorization Grants
      *
-     * @param $options
+     * @param array|null $grantNames
+     * @internal param $options
      */
-    public function enableAuthorizationGrants($options){
-        foreach ($options['grants'] as $name => $grantOptions) {
-            $name = camel_case('enable_' . $name . '_grant');
-
-            $this->{$name}($grantOptions);
+    public function enableAuthorizationGrants($grantNames = null){
+        $activeGrants = array_keys($this->options['grants']);
+        foreach ($activeGrants as $name) {
+            if(is_null($grantNames) || in_array($name, $grantNames)){
+                $this->enableGrant($name);
+            }
         }
+    }
+
+    /**
+     * enable Authorization Grant by name
+     *
+     * @param $name
+     */
+    public function enableGrant($name){
+            $methodName = camel_case('enable_' . $name . '_grant');
+
+            $this->{$methodName}($this->options['grants'][$name]);
     }
 
     /**

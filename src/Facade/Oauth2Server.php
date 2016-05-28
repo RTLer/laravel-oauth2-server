@@ -11,5 +11,8 @@ class Oauth2Server extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return Oauth2ServerClass::class; }
+    protected static function getFacadeAccessor()
+    {
+        return Oauth2ServerClass::class;
+    }
 }

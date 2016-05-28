@@ -19,11 +19,12 @@ class JsonRespondManipulator
 
     /**
      * edit Respond body
-     * 
+     *
      * @param $callback
      * @return $this
      */
-    public function editBody($callback){
+    public function editBody($callback)
+    {
         $bodyObject = $this->respond->getBody();
         $responseBody = json_decode((string)$bodyObject, true);
 
@@ -42,7 +43,8 @@ class JsonRespondManipulator
      * @param $callback
      * @return $this
      */
-    public function editResponse($callback){
+    public function editResponse($callback)
+    {
         $this->respond = $callback($this->respond);
 
         return $this;

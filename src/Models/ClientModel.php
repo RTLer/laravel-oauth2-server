@@ -28,5 +28,5 @@ class ClientModel extends Model
         'scopes',
     ];
 
-    
+
 }

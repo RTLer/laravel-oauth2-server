@@ -86,10 +86,11 @@ class Oauth2Server
      * @param array|null $grantNames
      * @internal param $options
      */
-    public function enableAuthorizationGrants($grantNames = null){
+    public function enableAuthorizationGrants($grantNames = null)
+    {
         $activeGrants = array_keys($this->options['grants']);
         foreach ($activeGrants as $name) {
-            if(is_null($grantNames) || in_array($name, $grantNames)){
+            if (is_null($grantNames) || in_array($name, $grantNames)) {
                 $this->enableGrant($name);
             }
         }
@@ -100,10 +101,11 @@ class Oauth2Server
      *
      * @param $name
      */
-    public function enableGrant($name){
-            $methodName = camel_case('enable_' . $name . '_grant');
+    public function enableGrant($name)
+    {
+        $methodName = camel_case('enable_' . $name . '_grant');
 
-            $this->{$methodName}($this->options['grants'][$name]);
+        $this->{$methodName}($this->options['grants'][$name]);
     }
 
     /**

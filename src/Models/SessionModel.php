@@ -32,7 +32,7 @@ class SessionModel extends Model
      */
     public function oauthClient()
     {
-        return $this->belongsTo('RTLer\Oauth2\Models\OauthClient','client_id');
+        return $this->belongsTo('RTLer\Oauth2\Models\OauthClient', 'client_id');
     }
 
 }

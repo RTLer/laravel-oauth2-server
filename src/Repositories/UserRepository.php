@@ -30,8 +30,8 @@ class UserRepository implements UserRepositoryInterface
         $userVerifier = \Oauth2::getOptions()['user_verifier'];
         $identifier = (new $userVerifier())
             ->getUserIdentifierByUserCredentials($username, $password, $grantType);
-        
-        if(is_null($identifier)){
+
+        if (is_null($identifier)) {
             return null;
         }
 

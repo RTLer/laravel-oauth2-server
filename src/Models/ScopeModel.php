@@ -29,14 +29,15 @@ class ScopeModel extends Model
      */
     public function oauthClient()
     {
-        return $this->hasMany('RTLer\Oauth2\Models\OauthClient','scope_id');
+        return $this->hasMany('RTLer\Oauth2\Models\OauthClient', 'scope_id');
     }
+
     /**
      * .
      */
     public function oauthGrant()
     {
-        return $this->hasOne('RTLer\Oauth2\Models\OauthGrant','grant_id');
+        return $this->hasOne('RTLer\Oauth2\Models\OauthGrant', 'grant_id');
     }
 
 }

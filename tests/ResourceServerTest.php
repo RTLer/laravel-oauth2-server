@@ -6,14 +6,16 @@ namespace LeagueTests;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
+use Oauth2Tests\OauthTestCase;
+use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use Zend\Diactoros\ServerRequestFactory;
 
-class ResourceServerTest extends \PHPUnit_Framework_TestCase
+class ResourceServerTest extends OauthTestCase
 {
     public function testValidateAuthenticatedRequest()
     {
         $server = new ResourceServer(
-            $this->getMock(AccessTokenRepositoryInterface::class),
+            new AccessTokenRepository(),
             'file://' . __DIR__ . '/Stubs/public.key'
         );
 

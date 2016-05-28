@@ -22,7 +22,7 @@ class TestDatabaseSeeder extends Seeder
 //        $this->call(SessionsTableSeeder::class);
         $this->call(AuthCodeSeeder::class);
         $this->call(AccessTokenSeeder::class);
-//        $this->call(RefreshTokensTableSeeder::class);
+        $this->call(RefreshTokenSeeder::class);
 
     }
 }

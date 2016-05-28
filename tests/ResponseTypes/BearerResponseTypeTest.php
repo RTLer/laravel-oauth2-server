@@ -13,6 +13,7 @@ use RTLer\Oauth2\Entities\ClientEntity;
 use RTLer\Oauth2\Entities\RefreshTokenEntity;
 use RTLer\Oauth2\Entities\ScopeEntity;
 use Psr\Http\Message\ResponseInterface;
+use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
 
@@ -75,13 +76,13 @@ class BearerResponseTypeTest extends OauthTestCase
         $client->setIdentifier('clientName');
 
         $accessToken = new AccessTokenEntity();
-        $accessToken->setIdentifier('abcdef');
+        $accessToken->setIdentifier('AccessTokenFoo');
         $accessToken->setUserIdentifier(123);
         $accessToken->setExpiryDateTime((new \DateTime())->add(new \DateInterval('PT1H')));
         $accessToken->setClient($client);
 
         $refreshToken = new RefreshTokenEntity();
-        $refreshToken->setIdentifier('abcdef');
+        $refreshToken->setIdentifier('RefreshTokenFoo');
         $refreshToken->setAccessToken($accessToken);
         $refreshToken->setExpiryDateTime((new \DateTime())->add(new \DateInterval('PT1H')));
 
@@ -91,8 +92,7 @@ class BearerResponseTypeTest extends OauthTestCase
         $response = $responseType->generateHttpResponse(new Response());
         $json = json_decode((string) $response->getBody());
 
-        $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
-        $accessTokenRepositoryMock->method('isAccessTokenRevoked')->willReturn(false);
+        $accessTokenRepositoryMock = new AccessTokenRepository();
 
         $authorizationValidator = new BearerTokenValidator($accessTokenRepositoryMock);
         $authorizationValidator->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
@@ -103,7 +103,7 @@ class BearerResponseTypeTest extends OauthTestCase
 
         $request = $authorizationValidator->validateAuthorization($request);
 
-        $this->assertEquals('abcdef', $request->getAttribute('oauth_access_token_id'));
+        $this->assertEquals('AccessTokenFoo', $request->getAttribute('oauth_access_token_id'));
         $this->assertEquals('clientName', $request->getAttribute('oauth_client_id'));
         $this->assertEquals('123', $request->getAttribute('oauth_user_id'));
         $this->assertEquals([], $request->getAttribute('oauth_scopes'));
@@ -111,8 +111,7 @@ class BearerResponseTypeTest extends OauthTestCase
 
     public function testDetermineAccessTokenInHeaderInvalidJWT()
     {
-        $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
-        $accessTokenRepositoryMock->method('isAccessTokenRevoked')->willReturn(false);
+        $accessTokenRepositoryMock = new AccessTokenRepository();
 
         $responseType = new BearerTokenResponse($accessTokenRepositoryMock);
         $responseType->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
@@ -181,8 +180,7 @@ class BearerResponseTypeTest extends OauthTestCase
         $response = $responseType->generateHttpResponse(new Response());
         $json = json_decode((string) $response->getBody());
 
-        $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
-        $accessTokenRepositoryMock->method('isAccessTokenRevoked')->willReturn(true);
+        $accessTokenRepositoryMock = new AccessTokenRepository();
 
         $authorizationValidator = new BearerTokenValidator($accessTokenRepositoryMock);
         $authorizationValidator->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
@@ -209,7 +207,7 @@ class BearerResponseTypeTest extends OauthTestCase
         $responseType->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
         $responseType->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
 
-        $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
+        $accessTokenRepositoryMock = new AccessTokenRepository();
 
         $authorizationValidator = new BearerTokenValidator($accessTokenRepositoryMock);
         $authorizationValidator->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));

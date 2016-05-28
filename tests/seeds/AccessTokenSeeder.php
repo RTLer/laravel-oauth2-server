@@ -16,7 +16,13 @@ class AccessTokenSeeder extends Seeder
     {
         AccessTokenModel::insert([
             'token' => str_random(10),
-            'session_id' => str_random(10).'@gmail.com',
+            'session_id' => 'test',
+            'expire_time' => CarbonInterval::day(),
+        ]);
+
+        AccessTokenModel::insert([
+            'token' => 'AccessTokenFoo',
+            'session_id' => 'SessionFoo',
             'expire_time' => CarbonInterval::day(),
         ]);
     }

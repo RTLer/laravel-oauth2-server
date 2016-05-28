@@ -1,8 +1,47 @@
 <?php
 namespace Oauth2Tests;
 
-trait ConfigureTestCase
+use Oauth2Tests\seeds\TestDatabaseSeeder;
+use Orchestra\Testbench\TestCase;
+use RTLer\Oauth2\Models\AccessTokenModel;
+use RTLer\Oauth2\Models\AuthCodeModel;
+use RTLer\Oauth2\Models\ClientModel;
+use RTLer\Oauth2\Models\GrantModel;
+use RTLer\Oauth2\Models\RefreshTokenModel;
+use RTLer\Oauth2\Models\ScopeModel;
+use RTLer\Oauth2\Models\SessionModel;
+
+abstract class OauthTestCase extends TestCase
 {
+    /**
+     * Setup the test environment.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->artisan('db:seed', [
+            '--class' => TestDatabaseSeeder::class,
+        ]);
+    }
+    /**
+     * Clean up the testing environment before the next test.
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        AccessTokenModel::truncate();
+        AuthCodeModel::truncate();
+        ClientModel::truncate();
+        GrantModel::truncate();
+        RefreshTokenModel::truncate();
+        ScopeModel::truncate();
+        SessionModel::truncate();
+
+        parent::tearDown();
+    }
+
     protected function getPackageProviders($app)
     {
         $app['config']->set('oauth2', [
@@ -42,7 +81,7 @@ trait ConfigureTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Oauth2' => \RTLer\Oauth2\Facade\Authorizer::class
+            'Oauth2' => \RTLer\Oauth2\Facade\Oauth2Server::class
         ];
     }
 

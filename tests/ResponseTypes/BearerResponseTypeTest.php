@@ -7,15 +7,16 @@ use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
-use LeagueTests\Stubs\AccessTokenEntity;
-use LeagueTests\Stubs\ClientEntity;
-use LeagueTests\Stubs\RefreshTokenEntity;
-use LeagueTests\Stubs\ScopeEntity;
+use Oauth2Tests\OauthTestCase;
+use RTLer\Oauth2\Entities\AccessTokenEntity;
+use RTLer\Oauth2\Entities\ClientEntity;
+use RTLer\Oauth2\Entities\RefreshTokenEntity;
+use RTLer\Oauth2\Entities\ScopeEntity;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
 
-class BearerResponseTypeTest extends \PHPUnit_Framework_TestCase
+class BearerResponseTypeTest extends OauthTestCase
 {
     public function testGenerateHttpResponse()
     {

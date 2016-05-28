@@ -1,47 +1,41 @@
 <?php
-
-namespace LeagueTests\Grant;
-
+namespace Oauth2Tests\Grant;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\ImplicitGrant;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use League\OAuth2\Server\ResponseTypes\RedirectResponse;
-use LeagueTests\Stubs\AccessTokenEntity;
-use LeagueTests\Stubs\ClientEntity;
-use LeagueTests\Stubs\CryptTraitStub;
-use LeagueTests\Stubs\StubResponseType;
-use LeagueTests\Stubs\UserEntity;
+use Oauth2Tests\OauthTestCase;
+use RTLer\Oauth2\Entities\AccessTokenEntity;
+use RTLer\Oauth2\Entities\ClientEntity;
+use Oauth2Tests\Stubs\CryptTraitStub;
+use Oauth2Tests\Stubs\StubResponseType;
+use RTLer\Oauth2\Entities\UserEntity;
 use Zend\Diactoros\ServerRequest;
-
-class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
+class ImplicitGrantTest extends OauthTestCase
 {
     /**
      * CryptTrait stub
      */
     protected $cryptStub;
-
     public function setUp()
     {
+        parent::setUp();
         $this->cryptStub = new CryptTraitStub();
     }
-
     public function testGetIdentifier()
     {
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $this->assertEquals('implicit', $grant->getIdentifier());
     }
-
     public function testCanRespondToAccessTokenRequest()
     {
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
-
         $this->assertFalse(
             $grant->canRespondToAccessTokenRequest(new ServerRequest())
         );
     }
-
     /**
      * @expectedException \LogicException
      */
@@ -54,11 +48,9 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
             new \DateInterval('PT10M')
         );
     }
-
     public function testCanRespondToAuthorizationRequest()
     {
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
-
         $request = new ServerRequest(
             [],
             [],
@@ -72,20 +64,16 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
                 'client_id'     => 'foo',
             ]
         );
-
         $this->assertTrue($grant->canRespondToAuthorizationRequest($request));
     }
-
     public function testValidateAuthorizationRequest()
     {
         $client = new ClientEntity();
         $client->setRedirectUri('http://foo/bar');
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
-
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
-
         $request = new ServerRequest(
             [],
             [],
@@ -100,20 +88,16 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
                 'redirect_uri'  => 'http://foo/bar',
             ]
         );
-
         $this->assertTrue($grant->validateAuthorizationRequest($request) instanceof AuthorizationRequest);
     }
-
     public function testValidateAuthorizationRequestRedirectUriArray()
     {
         $client = new ClientEntity();
         $client->setRedirectUri(['http://foo/bar']);
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
-
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
-
         $request = new ServerRequest(
             [],
             [],
@@ -128,10 +112,8 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
                 'redirect_uri'  => 'http://foo/bar',
             ]
         );
-
         $this->assertTrue($grant->validateAuthorizationRequest($request) instanceof AuthorizationRequest);
     }
-
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 3
@@ -139,10 +121,8 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
     public function testValidateAuthorizationRequestMissingClientId()
     {
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
-
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
-
         $request = new ServerRequest(
             [],
             [],
@@ -155,10 +135,8 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
                 'response_type' => 'code',
             ]
         );
-
         $grant->validateAuthorizationRequest($request);
     }
-
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 4
@@ -167,10 +145,8 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
     {
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn(null);
-
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
-
         $request = new ServerRequest(
             [],
             [],
@@ -184,10 +160,8 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
                 'client_id'     => 'foo',
             ]
         );
-
         $grant->validateAuthorizationRequest($request);
     }
-
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 4
@@ -198,10 +172,8 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
         $client->setRedirectUri('http://foo/bar');
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
-
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
-
         $request = new ServerRequest(
             [],
             [],
@@ -216,10 +188,8 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
                 'redirect_uri'  => 'http://bar',
             ]
         );
-
         $grant->validateAuthorizationRequest($request);
     }
-
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 4
@@ -230,10 +200,8 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
         $client->setRedirectUri(['http://foo/bar']);
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
-
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
-
         $request = new ServerRequest(
             [],
             [],
@@ -248,10 +216,8 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
                 'redirect_uri'  => 'http://bar',
             ]
         );
-
         $grant->validateAuthorizationRequest($request);
     }
-
     public function testCompleteAuthorizationRequest()
     {
         $authRequest = new AuthorizationRequest();
@@ -259,19 +225,15 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
         $authRequest->setClient(new ClientEntity());
         $authRequest->setGrantTypeId('authorization_code');
         $authRequest->setUser(new UserEntity());
-
         $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
         $accessTokenRepositoryMock->method('getNewToken')->willReturn(new AccessTokenEntity());
         $accessTokenRepositoryMock->method('persistNewAccessToken')->willReturnSelf();
-
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
         $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
-
         $this->assertTrue($grant->completeAuthorizationRequest($authRequest) instanceof RedirectResponse);
     }
-
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 9
@@ -283,16 +245,13 @@ class ImplicitGrantTest extends \PHPUnit_Framework_TestCase
         $authRequest->setClient(new ClientEntity());
         $authRequest->setGrantTypeId('authorization_code');
         $authRequest->setUser(new UserEntity());
-
         $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
         $accessTokenRepositoryMock->method('getNewToken')->willReturn(new AccessTokenEntity());
         $accessTokenRepositoryMock->method('persistNewAccessToken')->willReturnSelf();
-
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
         $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
-
         $grant->completeAuthorizationRequest($authRequest);
     }
 }

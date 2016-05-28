@@ -3,7 +3,7 @@
 namespace LeagueTests\Utils;
 
 use League\OAuth2\Server\CryptKey;
-use LeagueTests\Stubs\CryptTraitStub;
+use Oauth2Tests\Stubs\CryptTraitStub;
 
 class CryptTraitTest extends \PHPUnit_Framework_TestCase
 {

@@ -2,8 +2,6 @@
 
 namespace LeagueTests\Grant;
 
-use League\Event\Emitter;
-use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
@@ -14,24 +12,16 @@ use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
-use LeagueTests\Stubs\AccessTokenEntity;
-use LeagueTests\Stubs\AuthCodeEntity;
-use LeagueTests\Stubs\ClientEntity;
-use LeagueTests\Stubs\RefreshTokenEntity;
-use LeagueTests\Stubs\ScopeEntity;
+use Oauth2Tests\OauthTestCase;
+use RTLer\Oauth2\Entities\AccessTokenEntity;
+use RTLer\Oauth2\Entities\AuthCodeEntity;
+use RTLer\Oauth2\Entities\ClientEntity;
+use RTLer\Oauth2\Entities\RefreshTokenEntity;
+use RTLer\Oauth2\Entities\ScopeEntity;
 use Zend\Diactoros\ServerRequest;
 
-class AbstractGrantTest extends \PHPUnit_Framework_TestCase
+class AbstractGrantTest extends OauthTestCase
 {
-    public function testGetSet()
-    {
-        /** @var AbstractGrant $grantMock */
-        $grantMock = $this->getMockForAbstractClass(AbstractGrant::class);
-        $grantMock->setPrivateKey(new CryptKey(__DIR__ . '/../Stubs/private.key'));
-        $grantMock->setPublicKey(new CryptKey(__DIR__ . '/../Stubs/public.key'));
-        $grantMock->setEmitter(new Emitter());
-    }
-
     public function testValidateClientPublic()
     {
         $client = new ClientEntity();

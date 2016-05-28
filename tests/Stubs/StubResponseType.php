@@ -1,6 +1,6 @@
 <?php
 
-namespace LeagueTests\Stubs;
+namespace Oauth2Tests\Stubs;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;

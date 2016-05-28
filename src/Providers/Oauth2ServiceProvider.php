@@ -4,7 +4,7 @@ namespace RTLer\Oauth2\Providers;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
-use RTLer\Oauth2\Authorizer;
+use RTLer\Oauth2\Oauth2Server;
 
 class Oauth2ServiceProvider extends ServiceProvider
 {
@@ -36,8 +36,8 @@ class Oauth2ServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Authorizer::class, function () {
-            return new Authorizer($this->options);
+        $this->app->singleton(Oauth2Server::class, function () {
+            return new Oauth2Server($this->options);
         });
     }
 }

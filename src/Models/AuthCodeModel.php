@@ -20,8 +20,8 @@ class AuthCodeModel extends Model
      * @var array
      */
     protected $fillable = [
-        'session_id',
-        'redirect_uri',
+        'token',
+        'client_id',
         'expire_time'
     ];
 }

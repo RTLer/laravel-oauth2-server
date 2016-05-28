@@ -21,16 +21,23 @@ class ClientRepository implements ClientRepositoryInterface
      */
     public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
     {
-        $clintModelQuery = ClientModel::where('_id', $clientIdentifier)
-            ->where('grant_type', $grantType);
+        $clintModelQuery = ClientModel::where('_id', $clientIdentifier);
 
         if ($mustValidateSecret) {
             $clintModelQuery->where('secret', $clientSecret);
         }
         $clientModel = $clintModelQuery->first();
+
         if (is_null($clientModel)) {
             return null;
         }
+
+        if (!is_null($clientModel->grant_type) &&
+            $clientModel->grant_type != $grantType
+        ) {
+            return null;
+        }
+
         $clientEntity = new ClientEntity();
         $clientEntity->setIdentifier($clientIdentifier);
         $clientEntity->setName($clientModel->name);

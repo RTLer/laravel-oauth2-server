@@ -1,5 +1,6 @@
 <?php
 namespace Oauth2Tests\Grant;
+
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
@@ -63,7 +64,7 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
             ]
         );
 
@@ -91,8 +92,8 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
-                'redirect_uri'  => 'http://foo/bar',
+                'client_id' => 'foo',
+                'redirect_uri' => 'http://foo/bar',
             ]
         );
 
@@ -120,8 +121,8 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
-                'redirect_uri'  => 'http://foo/bar',
+                'client_id' => 'foo',
+                'redirect_uri' => 'http://foo/bar',
             ]
         );
 
@@ -184,7 +185,7 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'baz',
+                'client_id' => 'baz',
             ]
         );
 
@@ -216,8 +217,8 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
-                'redirect_uri'  => 'http://bar',
+                'client_id' => 'foo',
+                'redirect_uri' => 'http://bar',
             ]
         );
 
@@ -249,8 +250,8 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
-                'redirect_uri'  => 'http://bar',
+                'client_id' => 'foo',
+                'redirect_uri' => 'http://bar',
             ]
         );
 
@@ -431,10 +432,10 @@ class AuthCodeGrantTest extends OauthTestCase
             [],
             [],
             [
-                'grant_type'    => 'authorization_code',
-                'client_id'     => 'foo',
+                'grant_type' => 'authorization_code',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
-                'redirect_uri'  => 'http://foo/bar',
+                'redirect_uri' => 'http://foo/bar',
             ]
         );
 
@@ -477,14 +478,14 @@ class AuthCodeGrantTest extends OauthTestCase
                 'client_id' => 'foo',
                 'client_secret' => 'bar',
                 'redirect_uri' => 'http://foo/bar',
-                'code'         => $this->cryptStub->doEncrypt(
+                'code' => $this->cryptStub->doEncrypt(
                     json_encode(
                         [
                             'auth_code_id' => 'testAuthCodeExpired',
-                            'expire_time'  => time() - 3600,
-                            'client_id'    => 'foo',
-                            'user_id'      => 123,
-                            'scopes'       => ['foo'],
+                            'expire_time' => time() - 3600,
+                            'client_id' => 'foo',
+                            'user_id' => 123,
+                            'scopes' => ['foo'],
                             'redirect_uri' => 'http://foo/bar',
                         ]
                     )
@@ -537,14 +538,14 @@ class AuthCodeGrantTest extends OauthTestCase
                 'client_id' => 'foo',
                 'client_secret' => 'bar',
                 'redirect_uri' => 'http://foo/bar',
-                'code'         => $this->cryptStub->doEncrypt(
+                'code' => $this->cryptStub->doEncrypt(
                     json_encode(
                         [
                             'auth_code_id' => uniqid(),
-                            'expire_time'  => time() + 3600,
-                            'client_id'    => 'foo',
-                            'user_id'      => 123,
-                            'scopes'       => ['foo'],
+                            'expire_time' => time() + 3600,
+                            'client_id' => 'foo',
+                            'user_id' => 123,
+                            'scopes' => ['foo'],
                             'redirect_uri' => 'http://foo/bar',
                         ]
                     )
@@ -592,14 +593,14 @@ class AuthCodeGrantTest extends OauthTestCase
                 'client_id' => 'foo',
                 'client_secret' => 'bar',
                 'redirect_uri' => 'http://foo/bar',
-                'code'         => $this->cryptStub->doEncrypt(
+                'code' => $this->cryptStub->doEncrypt(
                     json_encode(
                         [
                             'auth_code_id' => 'testAuthCodeForBaz',
-                            'expire_time'  => time() + 3600,
-                            'client_id'    => 'bar',
-                            'user_id'      => 123,
-                            'scopes'       => ['foo'],
+                            'expire_time' => time() + 3600,
+                            'client_id' => 'bar',
+                            'user_id' => 123,
+                            'scopes' => ['foo'],
                             'redirect_uri' => 'http://foo/bar',
                         ]
                     )
@@ -650,7 +651,7 @@ class AuthCodeGrantTest extends OauthTestCase
                 'client_id' => 'foo',
                 'client_secret' => 'bar',
                 'redirect_uri' => 'http://foo/bar',
-                'code'         => 'sdfsfsd',
+                'code' => 'sdfsfsd',
             ]
         );
 

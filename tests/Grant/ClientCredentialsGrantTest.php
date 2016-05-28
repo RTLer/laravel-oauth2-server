@@ -1,5 +1,6 @@
 <?php
 namespace Oauth2Tests\Grant;
+
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use Oauth2Tests\OauthTestCase;
@@ -8,6 +9,7 @@ use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
 use RTLer\Oauth2\Repositories\ScopeRepository;
 use Zend\Diactoros\ServerRequest;
+
 class ClientCredentialsGrantTest extends OauthTestCase
 {
     public function testGetIdentifier()
@@ -15,6 +17,7 @@ class ClientCredentialsGrantTest extends OauthTestCase
         $grant = new ClientCredentialsGrant();
         $this->assertEquals('client_credentials', $grant->getIdentifier());
     }
+
     public function testRespondToRequest()
     {
         $clientRepositoryMock = new ClientRepository();
@@ -27,7 +30,7 @@ class ClientCredentialsGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
             ]
         );

@@ -17,7 +17,7 @@ class UserVerifier implements UserVerifierInterface
      */
     public function getUserIdentifierByUserCredentials($username, $password, $grantType)
     {
-        if($username == 'foo' && $password == 'bar'){
+        if ($username == 'foo' && $password == 'bar') {
             return 'foo bar guy';
         }
         return null;

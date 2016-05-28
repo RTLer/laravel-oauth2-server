@@ -1,5 +1,6 @@
 <?php
 namespace Oauth2Tests\Grant;
+
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Grant\PasswordGrant;
@@ -20,6 +21,7 @@ use RTLer\Oauth2\Repositories\RefreshTokenRepository;
 use RTLer\Oauth2\Repositories\ScopeRepository;
 use RTLer\Oauth2\Repositories\UserRepository;
 use Zend\Diactoros\ServerRequest;
+
 class PasswordGrantTest extends OauthTestCase
 {
     public function testGetIdentifier()
@@ -29,6 +31,7 @@ class PasswordGrantTest extends OauthTestCase
         $grant = new PasswordGrant($userRepositoryMock, $refreshTokenRepositoryMock);
         $this->assertEquals('password', $grant->getIdentifier());
     }
+
     public function testRespondToRequest()
     {
         $clientRepositoryMock = new ClientRepository();
@@ -43,10 +46,10 @@ class PasswordGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
-                'username'      => 'foo',
-                'password'      => 'bar',
+                'username' => 'foo',
+                'password' => 'bar',
             ]
         );
         $responseType = new StubResponseType();
@@ -54,6 +57,7 @@ class PasswordGrantTest extends OauthTestCase
         $this->assertTrue($responseType->getAccessToken() instanceof AccessTokenEntityInterface);
         $this->assertTrue($responseType->getRefreshToken() instanceof RefreshTokenEntityInterface);
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      */
@@ -69,13 +73,14 @@ class PasswordGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
             ]
         );
         $responseType = new StubResponseType();
         $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      */
@@ -91,14 +96,15 @@ class PasswordGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
-                'username'      => 'alex',
+                'username' => 'alex',
             ]
         );
         $responseType = new StubResponseType();
         $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      */
@@ -114,10 +120,10 @@ class PasswordGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
-                'username'      => 'alex',
-                'password'      => 'whisky',
+                'username' => 'alex',
+                'password' => 'whisky',
             ]
         );
         $responseType = new StubResponseType();

@@ -1,5 +1,6 @@
 <?php
 namespace Oauth2Tests\Grant;
+
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\ImplicitGrant;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
@@ -12,22 +13,26 @@ use RTLer\Oauth2\Entities\UserEntity;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
 use Zend\Diactoros\ServerRequest;
+
 class ImplicitGrantTest extends OauthTestCase
 {
     /**
      * CryptTrait stub
      */
     protected $cryptStub;
+
     public function setUp()
     {
         parent::setUp();
         $this->cryptStub = new CryptTraitStub();
     }
+
     public function testGetIdentifier()
     {
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $this->assertEquals('implicit', $grant->getIdentifier());
     }
+
     public function testCanRespondToAccessTokenRequest()
     {
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
@@ -35,6 +40,7 @@ class ImplicitGrantTest extends OauthTestCase
             $grant->canRespondToAccessTokenRequest(new ServerRequest())
         );
     }
+
     /**
      * @expectedException \LogicException
      */
@@ -47,6 +53,7 @@ class ImplicitGrantTest extends OauthTestCase
             new \DateInterval('PT10M')
         );
     }
+
     public function testCanRespondToAuthorizationRequest()
     {
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
@@ -60,11 +67,12 @@ class ImplicitGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'token',
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
             ]
         );
         $this->assertTrue($grant->canRespondToAuthorizationRequest($request));
     }
+
     public function testValidateAuthorizationRequest()
     {
         $clientRepositoryMock = new ClientRepository();
@@ -80,12 +88,13 @@ class ImplicitGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
-                'redirect_uri'  => 'http://foo/bar',
+                'client_id' => 'foo',
+                'redirect_uri' => 'http://foo/bar',
             ]
         );
         $this->assertTrue($grant->validateAuthorizationRequest($request) instanceof AuthorizationRequest);
     }
+
     public function testValidateAuthorizationRequestRedirectUriArray()
     {
         $clientRepositoryMock = new ClientRepository();
@@ -101,12 +110,13 @@ class ImplicitGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
-                'redirect_uri'  => 'http://foo/bar',
+                'client_id' => 'foo',
+                'redirect_uri' => 'http://foo/bar',
             ]
         );
         $this->assertTrue($grant->validateAuthorizationRequest($request) instanceof AuthorizationRequest);
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 3
@@ -130,6 +140,7 @@ class ImplicitGrantTest extends OauthTestCase
         );
         $grant->validateAuthorizationRequest($request);
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 4
@@ -149,11 +160,12 @@ class ImplicitGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'baz',
+                'client_id' => 'baz',
             ]
         );
         $grant->validateAuthorizationRequest($request);
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 4
@@ -173,12 +185,13 @@ class ImplicitGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
-                'redirect_uri'  => 'http://bar',
+                'client_id' => 'foo',
+                'redirect_uri' => 'http://bar',
             ]
         );
         $grant->validateAuthorizationRequest($request);
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 4
@@ -198,12 +211,13 @@ class ImplicitGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
-                'redirect_uri'  => 'http://bar',
+                'client_id' => 'foo',
+                'redirect_uri' => 'http://bar',
             ]
         );
         $grant->validateAuthorizationRequest($request);
     }
+
     public function testCompleteAuthorizationRequest()
     {
         $authRequest = new AuthorizationRequest();
@@ -218,6 +232,7 @@ class ImplicitGrantTest extends OauthTestCase
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $this->assertTrue($grant->completeAuthorizationRequest($authRequest) instanceof RedirectResponse);
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 9

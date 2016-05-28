@@ -24,6 +24,7 @@ abstract class OauthTestCase extends TestCase
             '--class' => TestDatabaseSeeder::class,
         ]);
     }
+
     /**
      * Clean up the testing environment before the next test.
      *
@@ -49,7 +50,7 @@ abstract class OauthTestCase extends TestCase
             'private_key_phrase' => '',
             'public_key' => __DIR__ . '/Stubs/private.key',
             'user_verifier' => \Oauth2Tests\Stubs\UserVerifier::class,
-            'grants'=>[
+            'grants' => [
                 'client_credentials' => [
                     'access_token_ttl' => 10,
                 ],
@@ -91,7 +92,7 @@ abstract class OauthTestCase extends TestCase
         $app['config']->set('database.default', 'mongodb');
         $app['config']->set('database.connections.mongodb', [
             'driver' => 'mongodb',
-            'host' =>'127.0.0.1',
+            'host' => '127.0.0.1',
             'port' => 27017,
             'database' => 'testbench',
             'username' => '',

@@ -16,7 +16,7 @@ class RefreshTokenSeeder extends Seeder
     {
         RefreshTokenModel::insert([
             'token' => 'RefreshTokenFoo',
-            'access_token_id' =>'AccessTokenFoo',
+            'access_token_id' => 'AccessTokenFoo',
             'expire_time' => CarbonInterval::day(),
         ]);
     }

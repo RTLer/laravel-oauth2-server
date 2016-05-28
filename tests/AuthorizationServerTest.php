@@ -74,7 +74,7 @@ class AuthorizationServerTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
             ]
         );
 
@@ -101,7 +101,7 @@ class AuthorizationServerTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
             ]
         );
 

@@ -4,7 +4,6 @@
 namespace LeagueTests;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
 use Oauth2Tests\OauthTestCase;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;

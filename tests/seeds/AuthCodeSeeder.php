@@ -4,7 +4,6 @@ namespace Oauth2Tests\seeds;
 use Carbon\CarbonInterval;
 use Illuminate\Database\Seeder;
 use RTLer\Oauth2\Models\AuthCodeModel;
-use RTLer\Oauth2\Models\ClientModel;
 
 class AuthCodeSeeder extends Seeder
 {

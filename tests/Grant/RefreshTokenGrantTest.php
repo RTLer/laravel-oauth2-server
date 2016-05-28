@@ -1,5 +1,6 @@
 <?php
 namespace Oauth2Tests\Grant;
+
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
@@ -12,6 +13,7 @@ use RTLer\Oauth2\Repositories\ClientRepository;
 use RTLer\Oauth2\Repositories\RefreshTokenRepository;
 use RTLer\Oauth2\Repositories\ScopeRepository;
 use Zend\Diactoros\ServerRequest;
+
 class RefreshTokenGrantTest extends OauthTestCase
 {
     /**
@@ -19,17 +21,20 @@ class RefreshTokenGrantTest extends OauthTestCase
      * @var CryptTraitStub
      */
     protected $cryptStub;
+
     public function setUp()
     {
         parent::setUp();
         $this->cryptStub = new CryptTraitStub();
     }
+
     public function testGetIdentifier()
     {
         $refreshTokenRepositoryMock = new RefreshTokenRepository();
         $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
         $this->assertEquals('refresh_token', $grant->getIdentifier());
     }
+
     public function testRespondToRequest()
     {
         $clientRepositoryMock = new ClientRepository();
@@ -45,19 +50,19 @@ class RefreshTokenGrantTest extends OauthTestCase
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id'        => 'foo',
+                    'client_id' => 'foo',
                     'refresh_token_id' => 'RefreshTokenFoo',
-                    'access_token_id'  => 'AccessTokenFoo',
-                    'scopes'           => ['foo'],
-                    'user_id'          => 123,
-                    'expire_time'      => time() + 3600,
+                    'access_token_id' => 'AccessTokenFoo',
+                    'scopes' => ['foo'],
+                    'user_id' => 123,
+                    'expire_time' => time() + 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
             ]
@@ -67,6 +72,7 @@ class RefreshTokenGrantTest extends OauthTestCase
         $this->assertTrue($responseType->getAccessToken() instanceof AccessTokenEntityInterface);
         $this->assertTrue($responseType->getRefreshToken() instanceof RefreshTokenEntityInterface);
     }
+
     public function testRespondToReducedScopes()
     {
         $clientRepositoryMock = new ClientRepository();
@@ -83,22 +89,22 @@ class RefreshTokenGrantTest extends OauthTestCase
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id'        => 'foo',
+                    'client_id' => 'foo',
                     'refresh_token_id' => 'RefreshTokenFoo',
-                    'access_token_id'  => 'AccessTokenFoo',
-                    'scopes'           => ['foo', 'bar'],
-                    'user_id'          => 123,
-                    'expire_time'      => time() + 3600,
+                    'access_token_id' => 'AccessTokenFoo',
+                    'scopes' => ['foo', 'bar'],
+                    'user_id' => 123,
+                    'expire_time' => time() + 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
-                'scope'         => 'foo',
+                'scope' => 'foo',
             ]
         );
         $responseType = new StubResponseType();
@@ -106,6 +112,7 @@ class RefreshTokenGrantTest extends OauthTestCase
         $this->assertTrue($responseType->getAccessToken() instanceof AccessTokenEntityInterface);
         $this->assertTrue($responseType->getRefreshToken() instanceof RefreshTokenEntityInterface);
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 5
@@ -126,28 +133,29 @@ class RefreshTokenGrantTest extends OauthTestCase
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id'        => 'foo',
+                    'client_id' => 'foo',
                     'refresh_token_id' => 'RefreshTokenFoo',
-                    'access_token_id'  => 'AccessTokenFoo',
-                    'scopes'           => ['foo', 'bar'],
-                    'user_id'          => 123,
-                    'expire_time'      => time() + 3600,
+                    'access_token_id' => 'AccessTokenFoo',
+                    'scopes' => ['foo', 'bar'],
+                    'user_id' => 123,
+                    'expire_time' => time() + 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
-                'scope'         => 'foobar',
+                'scope' => 'foobar',
             ]
         );
         $responseType = new StubResponseType();
-            $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
+        $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
 
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 3
@@ -165,13 +173,14 @@ class RefreshTokenGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
             ]
         );
         $responseType = new StubResponseType();
         $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 8
@@ -190,7 +199,7 @@ class RefreshTokenGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
             ]
@@ -198,6 +207,7 @@ class RefreshTokenGrantTest extends OauthTestCase
         $responseType = new StubResponseType();
         $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 8
@@ -215,19 +225,19 @@ class RefreshTokenGrantTest extends OauthTestCase
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id'        => 'bar',
+                    'client_id' => 'bar',
                     'refresh_token_id' => 'zyxwvu',
-                    'access_token_id'  => 'abcdef',
-                    'scopes'           => ['foo'],
-                    'user_id'          => 123,
-                    'expire_time'      => time() + 3600,
+                    'access_token_id' => 'abcdef',
+                    'scopes' => ['foo'],
+                    'user_id' => 123,
+                    'expire_time' => time() + 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
             ]
@@ -235,6 +245,7 @@ class RefreshTokenGrantTest extends OauthTestCase
         $responseType = new StubResponseType();
         $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 8
@@ -253,19 +264,19 @@ class RefreshTokenGrantTest extends OauthTestCase
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id'        => 'foo',
+                    'client_id' => 'foo',
                     'refresh_token_id' => 'zyxwvu',
-                    'access_token_id'  => 'abcdef',
-                    'scopes'           => ['foo'],
-                    'user_id'          => 123,
-                    'expire_time'      => time() - 3600,
+                    'access_token_id' => 'abcdef',
+                    'scopes' => ['foo'],
+                    'user_id' => 123,
+                    'expire_time' => time() - 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
             ]
@@ -273,6 +284,7 @@ class RefreshTokenGrantTest extends OauthTestCase
         $responseType = new StubResponseType();
         $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
     }
+
     /**
      * @expectedException \League\OAuth2\Server\Exception\OAuthServerException
      * @expectedExceptionCode 8
@@ -291,19 +303,19 @@ class RefreshTokenGrantTest extends OauthTestCase
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id'        => 'foo',
+                    'client_id' => 'foo',
                     'refresh_token_id' => 'zyxwvu',
-                    'access_token_id'  => 'abcdef',
-                    'scopes'           => ['foo'],
-                    'user_id'          => 123,
-                    'expire_time'      => time() + 3600,
+                    'access_token_id' => 'abcdef',
+                    'scopes' => ['foo'],
+                    'user_id' => 123,
+                    'expire_time' => time() + 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id'     => 'foo',
+                'client_id' => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
             ]

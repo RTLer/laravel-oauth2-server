@@ -8,11 +8,11 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 use Oauth2Tests\OauthTestCase;
+use Psr\Http\Message\ResponseInterface;
 use RTLer\Oauth2\Entities\AccessTokenEntity;
 use RTLer\Oauth2\Entities\ClientEntity;
 use RTLer\Oauth2\Entities\RefreshTokenEntity;
 use RTLer\Oauth2\Entities\ScopeEntity;
-use Psr\Http\Message\ResponseInterface;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
@@ -90,7 +90,7 @@ class BearerResponseTypeTest extends OauthTestCase
         $responseType->setRefreshToken($refreshToken);
 
         $response = $responseType->generateHttpResponse(new Response());
-        $json = json_decode((string) $response->getBody());
+        $json = json_decode((string)$response->getBody());
 
         $accessTokenRepositoryMock = new AccessTokenRepository();
 
@@ -135,7 +135,7 @@ class BearerResponseTypeTest extends OauthTestCase
         $responseType->setRefreshToken($refreshToken);
 
         $response = $responseType->generateHttpResponse(new Response());
-        $json = json_decode((string) $response->getBody());
+        $json = json_decode((string)$response->getBody());
 
         $authorizationValidator = new BearerTokenValidator($accessTokenRepositoryMock);
         $authorizationValidator->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
@@ -178,7 +178,7 @@ class BearerResponseTypeTest extends OauthTestCase
         $responseType->setRefreshToken($refreshToken);
 
         $response = $responseType->generateHttpResponse(new Response());
-        $json = json_decode((string) $response->getBody());
+        $json = json_decode((string)$response->getBody());
 
         $accessTokenRepositoryMock = new AccessTokenRepository();
 

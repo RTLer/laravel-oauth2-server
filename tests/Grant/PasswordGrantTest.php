@@ -14,32 +14,28 @@ use RTLer\Oauth2\Entities\ClientEntity;
 use RTLer\Oauth2\Entities\RefreshTokenEntity;
 use Oauth2Tests\Stubs\StubResponseType;
 use RTLer\Oauth2\Entities\UserEntity;
+use RTLer\Oauth2\Repositories\AccessTokenRepository;
+use RTLer\Oauth2\Repositories\ClientRepository;
+use RTLer\Oauth2\Repositories\RefreshTokenRepository;
+use RTLer\Oauth2\Repositories\ScopeRepository;
+use RTLer\Oauth2\Repositories\UserRepository;
 use Zend\Diactoros\ServerRequest;
 class PasswordGrantTest extends OauthTestCase
 {
     public function testGetIdentifier()
     {
-        $userRepositoryMock = $this->getMock(UserRepositoryInterface::class);
-        $refreshTokenRepositoryMock = $this->getMock(RefreshTokenRepositoryInterface::class);
+        $userRepositoryMock = new UserRepository();
+        $refreshTokenRepositoryMock = new RefreshTokenRepository();
         $grant = new PasswordGrant($userRepositoryMock, $refreshTokenRepositoryMock);
         $this->assertEquals('password', $grant->getIdentifier());
     }
     public function testRespondToRequest()
     {
-        $client = new ClientEntity();
-        $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
-        $clientRepositoryMock->method('getClientEntity')->willReturn($client);
-        $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
-        $accessTokenRepositoryMock->method('getNewToken')->willReturn(new AccessTokenEntity());
-        $accessTokenRepositoryMock->method('persistNewAccessToken')->willReturnSelf();
-        $userRepositoryMock = $this->getMockBuilder(UserRepositoryInterface::class)->getMock();
-        $userEntity = new UserEntity();
-        $userRepositoryMock->method('getUserEntityByUserCredentials')->willReturn($userEntity);
-        $refreshTokenRepositoryMock = $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock();
-        $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willReturnSelf();
-        $refreshTokenRepositoryMock->method('getNewRefreshToken')->willReturn(new RefreshTokenEntity());
-        $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
-        $scopeRepositoryMock->method('finalizeScopes')->willReturnArgument(0);
+        $clientRepositoryMock = new ClientRepository();
+        $accessTokenRepositoryMock = new AccessTokenRepository();
+        $userRepositoryMock = new UserRepository();
+        $refreshTokenRepositoryMock = new RefreshTokenRepository();
+        $scopeRepositoryMock = new ScopeRepository();
         $grant = new PasswordGrant($userRepositoryMock, $refreshTokenRepositoryMock);
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
@@ -63,12 +59,10 @@ class PasswordGrantTest extends OauthTestCase
      */
     public function testRespondToRequestMissingUsername()
     {
-        $client = new ClientEntity();
-        $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
-        $clientRepositoryMock->method('getClientEntity')->willReturn($client);
-        $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
-        $userRepositoryMock = $this->getMockBuilder(UserRepositoryInterface::class)->getMock();
-        $refreshTokenRepositoryMock = $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock();
+        $clientRepositoryMock = new ClientRepository();
+        $accessTokenRepositoryMock = new AccessTokenRepository();
+        $userRepositoryMock = new UserRepository();
+        $refreshTokenRepositoryMock = new RefreshTokenRepository();
         $grant = new PasswordGrant($userRepositoryMock, $refreshTokenRepositoryMock);
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
@@ -87,12 +81,10 @@ class PasswordGrantTest extends OauthTestCase
      */
     public function testRespondToRequestMissingPassword()
     {
-        $client = new ClientEntity();
-        $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
-        $clientRepositoryMock->method('getClientEntity')->willReturn($client);
-        $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
-        $userRepositoryMock = $this->getMockBuilder(UserRepositoryInterface::class)->getMock();
-        $refreshTokenRepositoryMock = $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock();
+        $clientRepositoryMock = new ClientRepository();
+        $accessTokenRepositoryMock = new AccessTokenRepository();
+        $userRepositoryMock = new UserRepository();
+        $refreshTokenRepositoryMock = new RefreshTokenRepository();
         $grant = new PasswordGrant($userRepositoryMock, $refreshTokenRepositoryMock);
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
@@ -112,13 +104,10 @@ class PasswordGrantTest extends OauthTestCase
      */
     public function testRespondToRequestBadCredentials()
     {
-        $client = new ClientEntity();
-        $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
-        $clientRepositoryMock->method('getClientEntity')->willReturn($client);
-        $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
-        $userRepositoryMock = $this->getMockBuilder(UserRepositoryInterface::class)->getMock();
-        $userRepositoryMock->method('getUserEntityByUserCredentials')->willReturn(null);
-        $refreshTokenRepositoryMock = $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock();
+        $clientRepositoryMock = new ClientRepository();
+        $accessTokenRepositoryMock = new AccessTokenRepository();
+        $userRepositoryMock = new UserRepository();
+        $refreshTokenRepositoryMock = new RefreshTokenRepository();
         $grant = new PasswordGrant($userRepositoryMock, $refreshTokenRepositoryMock);
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);

@@ -101,8 +101,6 @@ class AuthCodeGrantTest extends OauthTestCase
 
     public function testValidateAuthorizationRequestRedirectUriArray()
     {
-        $client = new ClientEntity();
-        $client->setRedirectUri(['http://foo/bar']);
         $clientRepositoryMock = new ClientRepository();
 
         $grant = new AuthCodeGrant(
@@ -199,8 +197,6 @@ class AuthCodeGrantTest extends OauthTestCase
      */
     public function testValidateAuthorizationRequestBadRedirectUriString()
     {
-        $client = new ClientEntity();
-        $client->setRedirectUri('http://foo/bar');
         $clientRepositoryMock = new ClientRepository();
 
         $grant = new AuthCodeGrant(
@@ -234,8 +230,6 @@ class AuthCodeGrantTest extends OauthTestCase
      */
     public function testValidateAuthorizationRequestBadRedirectUriArray()
     {
-        $client = new ClientEntity();
-        $client->setRedirectUri(['http://foo/bar']);
         $clientRepositoryMock = new ClientRepository();
 
         $grant = new AuthCodeGrant(
@@ -313,9 +307,6 @@ class AuthCodeGrantTest extends OauthTestCase
 
     public function testRespondToAccessTokenRequest()
     {
-        $client = new ClientEntity();
-        $client->setIdentifier('foo');
-        $client->setRedirectUri('http://foo/bar');
         $clientRepository = new ClientRepository();
         $scopeRepositoryMock = new ScopeRepository();
         $accessTokenRepositoryMock = new AccessTokenRepository();
@@ -505,7 +496,6 @@ class AuthCodeGrantTest extends OauthTestCase
             /* @var StubResponseType $response */
             $grant->respondToAccessTokenRequest($request, new StubResponseType(), new \DateInterval('PT10M'));
         } catch (OAuthServerException $e) {
-            dd($e);
             $this->assertEquals($e->getHint(), 'Authorization code has expired');
         }
     }
@@ -543,8 +533,9 @@ class AuthCodeGrantTest extends OauthTestCase
             [],
             [],
             [
-                'grant_type'   => 'authorization_code',
-                'client_id'    => 'foo',
+                'grant_type' => 'authorization_code',
+                'client_id' => 'foo',
+                'client_secret' => 'bar',
                 'redirect_uri' => 'http://foo/bar',
                 'code'         => $this->cryptStub->doEncrypt(
                     json_encode(
@@ -571,9 +562,6 @@ class AuthCodeGrantTest extends OauthTestCase
 
     public function testRespondToAccessTokenRequestClientMismatch()
     {
-        $client = new ClientEntity();
-        $client->setIdentifier('foo');
-        $client->setRedirectUri('http://foo/bar');
         $clientRepositoryMock = new ClientRepository();
 
         $accessTokenRepositoryMock = new AccessTokenRepository();
@@ -600,13 +588,14 @@ class AuthCodeGrantTest extends OauthTestCase
             [],
             [],
             [
-                'grant_type'   => 'authorization_code',
-                'client_id'    => 'foo',
+                'grant_type' => 'authorization_code',
+                'client_id' => 'foo',
+                'client_secret' => 'bar',
                 'redirect_uri' => 'http://foo/bar',
                 'code'         => $this->cryptStub->doEncrypt(
                     json_encode(
                         [
-                            'auth_code_id' => uniqid(),
+                            'auth_code_id' => 'testAuthCodeForBaz',
                             'expire_time'  => time() + 3600,
                             'client_id'    => 'bar',
                             'user_id'      => 123,
@@ -657,8 +646,9 @@ class AuthCodeGrantTest extends OauthTestCase
             [],
             [],
             [
-                'grant_type'   => 'authorization_code',
-                'client_id'    => 'foo',
+                'grant_type' => 'authorization_code',
+                'client_id' => 'foo',
+                'client_secret' => 'bar',
                 'redirect_uri' => 'http://foo/bar',
                 'code'         => 'sdfsfsd',
             ]

@@ -48,7 +48,7 @@ abstract class OauthTestCase extends TestCase
             'private_key' => __DIR__ . '/Stubs/private.key',
             'private_key_phrase' => '',
             'public_key' => __DIR__ . '/Stubs/private.key',
-            'user_verifier' => \App\Oauth2\UserVerifier::class,
+            'user_verifier' => \Oauth2Tests\Stubs\UserVerifier::class,
             'grants'=>[
                 'client_credentials' => [
                     'access_token_ttl' => 10,

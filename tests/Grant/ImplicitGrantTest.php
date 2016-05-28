@@ -2,16 +2,15 @@
 namespace Oauth2Tests\Grant;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\ImplicitGrant;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use League\OAuth2\Server\ResponseTypes\RedirectResponse;
 use Oauth2Tests\OauthTestCase;
-use RTLer\Oauth2\Entities\AccessTokenEntity;
 use RTLer\Oauth2\Entities\ClientEntity;
 use Oauth2Tests\Stubs\CryptTraitStub;
 use Oauth2Tests\Stubs\StubResponseType;
 use RTLer\Oauth2\Entities\UserEntity;
+use RTLer\Oauth2\Repositories\AccessTokenRepository;
+use RTLer\Oauth2\Repositories\ClientRepository;
 use Zend\Diactoros\ServerRequest;
 class ImplicitGrantTest extends OauthTestCase
 {
@@ -68,10 +67,7 @@ class ImplicitGrantTest extends OauthTestCase
     }
     public function testValidateAuthorizationRequest()
     {
-        $client = new ClientEntity();
-        $client->setRedirectUri('http://foo/bar');
-        $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
-        $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock = new ClientRepository();
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
@@ -92,10 +88,7 @@ class ImplicitGrantTest extends OauthTestCase
     }
     public function testValidateAuthorizationRequestRedirectUriArray()
     {
-        $client = new ClientEntity();
-        $client->setRedirectUri(['http://foo/bar']);
-        $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
-        $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock = new ClientRepository();
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
@@ -120,7 +113,7 @@ class ImplicitGrantTest extends OauthTestCase
      */
     public function testValidateAuthorizationRequestMissingClientId()
     {
-        $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
+        $clientRepositoryMock = new ClientRepository();
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
@@ -143,8 +136,7 @@ class ImplicitGrantTest extends OauthTestCase
      */
     public function testValidateAuthorizationRequestInvalidClientId()
     {
-        $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
-        $clientRepositoryMock->method('getClientEntity')->willReturn(null);
+        $clientRepositoryMock = new ClientRepository();
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
@@ -157,7 +149,7 @@ class ImplicitGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id'     => 'foo',
+                'client_id'     => 'baz',
             ]
         );
         $grant->validateAuthorizationRequest($request);
@@ -168,10 +160,7 @@ class ImplicitGrantTest extends OauthTestCase
      */
     public function testValidateAuthorizationRequestBadRedirectUriString()
     {
-        $client = new ClientEntity();
-        $client->setRedirectUri('http://foo/bar');
-        $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
-        $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock = new ClientRepository();
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
@@ -196,10 +185,7 @@ class ImplicitGrantTest extends OauthTestCase
      */
     public function testValidateAuthorizationRequestBadRedirectUriArray()
     {
-        $client = new ClientEntity();
-        $client->setRedirectUri(['http://foo/bar']);
-        $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
-        $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock = new ClientRepository();
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
@@ -225,9 +211,7 @@ class ImplicitGrantTest extends OauthTestCase
         $authRequest->setClient(new ClientEntity());
         $authRequest->setGrantTypeId('authorization_code');
         $authRequest->setUser(new UserEntity());
-        $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
-        $accessTokenRepositoryMock->method('getNewToken')->willReturn(new AccessTokenEntity());
-        $accessTokenRepositoryMock->method('persistNewAccessToken')->willReturnSelf();
+        $accessTokenRepositoryMock = new AccessTokenRepository();
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
         $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
@@ -245,9 +229,7 @@ class ImplicitGrantTest extends OauthTestCase
         $authRequest->setClient(new ClientEntity());
         $authRequest->setGrantTypeId('authorization_code');
         $authRequest->setUser(new UserEntity());
-        $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
-        $accessTokenRepositoryMock->method('getNewToken')->willReturn(new AccessTokenEntity());
-        $accessTokenRepositoryMock->method('persistNewAccessToken')->willReturnSelf();
+        $accessTokenRepositoryMock = new AccessTokenRepository();
         $grant = new ImplicitGrant(new \DateInterval('PT10M'));
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
         $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));

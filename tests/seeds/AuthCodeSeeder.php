@@ -25,5 +25,10 @@ class AuthCodeSeeder extends Seeder
             'client_id' => 'foo',
             'expire_time' => CarbonInterval::sub(CarbonInterval::day()),
         ]);
+        AuthCodeModel::insert([
+            'token' => 'testAuthCodeForBaz',
+            'client_id' => 'baz',
+            'expire_time' => CarbonInterval::sub(CarbonInterval::day()),
+        ]);
     }
 }

@@ -2,13 +2,11 @@
 namespace Oauth2Tests\Grant;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use Oauth2Tests\OauthTestCase;
-use RTLer\Oauth2\Entities\AccessTokenEntity;
-use RTLer\Oauth2\Entities\ClientEntity;
 use Oauth2Tests\Stubs\StubResponseType;
+use RTLer\Oauth2\Repositories\AccessTokenRepository;
+use RTLer\Oauth2\Repositories\ClientRepository;
+use RTLer\Oauth2\Repositories\ScopeRepository;
 use Zend\Diactoros\ServerRequest;
 class ClientCredentialsGrantTest extends OauthTestCase
 {
@@ -19,14 +17,9 @@ class ClientCredentialsGrantTest extends OauthTestCase
     }
     public function testRespondToRequest()
     {
-        $client = new ClientEntity();
-        $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
-        $clientRepositoryMock->method('getClientEntity')->willReturn($client);
-        $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
-        $accessTokenRepositoryMock->method('getNewToken')->willReturn(new AccessTokenEntity());
-        $accessTokenRepositoryMock->method('persistNewAccessToken')->willReturnSelf();
-        $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
-        $scopeRepositoryMock->method('finalizeScopes')->willReturnArgument(0);
+        $clientRepositoryMock = new ClientRepository();
+        $accessTokenRepositoryMock = new AccessTokenRepository();
+        $scopeRepositoryMock = new ScopeRepository();
         $grant = new ClientCredentialsGrant();
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);

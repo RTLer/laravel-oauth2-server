@@ -11,7 +11,11 @@ class Oauth2ServiceProvider extends ServiceProvider
 
     public function __construct($app)
     {
-        $app->configure('oauth2');
+        try {
+            $app->configure('oauth2');
+        } catch (\Exception $e) {
+        }
+        
         $this->options = $app->make('config')->get('oauth2');
 
         parent::__construct($app);

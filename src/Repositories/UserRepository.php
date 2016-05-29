@@ -4,6 +4,7 @@ namespace RTLer\Oauth2\Repositories;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use RTLer\Oauth2\Entities\UserEntity;
+use RTLer\Oauth2\Oauth2Server;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -27,7 +28,8 @@ class UserRepository implements UserRepositoryInterface
     {
 
         $userEntity = new UserEntity();
-        $userVerifier = \Oauth2::getOptions()['user_verifier'];
+        $userVerifier = app()->make(Oauth2Server::class)
+            ->getOptions()['user_verifier'];
         $identifier = (new $userVerifier())
             ->getUserIdentifierByUserCredentials($username, $password, $grantType);
 

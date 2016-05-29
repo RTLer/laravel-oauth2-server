@@ -3,7 +3,9 @@
 namespace RTLer\Oauth2\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use RTLer\Oauth2\Oauth2Server;
 
 class ResourceServerMiddleware
 {
@@ -18,17 +20,17 @@ class ResourceServerMiddleware
     {
 
         $psrRequest = app()->make('Psr\Http\Message\ServerRequestInterface');
-        $resourceServer = \Oauth2::makeResourceServer();
+        $resourceServer = app()->make(Oauth2Server::class)
+            ->makeResourceServer();
 
         $serverRequest = $resourceServer->validateAuthenticatedRequest($psrRequest);
 
-        $environment = \Oauth2::getOptions()['environment'];
         $neededScopes = array_slice(func_get_args(), 2);
         $requestedScopes = $serverRequest->getAttribute('oauth_scopes');
 
         $this->validateScopes($neededScopes, $requestedScopes);
 
-        $this->authUser($request, $serverRequest, $environment);
+        $this->authUser($request, $serverRequest);
 
         return $next($request);
     }
@@ -62,14 +64,13 @@ class ResourceServerMiddleware
      * @param $serverRequest
      * @param $environment
      */
-    protected function authUser($request, $serverRequest, $environment)
+    protected function authUser($request, $serverRequest)
     {
-        $userVerifier = \Oauth2::getOptions()['user_verifier'];
+        $userVerifier = app()->make(Oauth2Server::class)
+            ->getOptions()['user_verifier'];
         $user = (new $userVerifier())
             ->getUserByIdentifier($serverRequest->getAttribute('oauth_user_id'));
-        if ($environment == 'laravel') {
-            \Auth::setUser($user);
-        }
+            Auth::setUser($user);
         $request->setUserResolver(function () use ($user) {
             return $user;
         });

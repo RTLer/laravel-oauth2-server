@@ -6,6 +6,12 @@ use Jenssegers\Mongodb\Eloquent\Model;
 
 class ClientModel extends Model
 {
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mongodb';
 
     /**
      * The collection associated with the model.

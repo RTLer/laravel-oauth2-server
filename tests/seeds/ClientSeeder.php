@@ -16,9 +16,12 @@ class ClientSeeder extends Seeder
     {
         $modelResolver = new ModelResolver(config('oauth2.database_type'));
         $model = $modelResolver->getModel('ClientModel');
-
+        $id = 'id';
+        if(env('DB_DRIVER','mongodb') == 'mongodb'){
+            $id = '_id';
+        }
         $model::insert([
-            '_id' => 'foo',
+            $id => 'foo',
 //            'grant_type' => str_random(10).'@gmail.com',
             'secret' => 'bar',
             'name' => 'foo_client',

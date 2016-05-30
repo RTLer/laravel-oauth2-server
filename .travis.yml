@@ -12,6 +12,11 @@ matrix:
 
 sudo: false
 
+script:
+    - test
+    - test -c phpunit.mysql.xml
+
+
 services:
   - mongodb
 

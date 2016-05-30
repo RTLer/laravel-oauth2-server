@@ -52,7 +52,7 @@ abstract class OauthTestCase extends TestCase
             'private_key_phrase' => '',
             'public_key' => __DIR__ . '/Stubs/private.key',
             'user_verifier' => \Oauth2Tests\Stubs\UserVerifier::class,
-            'database_type' => 'mongo',
+            'database_type' => env('DB_DRIVER','mongodb'),
             'grants' => [
                 'client_credentials' => [
                     'access_token_ttl' => 10,
@@ -92,7 +92,7 @@ abstract class OauthTestCase extends TestCase
     protected function getEnvironmentSetUp($app)
     {
         // Setup default database to use sqlite :memory:
-        $app['config']->set('database.default', 'mongodb');
+        $app['config']->set('database.default', env('DB_DRIVER','mongodb'));
         $app['config']->set('database.connections.mongodb', [
             'driver' => 'mongodb',
             'host' => '127.0.0.1',

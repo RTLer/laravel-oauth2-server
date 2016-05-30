@@ -1,10 +1,10 @@
 <?php
 
-namespace RTLer\Oauth2\Models\Mongo;
+namespace RTLer\Oauth2\Models\Mongodb;
 
 use Jenssegers\Mongodb\Eloquent\Model;
 
-class AccessTokenModel extends Model
+class ClientModel extends Model
 {
     /**
      * The database table used by the model.
@@ -18,7 +18,7 @@ class AccessTokenModel extends Model
      *
      * @var string
      */
-    protected $collection = 'oauth_access_tokens';
+    protected $collection = 'oauth_clients';
 
     /**
      * The attributes that are mass assignable.
@@ -26,8 +26,13 @@ class AccessTokenModel extends Model
      * @var array
      */
     protected $fillable = [
-        'token',
-        'session_id',
-        'expire_time'
+        '_id',
+        'grant_type',
+        'secret',
+        'name',
+        'redirect_uri',
+        'scopes',
     ];
+
+
 }

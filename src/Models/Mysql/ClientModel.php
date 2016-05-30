@@ -19,7 +19,7 @@ class ClientModel extends Model
      * @var array
      */
     protected $fillable = [
-        '_id',
+        'id',
         'grant_type',
         'secret',
         'name',

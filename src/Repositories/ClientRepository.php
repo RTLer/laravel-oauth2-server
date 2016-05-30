@@ -39,7 +39,13 @@ class ClientRepository implements ClientRepositoryInterface
     {
         $clientModel = $this->modelResolver->getModel('ClientModel');
 
-        $clintModelQuery = $clientModel::where('_id', $clientIdentifier);
+        $driver = get_class($clientModel::getConnectionResolver()->connection());
+        $idKey = 'id';
+        if ($driver == 'Jenssegers\Mongodb\Connection') {
+            $idKey = '_id';
+        }
+
+        $clintModelQuery = $clientModel::where($idKey, $clientIdentifier);
 
         if ($mustValidateSecret) {
             $clintModelQuery->where('secret', $clientSecret);
@@ -50,7 +56,7 @@ class ClientRepository implements ClientRepositoryInterface
             return;
         }
 
-        if (!is_null($clientModel->grant_type) &&
+        if (!empty($clientModel->grant_type) &&
             $clientModel->grant_type != $grantType
         ) {
             return;

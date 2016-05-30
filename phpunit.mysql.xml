@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit colors="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" stopOnError="true"
          stopOnFailure="true" stopOnIncomplete="false" stopOnSkipped="false" bootstrap="tests/Bootstrap.php">
+    <php>
+        <env name="DB_DRIVER" value="mysql"/>
+    </php>
+
+
     <testsuites>
-        <testsuite name="Tests">
+        <testsuite name="TestsMongo">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>

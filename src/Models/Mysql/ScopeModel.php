@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class ScopeModel extends Model
 {
     /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * The table associated with the model.
      *
      * @var string
@@ -19,7 +26,7 @@ class ScopeModel extends Model
      * @var array
      */
     protected $fillable = [
-        '_id',
+        'id',
         'description',
     ];
 }

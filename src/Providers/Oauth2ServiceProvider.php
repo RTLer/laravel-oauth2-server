@@ -28,10 +28,13 @@ class Oauth2ServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'../publish/config/oauth2.php' => base_path('config/oauth2.php'),
+            __DIR__.'/../publish/config/oauth2.php' => base_path('config/oauth2.php'),
         ]);
         $this->publishes([
-            __DIR__.'../publish/Oauth2/UserVerifier.php' => base_path('app/Oauth2/UserVerifier.'),
+            __DIR__.'/../publish/Oauth2/UserVerifier.php' => base_path('app/Oauth2/UserVerifier.php'),
+        ]);
+        $this->publishes([
+            __DIR__.'/../publish/migrations/2016_05_30_155444_CreateOauth2Tables.php' => base_path('database/migrations/2016_05_30_155444_CreateOauth2Tables.php'),
         ]);
     }
 

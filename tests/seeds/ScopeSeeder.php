@@ -17,9 +17,13 @@ class ScopeSeeder extends Seeder
     {
         $modelResolver = new ModelResolver(config('oauth2.database_type'));
         $model = $modelResolver->getModel('ScopeModel');
+        $id = 'id';
+        if (env('DB_DRIVER', 'mongodb') == 'mongodb') {
+            $id = '_id';
+        }
 
         $model::insert([
-            '_id'         => 'foo',
+            $id           => 'foo',
             'description' => 'this is foo scope',
         ]);
     }

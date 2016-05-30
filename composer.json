@@ -5,14 +5,14 @@
     "type": "project",
     "require": {
         "league/oauth2-server": "5.*",
-        "jenssegers/mongodb": "3.*",
         "guzzlehttp/psr7": "^1.3",
         "symfony/psr-http-message-bridge": "^0.2.0",
         "zendframework/zend-diactoros": "^1.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.3",
-        "orchestra/testbench": "~3.2"
+        "orchestra/testbench": "~3.2",
+        "jenssegers/mongodb": "3.*"
     },
     "authors": [
         {

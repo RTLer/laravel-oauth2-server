@@ -2,7 +2,6 @@
 
 namespace RTLer\Oauth2\Models\Mysql;
 
-
 use Illuminate\Database\Eloquent\Model;
 
 class AccessTokenModel extends Model
@@ -22,6 +21,6 @@ class AccessTokenModel extends Model
     protected $fillable = [
         'token',
         'session_id',
-        'expire_time'
+        'expire_time',
     ];
 }

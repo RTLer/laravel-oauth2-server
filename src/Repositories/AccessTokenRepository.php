@@ -18,7 +18,6 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
 
     /**
      * AccessTokenRepository constructor.
-     *
      */
     public function __construct()
     {
@@ -28,11 +27,11 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     }
 
     /**
-     * Create a new access token
+     * Create a new access token.
      *
-     * @param \League\OAuth2\Server\Entities\ClientEntityInterface $clientEntity
+     * @param \League\OAuth2\Server\Entities\ClientEntityInterface  $clientEntity
      * @param \League\OAuth2\Server\Entities\ScopeEntityInterface[] $scopes
-     * @param mixed $userIdentifier
+     * @param mixed                                                 $userIdentifier
      *
      * @return AccessTokenEntityInterface
      */
@@ -51,8 +50,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
 
         $newAccessToken = [
-            'token' => $accessTokenEntity->getIdentifier(),
-            'client_id' => $accessTokenEntity->getClient()->getIdentifier(),
+            'token'       => $accessTokenEntity->getIdentifier(),
+            'client_id'   => $accessTokenEntity->getClient()->getIdentifier(),
             'expire_time' => $accessTokenEntity->getExpiryDateTime(),
         ];
 
@@ -93,6 +92,6 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     {
         $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
 
-        return !(boolean)$accessTokenModel::where('token', $tokenId)->exists();
+        return !(bool) $accessTokenModel::where('token', $tokenId)->exists();
     }
 }

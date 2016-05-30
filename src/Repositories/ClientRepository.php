@@ -16,7 +16,6 @@ class ClientRepository implements ClientRepositoryInterface
 
     /**
      * AccessTokenRepository constructor.
-     *
      */
     public function __construct()
     {
@@ -28,10 +27,10 @@ class ClientRepository implements ClientRepositoryInterface
     /**
      * Get a client.
      *
-     * @param string $clientIdentifier The client's identifier
-     * @param string $grantType The grant type used
-     * @param null|string $clientSecret The client's secret (if sent)
-     * @param bool $mustValidateSecret If true the client must attempt to validate the secret unless the client
+     * @param string      $clientIdentifier   The client's identifier
+     * @param string      $grantType          The grant type used
+     * @param null|string $clientSecret       The client's secret (if sent)
+     * @param bool        $mustValidateSecret If true the client must attempt to validate the secret unless the client
      *                                        is confidential
      *
      * @return \League\OAuth2\Server\Entities\ClientEntityInterface
@@ -54,13 +53,13 @@ class ClientRepository implements ClientRepositoryInterface
         $clientModel = $clintModelQuery->first();
 
         if (is_null($clientModel)) {
-            return null;
+            return;
         }
 
         if (!empty($clientModel->grant_type) &&
             $clientModel->grant_type != $grantType
         ) {
-            return null;
+            return;
         }
 
         $clientEntity = new ClientEntity();
@@ -69,6 +68,7 @@ class ClientRepository implements ClientRepositoryInterface
         if (!is_null($clientModel->redirect_uri)) {
             $clientEntity->setRedirectUri($clientModel->redirect_uri);
         }
+
         return $clientEntity;
     }
 }

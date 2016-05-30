@@ -49,7 +49,6 @@ class CreateOauth2Tables extends Migration
             $table->string('description');
             $table->timestamps();
         });
-
     }
 
     /**

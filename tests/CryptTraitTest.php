@@ -8,13 +8,13 @@ use Oauth2Tests\Stubs\CryptTraitStub;
 class CryptTraitTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * CryptTrait stub
+     * CryptTrait stub.
      */
     protected $cryptStub;
 
     public function setUp()
     {
-        $this->cryptStub = new CryptTraitStub;
+        $this->cryptStub = new CryptTraitStub();
     }
 
     public function testEncryptDecrypt()
@@ -32,7 +32,7 @@ class CryptTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function testBadPrivateKey()
     {
-        $this->cryptStub->setPrivateKey(new CryptKey(__DIR__ . '/Stubs/public.key'));
+        $this->cryptStub->setPrivateKey(new CryptKey(__DIR__.'/Stubs/public.key'));
         $this->cryptStub->doEncrypt('');
     }
 
@@ -41,7 +41,7 @@ class CryptTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function testBadPublicKey()
     {
-        $this->cryptStub->setPublicKey(new CryptKey(__DIR__ . '/Stubs/private.key'));
+        $this->cryptStub->setPublicKey(new CryptKey(__DIR__.'/Stubs/private.key'));
         $this->cryptStub->doDecrypt('');
     }
 

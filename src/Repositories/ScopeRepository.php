@@ -1,4 +1,5 @@
 <?php
+
 namespace RTLer\Oauth2\Repositories;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -17,7 +18,6 @@ class ScopeRepository implements ScopeRepositoryInterface
 
     /**
      * AccessTokenRepository constructor.
-     *
      */
     public function __construct()
     {
@@ -45,7 +45,7 @@ class ScopeRepository implements ScopeRepositoryInterface
 
         $scopeModel = $scopeModel::where($idKey, $identifier)->first();
         if (is_null($scopeModel)) {
-            return null;
+            return;
         }
         $scopeEntity = new ScopeEntity();
         $scopeEntity->setIdentifier($scopeModel->{$idKey});
@@ -57,10 +57,10 @@ class ScopeRepository implements ScopeRepositoryInterface
      * Given a client, grant type and optional user identifier validate the set of scopes requested are valid and optionally
      * append additional scopes or remove requested scopes.
      *
-     * @param ScopeEntityInterface[] $scopes
-     * @param string $grantType
+     * @param ScopeEntityInterface[]                               $scopes
+     * @param string                                               $grantType
      * @param \League\OAuth2\Server\Entities\ClientEntityInterface $clientEntity
-     * @param null|string $userIdentifier
+     * @param null|string                                          $userIdentifier
      *
      * @return \League\OAuth2\Server\Entities\ScopeEntityInterface[]
      */
@@ -69,8 +69,7 @@ class ScopeRepository implements ScopeRepositoryInterface
         $grantType,
         ClientEntityInterface $clientEntity,
         $userIdentifier = null
-    )
-    {
+    ) {
         $scopeModel = $this->modelResolver->getModel('ScopeModel');
         $clientModel = $this->modelResolver->getModel('ClientModel');
 

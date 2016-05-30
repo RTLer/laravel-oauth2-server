@@ -1,4 +1,5 @@
 <?php
+
 namespace Oauth2Tests\Grant;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
@@ -30,7 +31,7 @@ class ClientCredentialsGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
             ]
         );

@@ -12,7 +12,7 @@ class ScopeModel extends Model
      * @var bool
      */
     public $incrementing = false;
-    
+
     /**
      * The table associated with the model.
      *
@@ -27,6 +27,6 @@ class ScopeModel extends Model
      */
     protected $fillable = [
         'id',
-        'description'
+        'description',
     ];
 }

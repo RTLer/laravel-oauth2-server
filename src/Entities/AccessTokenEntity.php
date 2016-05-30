@@ -1,4 +1,5 @@
 <?php
+
 namespace RTLer\Oauth2\Entities;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;

@@ -48,7 +48,7 @@ class ScopeRepository implements ScopeRepositoryInterface
             return null;
         }
         $scopeEntity = new ScopeEntity();
-        $scopeEntity->setIdentifier($scopeModel->_id);
+        $scopeEntity->setIdentifier($scopeModel->{$idKey});
 
         return $scopeEntity;
     }
@@ -96,7 +96,7 @@ class ScopeRepository implements ScopeRepositoryInterface
         $validScopeEntities = [];
         foreach ($validScopeModels as $validScopeModel) {
             $scopeEntity = new ScopeEntity();
-            $scopeEntity->setIdentifier($validScopeModel->_id);
+            $scopeEntity->setIdentifier($validScopeModel->{$idKey});
             $validScopeEntities[] = $scopeEntity;
         }
 

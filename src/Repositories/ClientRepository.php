@@ -57,7 +57,7 @@ class ClientRepository implements ClientRepositoryInterface
             return null;
         }
 
-        if (!is_null($clientModel->grant_type) &&
+        if (!empty($clientModel->grant_type) &&
             $clientModel->grant_type != $grantType
         ) {
             return null;

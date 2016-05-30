@@ -15,14 +15,14 @@ class CreateOauth2Tables extends Migration
         Schema::create('oauth_access_tokens', function (Blueprint $table) {
             $table->increments('id')->unique();
             $table->string('token')->unique();
-            $this->timestamp('expire_time')->nullable();
+            $table->timestamp('expire_time')->nullable();
             $table->timestamps();
         });
         Schema::create('oauth_auth_codes', function (Blueprint $table) {
             $table->increments('id')->unique();
             $table->string('token')->unique();
-            $table->string('client_id');
-            $this->timestamp('expire_time')->nullable();
+            $table->string('client_id')->nullable();
+            $table->timestamp('expire_time')->nullable();
             $table->timestamps();
         });
         Schema::create('oauth_clients', function (Blueprint $table) {
@@ -39,7 +39,7 @@ class CreateOauth2Tables extends Migration
             $table->increments('id')->unique();
             $table->string('token')->unique();
             $table->string('access_token_id');
-            $this->timestamp('expire_time')->nullable();
+            $table->timestamp('expire_time')->nullable();
             $table->timestamps();
         });
 

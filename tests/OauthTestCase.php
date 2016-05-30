@@ -108,6 +108,19 @@ abstract class OauthTestCase extends TestCase
             ],
             'use_mongo_id' => true,
         ]);
+        $app['config']->set('database.connections.mysql', [
+            "driver" => "mysql",
+          "host" => "127.0.0.1",
+          "port" => "3306",
+          "database" => "testbench",
+          "username" => "root",
+          "password" => "",
+          "charset" => "utf8",
+          "collation" => "utf8_unicode_ci",
+          "prefix" => "",
+          "strict" => false,
+          "engine" => null,
+        ]);
 
     }
 

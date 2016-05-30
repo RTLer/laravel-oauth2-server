@@ -19,12 +19,10 @@ class AccessTokenSeeder extends Seeder
         $model = $modelResolver->getModel('AccessTokenModel');
         $model::insert([
             'token' => str_random(10),
-            'session_id' => 'test',
             'expire_time' => CarbonInterval::day(),
         ]);
         $model::getModel('AccessTokenModel')->insert([
             'token' => 'AccessTokenFoo',
-            'session_id' => 'SessionFoo',
             'expire_time' => CarbonInterval::day(),
         ]);
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Oauth2Tests\Grant;
 
 use League\OAuth2\Server\CryptKey;
@@ -9,10 +10,10 @@ use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use League\OAuth2\Server\ResponseTypes\RedirectResponse;
 use Oauth2Tests\OauthTestCase;
+use Oauth2Tests\Stubs\CryptTraitStub;
+use Oauth2Tests\Stubs\StubResponseType;
 use RTLer\Oauth2\Entities\ClientEntity;
 use RTLer\Oauth2\Entities\UserEntity;
-use Oauth2Tests\Stubs\StubResponseType;
-use Oauth2Tests\Stubs\CryptTraitStub;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\AuthCodeRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
@@ -23,9 +24,9 @@ use Zend\Diactoros\ServerRequest;
 class AuthCodeGrantTest extends OauthTestCase
 {
     /**
-     * CryptTrait stub
+     * CryptTrait stub.
      *
-     * @var CryptTraitStub $cryptStub
+     * @var CryptTraitStub
      */
     protected $cryptStub;
 
@@ -64,7 +65,7 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
             ]
         );
 
@@ -92,8 +93,8 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id' => 'foo',
-                'redirect_uri' => 'http://foo/bar',
+                'client_id'     => 'foo',
+                'redirect_uri'  => 'http://foo/bar',
             ]
         );
 
@@ -121,8 +122,8 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id' => 'foo',
-                'redirect_uri' => 'http://foo/bar',
+                'client_id'     => 'foo',
+                'redirect_uri'  => 'http://foo/bar',
             ]
         );
 
@@ -185,7 +186,7 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id' => 'baz',
+                'client_id'     => 'baz',
             ]
         );
 
@@ -217,8 +218,8 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id' => 'foo',
-                'redirect_uri' => 'http://bar',
+                'client_id'     => 'foo',
+                'redirect_uri'  => 'http://bar',
             ]
         );
 
@@ -250,8 +251,8 @@ class AuthCodeGrantTest extends OauthTestCase
             $cookies = [],
             $queryParams = [
                 'response_type' => 'code',
-                'client_id' => 'foo',
-                'redirect_uri' => 'http://bar',
+                'client_id'     => 'foo',
+                'redirect_uri'  => 'http://bar',
             ]
         );
 
@@ -274,8 +275,8 @@ class AuthCodeGrantTest extends OauthTestCase
             new \DateInterval('PT10M')
         );
 
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
 
         $this->assertTrue($grant->completeAuthorizationRequest($authRequest) instanceof RedirectResponse);
     }
@@ -300,8 +301,8 @@ class AuthCodeGrantTest extends OauthTestCase
             new \DateInterval('PT10M')
         );
 
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
 
         $grant->completeAuthorizationRequest($authRequest);
     }
@@ -321,8 +322,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $request = new ServerRequest(
             [],
             [],
@@ -333,18 +334,18 @@ class AuthCodeGrantTest extends OauthTestCase
             [],
             [],
             [
-                'grant_type' => 'authorization_code',
-                'client_id' => 'foo',
+                'grant_type'    => 'authorization_code',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
-                'redirect_uri' => 'http://foo/bar',
-                'code' => $this->cryptStub->doEncrypt(
+                'redirect_uri'  => 'http://foo/bar',
+                'code'          => $this->cryptStub->doEncrypt(
                     json_encode(
                         [
                             'auth_code_id' => 'testAuthCode',
-                            'expire_time' => time() + 3600,
-                            'client_id' => 'foo',
-                            'user_id' => 123,
-                            'scopes' => ['foo'],
+                            'expire_time'  => time() + 3600,
+                            'client_id'    => 'foo',
+                            'user_id'      => 123,
+                            'scopes'       => ['foo'],
                             'redirect_uri' => 'http://foo/bar',
                         ]
                     )
@@ -363,7 +364,6 @@ class AuthCodeGrantTest extends OauthTestCase
      */
     public function testRespondToAccessTokenRequestMissingRedirectUri()
     {
-
         $clientRepository = new ClientRepository();
         $accessTokenRepositoryMock = new AccessTokenRepository();
         $refreshTokenRepositoryMock = new RefreshTokenRepository();
@@ -377,8 +377,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $grant->setClientRepository($clientRepository);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
 
         $request = new ServerRequest(
             [],
@@ -419,8 +419,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
 
         $request = new ServerRequest(
             [],
@@ -432,10 +432,10 @@ class AuthCodeGrantTest extends OauthTestCase
             [],
             [],
             [
-                'grant_type' => 'authorization_code',
-                'client_id' => 'foo',
+                'grant_type'    => 'authorization_code',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
-                'redirect_uri' => 'http://foo/bar',
+                'redirect_uri'  => 'http://foo/bar',
             ]
         );
 
@@ -461,8 +461,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
 
         $request = new ServerRequest(
             [],
@@ -474,18 +474,18 @@ class AuthCodeGrantTest extends OauthTestCase
             [],
             [],
             [
-                'grant_type' => 'authorization_code',
-                'client_id' => 'foo',
+                'grant_type'    => 'authorization_code',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
-                'redirect_uri' => 'http://foo/bar',
-                'code' => $this->cryptStub->doEncrypt(
+                'redirect_uri'  => 'http://foo/bar',
+                'code'          => $this->cryptStub->doEncrypt(
                     json_encode(
                         [
                             'auth_code_id' => 'testAuthCodeExpired',
-                            'expire_time' => time() - 3600,
-                            'client_id' => 'foo',
-                            'user_id' => 123,
-                            'scopes' => ['foo'],
+                            'expire_time'  => time() - 3600,
+                            'client_id'    => 'foo',
+                            'user_id'      => 123,
+                            'scopes'       => ['foo'],
                             'redirect_uri' => 'http://foo/bar',
                         ]
                     )
@@ -521,8 +521,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
 
         $request = new ServerRequest(
             [],
@@ -534,18 +534,18 @@ class AuthCodeGrantTest extends OauthTestCase
             [],
             [],
             [
-                'grant_type' => 'authorization_code',
-                'client_id' => 'foo',
+                'grant_type'    => 'authorization_code',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
-                'redirect_uri' => 'http://foo/bar',
-                'code' => $this->cryptStub->doEncrypt(
+                'redirect_uri'  => 'http://foo/bar',
+                'code'          => $this->cryptStub->doEncrypt(
                     json_encode(
                         [
                             'auth_code_id' => uniqid(),
-                            'expire_time' => time() + 3600,
-                            'client_id' => 'foo',
-                            'user_id' => 123,
-                            'scopes' => ['foo'],
+                            'expire_time'  => time() + 3600,
+                            'client_id'    => 'foo',
+                            'user_id'      => 123,
+                            'scopes'       => ['foo'],
                             'redirect_uri' => 'http://foo/bar',
                         ]
                     )
@@ -576,8 +576,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
 
         $request = new ServerRequest(
             [],
@@ -589,18 +589,18 @@ class AuthCodeGrantTest extends OauthTestCase
             [],
             [],
             [
-                'grant_type' => 'authorization_code',
-                'client_id' => 'foo',
+                'grant_type'    => 'authorization_code',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
-                'redirect_uri' => 'http://foo/bar',
-                'code' => $this->cryptStub->doEncrypt(
+                'redirect_uri'  => 'http://foo/bar',
+                'code'          => $this->cryptStub->doEncrypt(
                     json_encode(
                         [
                             'auth_code_id' => 'testAuthCodeForBaz',
-                            'expire_time' => time() + 3600,
-                            'client_id' => 'bar',
-                            'user_id' => 123,
-                            'scopes' => ['foo'],
+                            'expire_time'  => time() + 3600,
+                            'client_id'    => 'bar',
+                            'user_id'      => 123,
+                            'scopes'       => ['foo'],
                             'redirect_uri' => 'http://foo/bar',
                         ]
                     )
@@ -634,8 +634,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
 
         $request = new ServerRequest(
             [],
@@ -647,11 +647,11 @@ class AuthCodeGrantTest extends OauthTestCase
             [],
             [],
             [
-                'grant_type' => 'authorization_code',
-                'client_id' => 'foo',
+                'grant_type'    => 'authorization_code',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
-                'redirect_uri' => 'http://foo/bar',
-                'code' => 'sdfsfsd',
+                'redirect_uri'  => 'http://foo/bar',
+                'code'          => 'sdfsfsd',
             ]
         );
 

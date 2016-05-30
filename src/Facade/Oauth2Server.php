@@ -1,4 +1,5 @@
 <?php
+
 namespace RTLer\Oauth2\Facade;
 
 use Illuminate\Support\Facades\Facade;

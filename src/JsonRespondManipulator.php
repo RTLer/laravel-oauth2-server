@@ -1,4 +1,5 @@
 <?php
+
 namespace RTLer\Oauth2;
 
 use Psr\Http\Message\ResponseInterface;
@@ -18,15 +19,16 @@ class JsonRespondManipulator
     }
 
     /**
-     * edit Respond body
+     * edit Respond body.
      *
      * @param $callback
+     *
      * @return $this
      */
     public function editBody($callback)
     {
         $bodyObject = $this->respond->getBody();
-        $responseBody = json_decode((string)$bodyObject, true);
+        $responseBody = json_decode((string) $bodyObject, true);
 
         $editedResponseBody = $callback($responseBody);
         $bodyObject->detach();
@@ -38,9 +40,10 @@ class JsonRespondManipulator
     }
 
     /**
-     * edit response it self (edit header and etc.)
+     * edit response it self (edit header and etc.).
      *
      * @param $callback
+     *
      * @return $this
      */
     public function editResponse($callback)

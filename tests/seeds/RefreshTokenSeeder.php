@@ -1,4 +1,5 @@
 <?php
+
 namespace Oauth2Tests\seeds;
 
 use Carbon\CarbonInterval;
@@ -19,9 +20,9 @@ class RefreshTokenSeeder extends Seeder
         $model = $modelResolver->getModel('RefreshTokenModel');
 
         $model::insert([
-            'token' => 'RefreshTokenFoo',
+            'token'           => 'RefreshTokenFoo',
             'access_token_id' => 'AccessTokenFoo',
-            'expire_time' => CarbonInterval::day(),
+            'expire_time'     => CarbonInterval::day(),
         ]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
-namespace RTLer\Oauth2\Repositories;
 
+namespace RTLer\Oauth2\Repositories;
 
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
@@ -17,7 +17,6 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 
     /**
      * AccessTokenRepository constructor.
-     *
      */
     public function __construct()
     {
@@ -27,7 +26,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     }
 
     /**
-     * Creates a new refresh token
+     * Creates a new refresh token.
      *
      * @return RefreshTokenEntityInterface
      */
@@ -46,9 +45,9 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
         $refreshTokenModel = $this->modelResolver->getModel('RefreshTokenModel');
 
         $refreshToken = [
-            'token' => $refreshTokenEntity->getIdentifier(),
+            'token'           => $refreshTokenEntity->getIdentifier(),
             'access_token_id' => $refreshTokenEntity->getAccessToken()->getIdentifier(),
-            'expire_time' => $refreshTokenEntity->getExpiryDateTime(),
+            'expire_time'     => $refreshTokenEntity->getExpiryDateTime(),
 
         ];
 
@@ -78,6 +77,6 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     {
         $refreshTokenModel = $this->modelResolver->getModel('RefreshTokenModel');
 
-        return !(boolean)$refreshTokenModel::where('token', $tokenId)->exists();
+        return !(bool) $refreshTokenModel::where('token', $tokenId)->exists();
     }
 }

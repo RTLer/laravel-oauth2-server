@@ -1,4 +1,5 @@
 <?php
+
 namespace Oauth2Tests\seeds;
 
 use Illuminate\Database\Seeder;
@@ -23,6 +24,5 @@ class TestDatabaseSeeder extends Seeder
         $this->call(AuthCodeSeeder::class);
         $this->call(AccessTokenSeeder::class);
         $this->call(RefreshTokenSeeder::class);
-
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Oauth2Tests\seeds;
 
 use Carbon\CarbonInterval;
@@ -19,18 +20,18 @@ class AuthCodeSeeder extends Seeder
         $model = $modelResolver->getModel('AuthCodeModel');
 
         $model::insert([
-            'token' => 'testAuthCode',
-            'client_id' => 'foo',
+            'token'       => 'testAuthCode',
+            'client_id'   => 'foo',
             'expire_time' => CarbonInterval::day(),
         ]);
         $model::insert([
-            'token' => 'testAuthCodeExpired',
-            'client_id' => 'foo',
+            'token'       => 'testAuthCodeExpired',
+            'client_id'   => 'foo',
             'expire_time' => CarbonInterval::sub(CarbonInterval::day()),
         ]);
         $model::insert([
-            'token' => 'testAuthCodeForBaz',
-            'client_id' => 'baz',
+            'token'       => 'testAuthCodeForBaz',
+            'client_id'   => 'baz',
             'expire_time' => CarbonInterval::sub(CarbonInterval::day()),
         ]);
     }

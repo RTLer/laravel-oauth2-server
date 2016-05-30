@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LeagueTests;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -15,7 +14,7 @@ class ResourceServerTest extends OauthTestCase
     {
         $server = new ResourceServer(
             new AccessTokenRepository(),
-            'file://' . __DIR__ . '/Stubs/public.key'
+            'file://'.__DIR__.'/Stubs/public.key'
         );
 
         try {

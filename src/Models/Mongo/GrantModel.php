@@ -26,6 +26,6 @@ class GrantModel extends Model
      * @var array
      */
     protected $fillable = [
-        'id'
+        'id',
     ];
 }

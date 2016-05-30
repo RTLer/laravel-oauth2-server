@@ -20,6 +20,6 @@ class ScopeModel extends Model
      */
     protected $fillable = [
         '_id',
-        'description'
+        'description',
     ];
 }

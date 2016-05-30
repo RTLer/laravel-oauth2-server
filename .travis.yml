@@ -13,8 +13,8 @@ matrix:
 sudo: false
 
 script:
-    - vendor/phpunit/phpunit/phpunit -c phpunit.mongo.xml
-    - vendor/phpunit/phpunit/phpunit -c phpunit.mysql.xml
+    - phpunit -c phpunit.mongo.xml
+    - phpunit -c phpunit.mysql.xml
 
 
 services:

@@ -14,10 +14,11 @@ abstract class OauthTestCase extends TestCase
     public function setUp()
     {
         parent::setUp();
-
-        $this->artisan('migrate', [
-            '--realpath' => realpath(__DIR__.'/../src/publish/migrations/'),
-        ]);
+        if(env('DB_DRIVER','mongodb') == 'mysql') {
+            $this->artisan('migrate', [
+                '--realpath' => realpath(__DIR__ . '/../src/publish/migrations/'),
+            ]);
+        }
 
         $this->artisan('db:seed', [
             '--class' => TestDatabaseSeeder::class,

@@ -37,7 +37,13 @@ class ScopeRepository implements ScopeRepositoryInterface
     {
         $scopeModel = $this->modelResolver->getModel('ScopeModel');
 
-        $scopeModel = $scopeModel::where('_id', $identifier)->first();
+        $driver = get_class($scopeModel::getConnectionResolver()->connection());
+        $idKey = 'id';
+        if ($driver == 'Jenssegers\Mongodb\Connection') {
+            $idKey = '_id';
+        }
+
+        $scopeModel = $scopeModel::where($idKey, $identifier)->first();
         if (is_null($scopeModel)) {
             return null;
         }
@@ -68,14 +74,24 @@ class ScopeRepository implements ScopeRepositoryInterface
         $scopeModel = $this->modelResolver->getModel('ScopeModel');
         $clientModel = $this->modelResolver->getModel('ClientModel');
 
+        $driver = get_class($clientModel::getConnectionResolver()->connection());
+        $idKey = 'id';
+        if ($driver == 'Jenssegers\Mongodb\Connection') {
+            $idKey = '_id';
+        }
 
-        $clientModel = $clientModel::where('_id', $clientEntity->getIdentifier())->first();
+        $clientModel = $clientModel::where($idKey, $clientEntity->getIdentifier())->first();
         if (is_null($clientModel)) {
             return [];
         }
 
+        $scopes = $clientModel->scopes;
+        if ($driver != 'Jenssegers\Mongodb\Connection') {
+            $scopes = json_decode($scopes);
+        }
+
         $validScopes = collect($clientModel->scopes)->intersect($scopes);
-        $validScopeModels = $scopeModel::whereIn('_id', $validScopes)->get();
+        $validScopeModels = $scopeModel::whereIn($idKey, $validScopes)->get();
 
         $validScopeEntities = [];
         foreach ($validScopeModels as $validScopeModel) {

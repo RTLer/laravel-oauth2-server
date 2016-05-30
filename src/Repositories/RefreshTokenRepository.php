@@ -5,10 +5,26 @@ namespace RTLer\Oauth2\Repositories;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use RTLer\Oauth2\Entities\RefreshTokenEntity;
-use RTLer\Oauth2\Models\RefreshTokenModel;
+use RTLer\Oauth2\Models\ModelResolver;
+use RTLer\Oauth2\Oauth2Server;
 
 class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {
+    /**
+     * @var ModelResolver
+     */
+    protected $modelResolver;
+
+    /**
+     * AccessTokenRepository constructor.
+     *
+     */
+    public function __construct()
+    {
+        $type = app()->make(Oauth2Server::class)
+            ->getOptions()['database_type'];
+        $this->modelResolver = new ModelResolver($type);
+    }
 
     /**
      * Creates a new refresh token
@@ -27,6 +43,8 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      */
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
     {
+        $refreshTokenModel = $this->modelResolver->getModel('RefreshTokenModel');
+
         $refreshToken = [
             'token' => $refreshTokenEntity->getIdentifier(),
             'access_token_id' => $refreshTokenEntity->getAccessToken()->getIdentifier(),
@@ -34,7 +52,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 
         ];
 
-        RefreshTokenModel::create($refreshToken);
+        $refreshTokenModel::create($refreshToken);
     }
 
     /**
@@ -44,7 +62,9 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      */
     public function revokeRefreshToken($tokenId)
     {
-        RefreshTokenModel::where('token', $tokenId)->delete();
+        $refreshTokenModel = $this->modelResolver->getModel('RefreshTokenModel');
+
+        $refreshTokenModel::where('token', $tokenId)->delete();
     }
 
     /**
@@ -56,6 +76,8 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      */
     public function isRefreshTokenRevoked($tokenId)
     {
-        return !(boolean)RefreshTokenModel::where('token', $tokenId)->exists();
+        $refreshTokenModel = $this->modelResolver->getModel('RefreshTokenModel');
+
+        return !(boolean)$refreshTokenModel::where('token', $tokenId)->exists();
     }
 }

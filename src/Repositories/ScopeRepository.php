@@ -5,11 +5,26 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use RTLer\Oauth2\Entities\ScopeEntity;
-use RTLer\Oauth2\Models\ClientModel;
-use RTLer\Oauth2\Models\ScopeModel;
+use RTLer\Oauth2\Models\ModelResolver;
+use RTLer\Oauth2\Oauth2Server;
 
 class ScopeRepository implements ScopeRepositoryInterface
 {
+    /**
+     * @var ModelResolver
+     */
+    protected $modelResolver;
+
+    /**
+     * AccessTokenRepository constructor.
+     *
+     */
+    public function __construct()
+    {
+        $type = app()->make(Oauth2Server::class)
+            ->getOptions()['database_type'];
+        $this->modelResolver = new ModelResolver($type);
+    }
 
     /**
      * Return information about a scope.
@@ -20,7 +35,9 @@ class ScopeRepository implements ScopeRepositoryInterface
      */
     public function getScopeEntityByIdentifier($identifier)
     {
-        $scopeModel = ScopeModel::where('_id', $identifier)->first();
+        $scopeModel = $this->modelResolver->getModel('ScopeModel');
+
+        $scopeModel = $scopeModel::where('_id', $identifier)->first();
         if (is_null($scopeModel)) {
             return null;
         }
@@ -48,13 +65,17 @@ class ScopeRepository implements ScopeRepositoryInterface
         $userIdentifier = null
     )
     {
-        $clientModel = ClientModel::where('_id', $clientEntity->getIdentifier())->first();
+        $scopeModel = $this->modelResolver->getModel('ScopeModel');
+        $clientModel = $this->modelResolver->getModel('ClientModel');
+
+
+        $clientModel = $clientModel::where('_id', $clientEntity->getIdentifier())->first();
         if (is_null($clientModel)) {
             return [];
         }
 
         $validScopes = collect($clientModel->scopes)->intersect($scopes);
-        $validScopeModels = ScopeModel::whereIn('_id', $validScopes)->get();
+        $validScopeModels = $scopeModel::whereIn('_id', $validScopes)->get();
 
         $validScopeEntities = [];
         foreach ($validScopeModels as $validScopeModel) {

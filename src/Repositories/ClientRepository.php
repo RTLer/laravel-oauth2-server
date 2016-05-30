@@ -4,10 +4,27 @@ namespace RTLer\Oauth2\Repositories;
 
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use RTLer\Oauth2\Entities\ClientEntity;
-use RTLer\Oauth2\Models\ClientModel;
+use RTLer\Oauth2\Models\ModelResolver;
+use RTLer\Oauth2\Oauth2Server;
 
 class ClientRepository implements ClientRepositoryInterface
 {
+    /**
+     * @var ModelResolver
+     */
+    protected $modelResolver;
+
+    /**
+     * AccessTokenRepository constructor.
+     *
+     */
+    public function __construct()
+    {
+        $type = app()->make(Oauth2Server::class)
+            ->getOptions()['database_type'];
+        $this->modelResolver = new ModelResolver($type);
+    }
+
     /**
      * Get a client.
      *
@@ -21,7 +38,9 @@ class ClientRepository implements ClientRepositoryInterface
      */
     public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
     {
-        $clintModelQuery = ClientModel::where('_id', $clientIdentifier);
+        $clientModel = $this->modelResolver->getModel('ClientModel');
+
+        $clintModelQuery = $clientModel::where('_id', $clientIdentifier);
 
         if ($mustValidateSecret) {
             $clintModelQuery->where('secret', $clientSecret);

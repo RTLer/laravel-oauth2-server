@@ -6,10 +6,26 @@ namespace RTLer\Oauth2\Repositories;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use RTLer\Oauth2\Entities\AuthCodeEntity;
-use RTLer\Oauth2\Models\AuthCodeModel;
+use RTLer\Oauth2\Models\ModelResolver;
+use RTLer\Oauth2\Oauth2Server;
 
 class AuthCodeRepository implements AuthCodeRepositoryInterface
 {
+    /**
+     * @var ModelResolver
+     */
+    protected $modelResolver;
+
+    /**
+     * AccessTokenRepository constructor.
+     *
+     */
+    public function __construct()
+    {
+        $type = app()->make(Oauth2Server::class)
+            ->getOptions()['database_type'];
+        $this->modelResolver = new ModelResolver($type);
+    }
 
     /**
      * Creates a new AuthCode
@@ -37,8 +53,8 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
         if (!is_null($authCodeEntity->getUserIdentifier())) {
             $newAuthCode['user_id'] = $authCodeEntity->getUserIdentifier();
         }
-
-        AuthCodeModel::create($newAuthCode);
+        $authCodeModel = $this->modelResolver->getModel('AuthCodeModel');
+        $authCodeModel::create($newAuthCode);
     }
 
     /**
@@ -48,8 +64,8 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function revokeAuthCode($codeId)
     {
-        AuthCodeModel::where('token', $codeId)->delete();
-
+        $authCodeModel = $this->modelResolver->getModel('AuthCodeModel');
+        $authCodeModel::where('token', $codeId)->delete();
     }
 
     /**
@@ -61,6 +77,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function isAuthCodeRevoked($codeId)
     {
-        return !(boolean)AuthCodeModel::where('token', $codeId)->exists();
+        $authCodeModel = $this->modelResolver->getModel('AuthCodeModel');
+        return !(boolean)$authCodeModel::where('token', $codeId)->exists();
     }
 }

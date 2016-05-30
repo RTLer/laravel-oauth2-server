@@ -15,6 +15,10 @@ abstract class OauthTestCase extends TestCase
     {
         parent::setUp();
 
+        $this->artisan('migrate', [
+            '--realpath' => realpath(__DIR__.'/../src/publish/migrations/'),
+        ]);
+
         $this->artisan('db:seed', [
             '--class' => TestDatabaseSeeder::class,
         ]);

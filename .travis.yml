@@ -13,8 +13,8 @@ matrix:
 sudo: false
 
 script:
-    - test
-    - test -c phpunit.mysql.xml
+    - phpunit
+    - phpunit -c phpunit.mysql.xml
 
 
 services:

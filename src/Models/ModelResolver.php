@@ -1,6 +1,6 @@
 <?php
-namespace RTLer\Oauth2\Models;
 
+namespace RTLer\Oauth2\Models;
 
 class ModelResolver
 {
@@ -10,8 +10,8 @@ class ModelResolver
     /**
      * ModelResolver constructor.
      *
-     * @param string $type (mysql|mongo)
-     * @param array $customModels
+     * @param string $type         (mysql|mongo)
+     * @param array  $customModels
      */
     public function __construct($type = null, $customModels = [])
     {
@@ -24,11 +24,13 @@ class ModelResolver
     }
 
     /**
-     * get Model class address
+     * get Model class address.
      *
      * @param $modelName
-     * @return string
+     *
      * @throws \Exception
+     *
+     * @return string
      */
     public function getModel($modelName)
     {
@@ -36,14 +38,14 @@ class ModelResolver
             if (in_array($modelName, $this->customModels)
                 && class_exists($this->customModels[$modelName])
             ) {
-
                 return $this->customModels[$modelName];
             }
-            
-            throw new \Exception('custom model ' . $modelName . ' not found.');
+
+            throw new \Exception('custom model '.$modelName.' not found.');
         }
+
         return 'RTLer\Oauth2\Models\\'
-        . studly_case($this->type) . '\\'
-        . studly_case($modelName);
+        .studly_case($this->type).'\\'
+        .studly_case($modelName);
     }
 }

@@ -12,13 +12,13 @@ class ResourceServerMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-
         $psrRequest = app()->make('Psr\Http\Message\ServerRequestInterface');
         $resourceServer = app()->make(Oauth2Server::class)
             ->makeResourceServer();
@@ -36,10 +36,11 @@ class ResourceServerMiddleware
     }
 
     /**
-     * check if client have right scopes to access the route
+     * check if client have right scopes to access the route.
      *
      * @param $neededScopes
      * @param $requestedScopes
+     *
      * @throws OAuthServerException
      */
     protected function validateScopes($neededScopes, $requestedScopes)
@@ -58,7 +59,7 @@ class ResourceServerMiddleware
     }
 
     /**
-     * auth user
+     * auth user.
      *
      * @param $request
      * @param $serverRequest
@@ -70,7 +71,7 @@ class ResourceServerMiddleware
             ->getOptions()['user_verifier'];
         $user = (new $userVerifier())
             ->getUserByIdentifier($serverRequest->getAttribute('oauth_user_id'));
-            Auth::setUser($user);
+        Auth::setUser($user);
         $request->setUserResolver(function () use ($user) {
             return $user;
         });

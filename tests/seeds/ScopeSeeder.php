@@ -1,4 +1,5 @@
 <?php
+
 namespace Oauth2Tests\seeds;
 
 use Illuminate\Database\Seeder;
@@ -18,8 +19,8 @@ class ScopeSeeder extends Seeder
         $model = $modelResolver->getModel('ScopeModel');
 
         $model::insert([
-            '_id' => 'foo',
-            'description' => 'this is foo scope'
+            '_id'         => 'foo',
+            'description' => 'this is foo scope',
         ]);
     }
 }

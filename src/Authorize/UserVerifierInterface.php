@@ -1,10 +1,11 @@
 <?php
+
 namespace RTLer\Oauth2\Authorize;
 
 interface UserVerifierInterface
 {
     /**
-     * get user identifier to login user by it
+     * get user identifier to login user by it.
      *
      * @param string $username
      * @param string $password
@@ -15,11 +16,11 @@ interface UserVerifierInterface
     public function getUserIdentifierByUserCredentials($username, $password, $grantType);
 
     /**
-     * get user by identifier
+     * get user by identifier.
      *
      * @param string $identifier
+     *
      * @return null|User
      */
     public function getUserByIdentifier($identifier);
-
 }

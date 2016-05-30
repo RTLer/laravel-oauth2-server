@@ -1,13 +1,13 @@
 <?php
+
 namespace App\Oauth2;
 
 use RTLer\Oauth2\Authorize\UserVerifierInterface;
 
 class UserVerifier implements UserVerifierInterface
 {
-
     /**
-     * get user identifier to login user by it
+     * get user identifier to login user by it.
      *
      * @param string $username
      * @param string $password
@@ -21,9 +21,10 @@ class UserVerifier implements UserVerifierInterface
     }
 
     /**
-     * get user by identifier
+     * get user by identifier.
      *
      * @param string $identifier
+     *
      * @return null|User
      */
     public function getUserByIdentifier($identifier)

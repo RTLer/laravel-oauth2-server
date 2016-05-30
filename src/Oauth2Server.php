@@ -1,4 +1,5 @@
 <?php
+
 namespace RTLer\Oauth2;
 
 use Carbon\CarbonInterval;
@@ -18,7 +19,6 @@ use RTLer\Oauth2\Repositories\UserRepository;
 
 class Oauth2Server
 {
-
     protected $authorizationServer;
     protected $resourceServer;
     protected $options;
@@ -31,13 +31,13 @@ class Oauth2Server
     public function __construct($options)
     {
         $this->options = $options;
-
     }
 
     /**
      * setup AuthorizationServer.
      *
      * @param array $grantNames
+     *
      * @return AuthorizationServer
      */
     public function makeAuthorizationServer($grantNames = [])
@@ -81,9 +81,10 @@ class Oauth2Server
     }
 
     /**
-     * enable all configured Authorization Grants
+     * enable all configured Authorization Grants.
      *
      * @param array|null $grantNames
+     *
      * @internal param $options
      */
     public function enableAuthorizationGrants($grantNames = null)
@@ -97,19 +98,19 @@ class Oauth2Server
     }
 
     /**
-     * enable Authorization Grant by name
+     * enable Authorization Grant by name.
      *
      * @param $name
      */
     public function enableGrant($name)
     {
-        $methodName = camel_case('enable_' . $name . '_grant');
+        $methodName = camel_case('enable_'.$name.'_grant');
 
         $this->{$methodName}($this->options['grants'][$name]);
     }
 
     /**
-     * enable ClientCredentialsGrant
+     * enable ClientCredentialsGrant.
      *
      * @param $options
      */
@@ -123,7 +124,7 @@ class Oauth2Server
     }
 
     /**
-     * enable AuthCodeGrant
+     * enable AuthCodeGrant.
      *
      * @param $options
      */
@@ -150,7 +151,7 @@ class Oauth2Server
     }
 
     /**
-     * enable PasswordGrant
+     * enable PasswordGrant.
      *
      * @param $options
      */
@@ -174,12 +175,10 @@ class Oauth2Server
             $grant,
             $this->getDateInterval($options['access_token_ttl']) // access tokens will expire after 1 hour
         );
-
-
     }
 
     /**
-     * enable ImplicitGrant
+     * enable ImplicitGrant.
      *
      * @param $options
      */
@@ -197,7 +196,7 @@ class Oauth2Server
     }
 
     /**
-     * enable RefreshTokenGrant
+     * enable RefreshTokenGrant.
      *
      * @param $options
      */
@@ -219,7 +218,7 @@ class Oauth2Server
     }
 
     /**
-     * get AuthorizationServer
+     * get AuthorizationServer.
      *
      * @return AuthorizationServer
      */
@@ -234,7 +233,7 @@ class Oauth2Server
     }
 
     /**
-     * get ResourceServer
+     * get ResourceServer.
      *
      * @return mixed
      */
@@ -244,7 +243,7 @@ class Oauth2Server
     }
 
     /**
-     * get Options (configs)
+     * get Options (configs).
      *
      * @return mixed
      */

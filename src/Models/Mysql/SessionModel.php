@@ -23,6 +23,6 @@ class SessionModel extends Model
         'client_id',
         'owner_type',
         'owner_id',
-        'client_redirect_uri'
+        'client_redirect_uri',
     ];
 }

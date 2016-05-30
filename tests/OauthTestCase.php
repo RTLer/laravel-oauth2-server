@@ -33,18 +33,14 @@ abstract class OauthTestCase extends TestCase
         $AccessTokenModel = $modelResolver->getModel('AccessTokenModel');
         $AuthCodeModel = $modelResolver->getModel('AuthCodeModel');
         $ClientModel = $modelResolver->getModel('ClientModel');
-        $GrantModel = $modelResolver->getModel('GrantModel');
         $RefreshTokenModel = $modelResolver->getModel('RefreshTokenModel');
         $ScopeModel = $modelResolver->getModel('ScopeModel');
-        $SessionModel = $modelResolver->getModel('SessionModel');
 
         $AccessTokenModel::truncate();
         $AuthCodeModel::truncate();
         $ClientModel::truncate();
-        $GrantModel::truncate();
         $RefreshTokenModel::truncate();
         $ScopeModel::truncate();
-        $SessionModel::truncate();
 
         parent::tearDown();
     }

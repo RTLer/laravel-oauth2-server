@@ -30,6 +30,9 @@ class Oauth2ServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '../publish/config/oauth2.php' => base_path('config/oauth2.php'),
         ]);
+        $this->publishes([
+            __DIR__ . '../publish/Oauth2/UserVerifier.php' => base_path('app/Oauth2/UserVerifier.'),
+        ]);
     }
 
     /**

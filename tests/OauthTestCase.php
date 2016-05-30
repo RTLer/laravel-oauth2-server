@@ -3,13 +3,8 @@ namespace Oauth2Tests;
 
 use Oauth2Tests\seeds\TestDatabaseSeeder;
 use Orchestra\Testbench\TestCase;
-use RTLer\Oauth2\Models\AccessTokenModel;
-use RTLer\Oauth2\Models\AuthCodeModel;
-use RTLer\Oauth2\Models\ClientModel;
-use RTLer\Oauth2\Models\GrantModel;
-use RTLer\Oauth2\Models\RefreshTokenModel;
-use RTLer\Oauth2\Models\ScopeModel;
-use RTLer\Oauth2\Models\SessionModel;
+use RTLer\Oauth2\Models\ModelResolver;
+use RTLer\Oauth2\Oauth2Server;
 
 abstract class OauthTestCase extends TestCase
 {
@@ -32,13 +27,24 @@ abstract class OauthTestCase extends TestCase
      */
     public function tearDown()
     {
-        AccessTokenModel::truncate();
-        AuthCodeModel::truncate();
-        ClientModel::truncate();
-        GrantModel::truncate();
-        RefreshTokenModel::truncate();
-        ScopeModel::truncate();
-        SessionModel::truncate();
+        $type = app()->make(Oauth2Server::class)
+            ->getOptions()['database_type'];
+        $modelResolver = new ModelResolver($type);
+        $AccessTokenModel = $modelResolver->getModel('AccessTokenModel');
+        $AuthCodeModel = $modelResolver->getModel('AuthCodeModel');
+        $ClientModel = $modelResolver->getModel('ClientModel');
+        $GrantModel = $modelResolver->getModel('GrantModel');
+        $RefreshTokenModel = $modelResolver->getModel('RefreshTokenModel');
+        $ScopeModel = $modelResolver->getModel('ScopeModel');
+        $SessionModel = $modelResolver->getModel('SessionModel');
+
+        $AccessTokenModel::truncate();
+        $AuthCodeModel::truncate();
+        $ClientModel::truncate();
+        $GrantModel::truncate();
+        $RefreshTokenModel::truncate();
+        $ScopeModel::truncate();
+        $SessionModel::truncate();
 
         parent::tearDown();
     }
@@ -50,6 +56,7 @@ abstract class OauthTestCase extends TestCase
             'private_key_phrase' => '',
             'public_key' => __DIR__ . '/Stubs/private.key',
             'user_verifier' => \Oauth2Tests\Stubs\UserVerifier::class,
+            'database_type' => 'mongo',
             'grants' => [
                 'client_credentials' => [
                     'access_token_ttl' => 10,

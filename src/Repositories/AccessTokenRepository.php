@@ -6,10 +6,26 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use RTLer\Oauth2\Entities\AccessTokenEntity;
-use RTLer\Oauth2\Models\AccessTokenModel;
+use RTLer\Oauth2\Models\ModelResolver;
+use RTLer\Oauth2\Oauth2Server;
 
 class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
+    /**
+     * @var ModelResolver
+     */
+    protected $modelResolver;
+
+    /**
+     * AccessTokenRepository constructor.
+     *
+     */
+    public function __construct()
+    {
+        $type = app()->make(Oauth2Server::class)
+            ->getOptions()['database_type'];
+        $this->modelResolver = new ModelResolver($type);
+    }
 
     /**
      * Create a new access token
@@ -32,6 +48,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
+        $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
+
         $newAccessToken = [
             'token' => $accessTokenEntity->getIdentifier(),
             'client_id' => $accessTokenEntity->getClient()->getIdentifier(),
@@ -41,11 +59,15 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         if (!is_null($accessTokenEntity->getUserIdentifier())) {
             $newAccessToken['user_id'] = $accessTokenEntity->getUserIdentifier();
         }
-
+        $driver = get_class($accessTokenModel::getConnectionResolver()->connection());
         if ($accessTokenEntity->getScopes() !== []) {
-            $newAccessToken['scopes'] = $accessTokenEntity->getScopes();
+            if ($driver == 'Jenssegers\Mongodb\Connection') {
+                $newAccessToken['scopes'] = $accessTokenEntity->getScopes();
+            } else {
+                $newAccessToken['scopes'] = json_encode($accessTokenEntity->getScopes());
+            }
         }
-        AccessTokenModel::create($newAccessToken);
+        $accessTokenModel::create($newAccessToken);
     }
 
     /**
@@ -55,7 +77,9 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function revokeAccessToken($tokenId)
     {
-        AccessTokenModel::where('token', $tokenId)->delete();
+        $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
+
+        $accessTokenModel::where('token', $tokenId)->delete();
     }
 
     /**
@@ -67,6 +91,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function isAccessTokenRevoked($tokenId)
     {
-        return !(boolean)AccessTokenModel::where('token', $tokenId)->exists();
+        $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
+
+        return !(boolean)$accessTokenModel::where('token', $tokenId)->exists();
     }
 }

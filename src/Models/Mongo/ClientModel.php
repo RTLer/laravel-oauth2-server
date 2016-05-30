@@ -1,6 +1,6 @@
 <?php
 
-namespace RTLer\Oauth2\Models;
+namespace RTLer\Oauth2\Models\Mongo;
 
 use Jenssegers\Mongodb\Eloquent\Model;
 

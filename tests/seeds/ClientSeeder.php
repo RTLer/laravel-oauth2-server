@@ -3,6 +3,7 @@ namespace Oauth2Tests\seeds;
 
 use Illuminate\Database\Seeder;
 use RTLer\Oauth2\Models\ClientModel;
+use RTLer\Oauth2\Models\ModelResolver;
 
 class ClientSeeder extends Seeder
 {
@@ -13,7 +14,10 @@ class ClientSeeder extends Seeder
      */
     public function run()
     {
-        ClientModel::insert([
+        $modelResolver = new ModelResolver(config('oauth2.database_type'));
+        $model = $modelResolver->getModel('ClientModel');
+
+        $model::insert([
             '_id' => 'foo',
 //            'grant_type' => str_random(10).'@gmail.com',
             'secret' => 'bar',

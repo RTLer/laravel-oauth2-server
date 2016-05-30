@@ -33,6 +33,4 @@ class ClientModel extends Model
         'redirect_uri',
         'scopes',
     ];
-
-
 }

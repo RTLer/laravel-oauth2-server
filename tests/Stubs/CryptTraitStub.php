@@ -11,8 +11,8 @@ class CryptTraitStub
 
     public function __construct()
     {
-        $this->setPrivateKey(new CryptKey('file://' . __DIR__ . '/private.key'));
-        $this->setPublicKey(new CryptKey('file://' . __DIR__ . '/public.key'));
+        $this->setPrivateKey(new CryptKey('file://'.__DIR__.'/private.key'));
+        $this->setPublicKey(new CryptKey('file://'.__DIR__.'/public.key'));
     }
 
     public function doEncrypt($unencryptedData)

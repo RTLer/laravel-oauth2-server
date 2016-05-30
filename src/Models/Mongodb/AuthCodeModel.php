@@ -28,6 +28,6 @@ class AuthCodeModel extends Model
     protected $fillable = [
         'token',
         'client_id',
-        'expire_time'
+        'expire_time',
     ];
 }

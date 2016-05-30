@@ -1,4 +1,5 @@
 <?php
+
 namespace Oauth2Tests\Grant;
 
 use League\OAuth2\Server\CryptKey;
@@ -6,8 +7,8 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use Oauth2Tests\OauthTestCase;
-use Oauth2Tests\Stubs\StubResponseType;
 use Oauth2Tests\Stubs\CryptTraitStub;
+use Oauth2Tests\Stubs\StubResponseType;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
 use RTLer\Oauth2\Repositories\RefreshTokenRepository;
@@ -17,7 +18,8 @@ use Zend\Diactoros\ServerRequest;
 class RefreshTokenGrantTest extends OauthTestCase
 {
     /**
-     * CryptTrait stub
+     * CryptTrait stub.
+     *
      * @var CryptTraitStub
      */
     protected $cryptStub;
@@ -45,24 +47,24 @@ class RefreshTokenGrantTest extends OauthTestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id' => 'foo',
+                    'client_id'        => 'foo',
                     'refresh_token_id' => 'RefreshTokenFoo',
-                    'access_token_id' => 'AccessTokenFoo',
-                    'scopes' => ['foo'],
-                    'user_id' => 123,
-                    'expire_time' => time() + 3600,
+                    'access_token_id'  => 'AccessTokenFoo',
+                    'scopes'           => ['foo'],
+                    'user_id'          => 123,
+                    'expire_time'      => time() + 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
             ]
@@ -84,27 +86,27 @@ class RefreshTokenGrantTest extends OauthTestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setScopeRepository($scopeRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id' => 'foo',
+                    'client_id'        => 'foo',
                     'refresh_token_id' => 'RefreshTokenFoo',
-                    'access_token_id' => 'AccessTokenFoo',
-                    'scopes' => ['foo', 'bar'],
-                    'user_id' => 123,
-                    'expire_time' => time() + 3600,
+                    'access_token_id'  => 'AccessTokenFoo',
+                    'scopes'           => ['foo', 'bar'],
+                    'user_id'          => 123,
+                    'expire_time'      => time() + 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
-                'scope' => 'foo',
+                'scope'         => 'foo',
             ]
         );
         $responseType = new StubResponseType();
@@ -128,32 +130,31 @@ class RefreshTokenGrantTest extends OauthTestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setScopeRepository($scopeRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id' => 'foo',
+                    'client_id'        => 'foo',
                     'refresh_token_id' => 'RefreshTokenFoo',
-                    'access_token_id' => 'AccessTokenFoo',
-                    'scopes' => ['foo', 'bar'],
-                    'user_id' => 123,
-                    'expire_time' => time() + 3600,
+                    'access_token_id'  => 'AccessTokenFoo',
+                    'scopes'           => ['foo', 'bar'],
+                    'user_id'          => 123,
+                    'expire_time'      => time() + 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
-                'scope' => 'foobar',
+                'scope'         => 'foobar',
             ]
         );
         $responseType = new StubResponseType();
         $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
-
     }
 
     /**
@@ -168,12 +169,12 @@ class RefreshTokenGrantTest extends OauthTestCase
         $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
             ]
         );
@@ -193,13 +194,13 @@ class RefreshTokenGrantTest extends OauthTestCase
         $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = 'foobar';
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
             ]
@@ -220,24 +221,24 @@ class RefreshTokenGrantTest extends OauthTestCase
         $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id' => 'bar',
+                    'client_id'        => 'bar',
                     'refresh_token_id' => 'zyxwvu',
-                    'access_token_id' => 'abcdef',
-                    'scopes' => ['foo'],
-                    'user_id' => 123,
-                    'expire_time' => time() + 3600,
+                    'access_token_id'  => 'abcdef',
+                    'scopes'           => ['foo'],
+                    'user_id'          => 123,
+                    'expire_time'      => time() + 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
             ]
@@ -259,24 +260,24 @@ class RefreshTokenGrantTest extends OauthTestCase
         $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id' => 'foo',
+                    'client_id'        => 'foo',
                     'refresh_token_id' => 'zyxwvu',
-                    'access_token_id' => 'abcdef',
-                    'scopes' => ['foo'],
-                    'user_id' => 123,
-                    'expire_time' => time() - 3600,
+                    'access_token_id'  => 'abcdef',
+                    'scopes'           => ['foo'],
+                    'user_id'          => 123,
+                    'expire_time'      => time() - 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
             ]
@@ -298,24 +299,24 @@ class RefreshTokenGrantTest extends OauthTestCase
         $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
-        $grant->setPublicKey(new CryptKey('file://' . __DIR__ . '/../Stubs/public.key'));
-        $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
+        $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
+        $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(
             json_encode(
                 [
-                    'client_id' => 'foo',
+                    'client_id'        => 'foo',
                     'refresh_token_id' => 'zyxwvu',
-                    'access_token_id' => 'abcdef',
-                    'scopes' => ['foo'],
-                    'user_id' => 123,
-                    'expire_time' => time() + 3600,
+                    'access_token_id'  => 'abcdef',
+                    'scopes'           => ['foo'],
+                    'user_id'          => 123,
+                    'expire_time'      => time() + 3600,
                 ]
             )
         );
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
                 'refresh_token' => $oldRefreshToken,
             ]

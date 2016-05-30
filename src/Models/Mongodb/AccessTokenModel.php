@@ -28,6 +28,6 @@ class AccessTokenModel extends Model
     protected $fillable = [
         'token',
         'session_id',
-        'expire_time'
+        'expire_time',
     ];
 }

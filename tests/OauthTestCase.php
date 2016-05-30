@@ -1,4 +1,5 @@
 <?php
+
 namespace Oauth2Tests;
 
 use Oauth2Tests\seeds\TestDatabaseSeeder;
@@ -14,9 +15,9 @@ abstract class OauthTestCase extends TestCase
     public function setUp()
     {
         parent::setUp();
-        if(env('DB_DRIVER','mongodb') == 'mysql') {
+        if (env('DB_DRIVER', 'mongodb') == 'mysql') {
             $this->artisan('migrate', [
-                '--realpath' => realpath(__DIR__ . '/../src/publish/migrations/'),
+                '--realpath' => realpath(__DIR__.'/../src/publish/migrations/'),
             ]);
         }
 
@@ -53,30 +54,30 @@ abstract class OauthTestCase extends TestCase
     protected function getPackageProviders($app)
     {
         $app['config']->set('oauth2', [
-            'private_key' => __DIR__ . '/Stubs/private.key',
+            'private_key'        => __DIR__.'/Stubs/private.key',
             'private_key_phrase' => '',
-            'public_key' => __DIR__ . '/Stubs/private.key',
-            'user_verifier' => \Oauth2Tests\Stubs\UserVerifier::class,
-            'database_type' => env('DB_DRIVER','mongodb'),
-            'grants' => [
+            'public_key'         => __DIR__.'/Stubs/private.key',
+            'user_verifier'      => \Oauth2Tests\Stubs\UserVerifier::class,
+            'database_type'      => env('DB_DRIVER', 'mongodb'),
+            'grants'             => [
                 'client_credentials' => [
                     'access_token_ttl' => 10,
                 ],
                 'auth_code' => [
-                    'auth_code_ttl' => 60,
+                    'auth_code_ttl'     => 60,
                     'refresh_token_ttl' => 60,
-                    'access_token_ttl' => 10,
+                    'access_token_ttl'  => 10,
                 ],
                 'password' => [
                     'refresh_token_ttl' => 60,
-                    'access_token_ttl' => 10,
+                    'access_token_ttl'  => 10,
                 ],
                 'implicit' => [
                     'access_token_ttl' => 10,
                 ],
                 'refresh_token' => [
                     'refresh_token_ttl' => 60,
-                    'access_token_ttl' => 10,
+                    'access_token_ttl'  => 10,
                 ],
             ],
         ]);
@@ -90,22 +91,22 @@ abstract class OauthTestCase extends TestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Oauth2' => \RTLer\Oauth2\Facade\Oauth2Server::class
+            'Oauth2' => \RTLer\Oauth2\Facade\Oauth2Server::class,
         ];
     }
 
     protected function getEnvironmentSetUp($app)
     {
         // Setup default database to use sqlite :memory:
-        $app['config']->set('database.default', env('DB_DRIVER','mongodb'));
+        $app['config']->set('database.default', env('DB_DRIVER', 'mongodb'));
         $app['config']->set('database.connections.mongodb', [
-            'driver' => 'mongodb',
-            'host' => '127.0.0.1',
-            'port' => 27017,
+            'driver'   => 'mongodb',
+            'host'     => '127.0.0.1',
+            'port'     => 27017,
             'database' => 'testbench',
             'username' => '',
             'password' => '',
-            'options' => [
+            'options'  => [
                 'db' => 'admin', // sets the authentication database required by mongo 3
                 //'replicaSet' => 'rs01',
                 'socketTimeoutMS' => '90000',
@@ -114,19 +115,17 @@ abstract class OauthTestCase extends TestCase
             'use_mongo_id' => true,
         ]);
         $app['config']->set('database.connections.mysql', [
-            "driver" => "mysql",
-          "host" => "127.0.0.1",
-          "port" => "3306",
-          "database" => "testbench",
-          "username" => "root",
-          "password" => "",
-          "charset" => "utf8",
-          "collation" => "utf8_unicode_ci",
-          "prefix" => "",
-          "strict" => false,
-          "engine" => null,
+            'driver'  => 'mysql',
+          'host'      => '127.0.0.1',
+          'port'      => '3306',
+          'database'  => 'testbench',
+          'username'  => 'root',
+          'password'  => '',
+          'charset'   => 'utf8',
+          'collation' => 'utf8_unicode_ci',
+          'prefix'    => '',
+          'strict'    => false,
+          'engine'    => null,
         ]);
-
     }
-
 }

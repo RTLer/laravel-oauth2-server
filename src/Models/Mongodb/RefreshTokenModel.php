@@ -28,6 +28,6 @@ class RefreshTokenModel extends Model
     protected $fillable = [
         'token',
         'access_token_id',
-        'expire_time'
+        'expire_time',
     ];
 }

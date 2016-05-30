@@ -1,20 +1,12 @@
 <?php
+
 namespace Oauth2Tests\Grant;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Grant\PasswordGrant;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Oauth2Tests\OauthTestCase;
-use RTLer\Oauth2\Entities\AccessTokenEntity;
-use RTLer\Oauth2\Entities\ClientEntity;
-use RTLer\Oauth2\Entities\RefreshTokenEntity;
 use Oauth2Tests\Stubs\StubResponseType;
-use RTLer\Oauth2\Entities\UserEntity;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
 use RTLer\Oauth2\Repositories\RefreshTokenRepository;
@@ -46,10 +38,10 @@ class PasswordGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
-                'username' => 'foo',
-                'password' => 'bar',
+                'username'      => 'foo',
+                'password'      => 'bar',
             ]
         );
         $responseType = new StubResponseType();
@@ -73,7 +65,7 @@ class PasswordGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
             ]
         );
@@ -96,9 +88,9 @@ class PasswordGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
-                'username' => 'alex',
+                'username'      => 'alex',
             ]
         );
         $responseType = new StubResponseType();
@@ -120,10 +112,10 @@ class PasswordGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
-                'username' => 'alex',
-                'password' => 'whisky',
+                'username'      => 'alex',
+                'password'      => 'whisky',
             ]
         );
         $responseType = new StubResponseType();

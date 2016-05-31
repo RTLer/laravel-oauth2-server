@@ -1,5 +1,5 @@
 {
-    "name": "rtler/laravel-oauth2",
+    "name": "rtler/laravel-oauth2-server",
     "description": "thephpleague oauth2 integration for laravel and mongo",
     "license": "MIT",
     "type": "project",

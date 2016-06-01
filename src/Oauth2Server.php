@@ -252,6 +252,7 @@ class Oauth2Server
     {
         return $this->options;
     }
+
     /**
      * get auth info.
      *
@@ -266,6 +267,7 @@ class Oauth2Server
      * set auth info.
      *
      * @param $authInfo
+     *
      * @return mixed
      */
     public function setAuthInfo($authInfo)

@@ -84,18 +84,26 @@ class ScopeRepository implements ScopeRepositoryInterface
             return [];
         }
 
-        $scopes = $clientModel->scopes;
-        if ($driver != 'Jenssegers\Mongodb\Connection') {
-            $scopes = json_decode($scopes);
+        $scopes = array_map(function ($scopes) {
+            return $scopes->getIdentifier();
+        }, $scopes);
+
+        $validScopes = $scopeModel::whereIn($idKey, $scopes)->get()->pluck($idKey);
+
+        $validScopes = collect($validScopes);
+
+        if(!empty($clientModel->scopes)){
+            $clientScopes = $clientModel->scopes;
+            if ($driver != 'Jenssegers\Mongodb\Connection') {
+                $clientScopes = json_decode($clientScopes);
+            }
+            $validScopes = $validScopes->intersect($clientScopes);
         }
 
-        $validScopes = collect($clientModel->scopes)->intersect($scopes);
-        $validScopeModels = $scopeModel::whereIn($idKey, $validScopes)->get();
-
         $validScopeEntities = [];
-        foreach ($validScopeModels as $validScopeModel) {
+        foreach ($validScopes as $validScope) {
             $scopeEntity = new ScopeEntity();
-            $scopeEntity->setIdentifier($validScopeModel->{$idKey});
+            $scopeEntity->setIdentifier($validScope);
             $validScopeEntities[] = $scopeEntity;
         }
 

@@ -30,7 +30,7 @@ class ResourceServerMiddleware
 
         $this->validateScopes($neededScopes, $requestedScopes);
 
-        if(!empty($serverRequest->getAttribute('oauth_user_id'))){
+        if (!empty($serverRequest->getAttribute('oauth_user_id'))) {
             $this->authUser($request, $serverRequest);
         }
 

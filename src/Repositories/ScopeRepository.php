@@ -92,7 +92,7 @@ class ScopeRepository implements ScopeRepositoryInterface
 
         $validScopes = collect($validScopes);
 
-        if(!empty($clientModel->scopes)){
+        if (!empty($clientModel->scopes)) {
             $clientScopes = $clientModel->scopes;
             if ($driver != 'Jenssegers\Mongodb\Connection') {
                 $clientScopes = json_decode($clientScopes);

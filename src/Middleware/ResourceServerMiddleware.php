@@ -34,6 +34,14 @@ class ResourceServerMiddleware
             $this->authUser($request, $serverRequest);
         }
 
+        app()->make(Oauth2Server::class)->setAuthInfo([
+            $serverRequest->getAttribute('oauth_access_token_id'),
+            $serverRequest->getAttribute('oauth_client_id'),
+            $serverRequest->getAttribute('oauth_user_id'),
+            $serverRequest->getAttribute('oauth_scopes')
+        ]);
+
+
         return $next($request);
     }
 

@@ -22,6 +22,7 @@ class Oauth2Server
     protected $authorizationServer;
     protected $resourceServer;
     protected $options;
+    protected $authInfo;
 
     /**
      * Authorizer constructor.
@@ -250,5 +251,25 @@ class Oauth2Server
     public function getOptions()
     {
         return $this->options;
+    }
+    /**
+     * get auth info.
+     *
+     * @return mixed
+     */
+    public function getAuthInfo()
+    {
+        return $this->authInfo;
+    }
+
+    /**
+     * set auth info.
+     *
+     * @param $authInfo
+     * @return mixed
+     */
+    public function setAuthInfo($authInfo)
+    {
+        $this->authInfo = $authInfo;
     }
 }

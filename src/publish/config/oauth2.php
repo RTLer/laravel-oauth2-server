@@ -43,6 +43,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | custom bearer
+    |--------------------------------------------------------------------------
+    |
+    | if you don't like the usage of jwt
+    | or want to add your custom bearer
+    | you can set them here
+    |
+    */
+//    'bearer_token_response' => RTLer\Oauth2\Bearer\BearerTokenResponse::class,
+//    'bearer_token_validator' => RTLer\Oauth2\Bearer\BearerTokenValidator::class,
+
+
+    /*
+    |--------------------------------------------------------------------------
     | grants
     |--------------------------------------------------------------------------
     |

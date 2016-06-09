@@ -4,12 +4,14 @@ namespace RTLer\Oauth2;
 
 use Carbon\CarbonInterval;
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\AuthorizationValidators\BearerTokenValidator;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
+use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\AuthCodeRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
@@ -48,13 +50,17 @@ class Oauth2Server
         $scopeRepository = new ScopeRepository(); // instance of ScopeRepositoryInterface
         $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
 
+        // init bearer
+        $bearerTokenResponse = $this->getBearerTokenResponse();
+
         // Setup the authorization server
         $this->authorizationServer = new AuthorizationServer(
             $clientRepository,
             $accessTokenRepository,
             $scopeRepository,
             $this->options['private_key'],
-            $this->options['public_key']
+            $this->options['public_key'],
+            $bearerTokenResponse
         );
 
         $this->enableAuthorizationGrants($grantNames);
@@ -72,10 +78,15 @@ class Oauth2Server
         // Init our repositories
         $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
 
+        // init bearer
+        $bearerTokenValidator = $this->getBearerTokenValidator($accessTokenRepository);
+
+
         // Setup the authorization server
         $this->resourceServer = new ResourceServer(
             $accessTokenRepository,
-            $this->options['public_key']
+            $this->options['public_key'],
+            $bearerTokenValidator
         );
 
         return $this->resourceServer;
@@ -271,5 +282,32 @@ class Oauth2Server
     public function setAuthInfo($authInfo)
     {
         $this->authInfo = $authInfo;
+    }
+
+    /**
+     * get BearerTokenResponse
+     *
+     * @return BearerTokenResponse
+     */
+    protected function getBearerTokenResponse()
+    {
+        if(empty($this->options['bearer_token_response'])){
+            return new BearerTokenResponse();
+        }
+        return new $this->options['bearer_token_response']();
+    }
+
+    /**
+     * get BearerTokenValidator
+     *
+     * @param AccessTokenRepository $accessTokenRepository
+     * @return BearerTokenValidator
+     */
+    protected function getBearerTokenValidator(AccessTokenRepository $accessTokenRepository)
+    {
+        if(empty($this->options['bearer_token_validator'])){
+            return new BearerTokenValidator($accessTokenRepository);
+        }
+        return new $this->options['bearer_token_validator']($accessTokenRepository);
     }
 }

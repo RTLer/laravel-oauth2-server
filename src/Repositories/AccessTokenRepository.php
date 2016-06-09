@@ -94,8 +94,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
 
         $accessToken = $accessTokenModel::where('token', $tokenId)->first();
 
-        if(is_null($accessToken)){
-            return null;
+        if (is_null($accessToken)) {
+            return;
         }
 
         $accessTokenEntity = new AccessTokenEntity();
@@ -113,7 +113,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         if ($driver != 'Jenssegers\Mongodb\Connection') {
             $scopes = json_decode($scopes);
         }
-        if(is_array($scopes)) {
+        if (is_array($scopes)) {
             $clientRepository = new ScopeRepository();
 
             foreach ($scopes as $scope) {
@@ -124,8 +124,6 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         }
 
         return $accessTokenEntity;
-
-
     }
 
     /**

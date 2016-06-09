@@ -6,19 +6,14 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
-
 namespace RTLer\Oauth2\Bearer;
 
 use Carbon\Carbon;
-use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\ValidationData;
 use League\OAuth2\Server\AuthorizationValidators\AuthorizationValidatorInterface;
 use League\OAuth2\Server\CryptTrait;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use RTLer\Oauth2\Facade\Oauth2Server;
 
 class BearerTokenValidator implements AuthorizationValidatorInterface
 {
@@ -64,7 +59,7 @@ class BearerTokenValidator implements AuthorizationValidatorInterface
             if ($accessTokenEntity->getExpiryDateTime()->lt(Carbon::now())) {
                 throw OAuthServerException::accessDenied('Access token is invalid');
             }
-            
+
             // Return the request with additional attributes
             return $request
                 ->withAttribute('oauth_access_token_id', $accessTokenEntity->getIdentifier())

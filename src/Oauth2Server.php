@@ -263,6 +263,7 @@ class Oauth2Server
     {
         return $this->options;
     }
+
     /**
      * get auth info.
      *
@@ -277,6 +278,7 @@ class Oauth2Server
      * set auth info.
      *
      * @param $authInfo
+     *
      * @return mixed
      */
     public function setAuthInfo($authInfo)
@@ -285,29 +287,32 @@ class Oauth2Server
     }
 
     /**
-     * get BearerTokenResponse
+     * get BearerTokenResponse.
      *
      * @return BearerTokenResponse
      */
     protected function getBearerTokenResponse()
     {
-        if(empty($this->options['bearer_token_response'])){
+        if (empty($this->options['bearer_token_response'])) {
             return new BearerTokenResponse();
         }
+
         return new $this->options['bearer_token_response']();
     }
 
     /**
-     * get BearerTokenValidator
+     * get BearerTokenValidator.
      *
      * @param AccessTokenRepository $accessTokenRepository
+     *
      * @return BearerTokenValidator
      */
     protected function getBearerTokenValidator(AccessTokenRepository $accessTokenRepository)
     {
-        if(empty($this->options['bearer_token_validator'])){
+        if (empty($this->options['bearer_token_validator'])) {
             return new BearerTokenValidator($accessTokenRepository);
         }
+
         return new $this->options['bearer_token_validator']($accessTokenRepository);
     }
 }

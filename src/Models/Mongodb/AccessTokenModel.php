@@ -19,7 +19,7 @@ class AccessTokenModel extends Model
      * @var array
      */
     protected $dates = [
-        'expire_time'
+        'expire_time',
     ];
 
     /**

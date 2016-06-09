@@ -40,7 +40,8 @@ class ClientRepository implements ClientRepositoryInterface
         return $this->findClientEntity($clientIdentifier, $grantType, $clientSecret, $mustValidateSecret);
     }
 
-    public function findClientEntity($clientIdentifier, $grantType = null, $clientSecret = null, $mustValidateSecret = true){
+    public function findClientEntity($clientIdentifier, $grantType = null, $clientSecret = null, $mustValidateSecret = true)
+    {
         $clientModel = $this->modelResolver->getModel('ClientModel');
 
         $driver = get_class($clientModel::getConnectionResolver()->connection());
@@ -75,6 +76,5 @@ class ClientRepository implements ClientRepositoryInterface
         }
 
         return $clientEntity;
-
     }
 }

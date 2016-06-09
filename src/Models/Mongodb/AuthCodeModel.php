@@ -14,6 +14,15 @@ class AuthCodeModel extends Model
     protected $connection = 'mongodb';
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'expire_time'
+    ];
+
+    /**
      * The collection associated with the model.
      *
      * @var string
@@ -29,5 +38,6 @@ class AuthCodeModel extends Model
         'token',
         'client_id',
         'expire_time',
+        'user_id',
     ];
 }

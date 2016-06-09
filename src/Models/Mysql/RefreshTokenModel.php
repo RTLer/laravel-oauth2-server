@@ -14,6 +14,15 @@ class RefreshTokenModel extends Model
     protected $table = 'oauth_refresh_tokens';
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'expire_time'
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

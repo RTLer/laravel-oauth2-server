@@ -14,6 +14,15 @@ class AccessTokenModel extends Model
     protected $connection = 'mongodb';
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'expire_time',
+    ];
+
+    /**
      * The collection associated with the model.
      *
      * @var string
@@ -27,7 +36,10 @@ class AccessTokenModel extends Model
      */
     protected $fillable = [
         'token',
+        'client_id',
         'session_id',
         'expire_time',
+        'user_id',
+        'scopes',
     ];
 }

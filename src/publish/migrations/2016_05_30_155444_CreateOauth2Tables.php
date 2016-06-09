@@ -15,6 +15,9 @@ class CreateOauth2Tables extends Migration
         Schema::create('oauth_access_tokens', function (Blueprint $table) {
             $table->increments('id')->unique();
             $table->string('token')->unique();
+            $table->string('client_id')->nullable();
+            $table->string('user_id')->nullable();
+            $table->string('scopes')->nullable();
             $table->timestamp('expire_time')->nullable();
             $table->timestamps();
         });
@@ -22,6 +25,7 @@ class CreateOauth2Tables extends Migration
             $table->increments('id')->unique();
             $table->string('token')->unique();
             $table->string('client_id')->nullable();
+            $table->string('user_id')->nullable();
             $table->timestamp('expire_time')->nullable();
             $table->timestamps();
         });

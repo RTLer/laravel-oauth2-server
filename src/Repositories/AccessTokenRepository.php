@@ -82,6 +82,51 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     }
 
     /**
+     * find an access token.
+     *
+     * @param string $tokenId
+     *
+     * @return AccessTokenEntity
+     */
+    public function findAccessToken($tokenId)
+    {
+        $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
+
+        $accessToken = $accessTokenModel::where('token', $tokenId)->first();
+
+        if (is_null($accessToken)) {
+            return;
+        }
+
+        $accessTokenEntity = new AccessTokenEntity();
+
+
+        $clientRepository = new ClientRepository();
+        $client = $clientRepository->findClientEntity($accessToken->client_id, null, null, false);
+        $accessTokenEntity->setClient($client);
+        $accessTokenEntity->setUserIdentifier($accessToken->user_id);
+        $accessTokenEntity->setIdentifier($accessToken->token);
+        $accessTokenEntity->setExpiryDateTime($accessToken->expire_time);
+
+        $driver = get_class($accessTokenModel::getConnectionResolver()->connection());
+        $scopes = $accessToken->scopes;
+        if ($driver != 'Jenssegers\Mongodb\Connection') {
+            $scopes = json_decode($scopes);
+        }
+        if (is_array($scopes)) {
+            $clientRepository = new ScopeRepository();
+
+            foreach ($scopes as $scope) {
+                $accessTokenEntity->addScope(
+                    $clientRepository->getScopeEntityByIdentifier($scope)
+                );
+            }
+        }
+
+        return $accessTokenEntity;
+    }
+
+    /**
      * Check if the access token has been revoked.
      *
      * @param string $tokenId

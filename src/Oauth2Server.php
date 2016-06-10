@@ -27,7 +27,7 @@ class Oauth2Server
     protected $authInfo;
 
     /**
-     * Authorizer constructor.
+     * Oauth2Server constructor.
      *
      * @param $options
      */

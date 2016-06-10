@@ -6,7 +6,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class JsonRespondManipulator
 {
-    protected $respond;
+    /**
+     * @var ResponseInterface
+     */
+    protected $response;
 
     /**
      * RespondManipulator constructor.
@@ -15,19 +18,18 @@ class JsonRespondManipulator
      */
     public function __construct(ResponseInterface $response)
     {
-        $this->respond = $response;
+        $this->response = $response;
     }
 
     /**
      * edit Respond body.
      *
      * @param $callback
-     *
      * @return $this
      */
     public function editBody($callback)
     {
-        $bodyObject = $this->respond->getBody();
+        $bodyObject = $this->response->getBody();
         $responseBody = json_decode((string) $bodyObject, true);
 
         $editedResponseBody = $callback($responseBody);
@@ -43,12 +45,11 @@ class JsonRespondManipulator
      * edit response it self (edit header and etc.).
      *
      * @param $callback
-     *
      * @return $this
      */
     public function editResponse($callback)
     {
-        $this->respond = $callback($this->respond);
+        $this->response = $callback($this->response);
 
         return $this;
     }
@@ -56,8 +57,8 @@ class JsonRespondManipulator
     /**
      * @return ResponseInterface
      */
-    public function getRespond()
+    public function getResponse()
     {
-        return $this->respond;
+        return $this->response;
     }
 }

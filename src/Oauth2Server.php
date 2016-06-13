@@ -21,9 +21,23 @@ use RTLer\Oauth2\Repositories\UserRepository;
 
 class Oauth2Server
 {
+    /**
+     * @var AuthorizationServer
+     */
     protected $authorizationServer;
+    /**
+     * @var ResourceServer
+     */
     protected $resourceServer;
+
+    /**
+     * @var array configs
+     */
     protected $options;
+
+    /**
+     * @var array auth info
+     */
     protected $authInfo;
 
     /**
@@ -239,6 +253,12 @@ class Oauth2Server
         return $this->authorizationServer;
     }
 
+    /**
+     * get DateInterval
+     *
+     * @param $minutes
+     * @return CarbonInterval
+     */
     protected function getDateInterval($minutes)
     {
         return CarbonInterval::minutes($minutes);
@@ -284,6 +304,25 @@ class Oauth2Server
     public function setAuthInfo($authInfo)
     {
         $this->authInfo = $authInfo;
+    }
+
+    /**
+     * revoke access token
+     *
+     * @return bool
+     */
+    public function revokeAccessToken()
+    {
+        if(isset($this->getAuthInfo()['access_token_id'])){
+            $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
+            $accessTokenRepository->revokeAccessToken(
+                $this->getAuthInfo()['access_token_id']
+            );
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

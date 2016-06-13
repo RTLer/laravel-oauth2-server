@@ -254,9 +254,10 @@ class Oauth2Server
     }
 
     /**
-     * get DateInterval
+     * get DateInterval.
      *
      * @param $minutes
+     *
      * @return CarbonInterval
      */
     protected function getDateInterval($minutes)
@@ -307,13 +308,13 @@ class Oauth2Server
     }
 
     /**
-     * revoke access token
+     * revoke access token.
      *
      * @return bool
      */
     public function revokeAccessToken()
     {
-        if(isset($this->getAuthInfo()['access_token_id'])){
+        if (isset($this->getAuthInfo()['access_token_id'])) {
             $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
             $accessTokenRepository->revokeAccessToken(
                 $this->getAuthInfo()['access_token_id']

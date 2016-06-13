@@ -6,9 +6,8 @@ use Illuminate\Support\Facades\Facade;
 use RTLer\Oauth2\Oauth2Server as Oauth2ServerClass;
 
 /**
- * Class Oauth2Server
+ * Class Oauth2Server.
  *
- * @package RTLer\Oauth2\Facade
  * @method static bool makeAuthorizationServer($grantNames = [])
  * @method static bool makeResourceServer()
  * @method static bool enableAuthorizationGrants($grantNames = null)

@@ -60,10 +60,15 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         }
         $driver = get_class($accessTokenModel::getConnectionResolver()->connection());
         if ($accessTokenEntity->getScopes() !== []) {
+
+            $scopes = array_map(function ($item){
+                return $item->getIdentifier();
+            }, $accessTokenEntity->getScopes());
+
             if ($driver == 'Jenssegers\Mongodb\Connection') {
-                $newAccessToken['scopes'] = $accessTokenEntity->getScopes();
+                $newAccessToken['scopes'] = $scopes;
             } else {
-                $newAccessToken['scopes'] = json_encode($accessTokenEntity->getScopes());
+                $newAccessToken['scopes'] = json_encode($scopes);
             }
         }
         $accessTokenModel::create($newAccessToken);
@@ -113,7 +118,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         if ($driver != 'Jenssegers\Mongodb\Connection') {
             $scopes = json_decode($scopes);
         }
-        if (is_array($scopes)) {
+        if (!empty($scopes)) {
             $clientRepository = new ScopeRepository();
 
             foreach ($scopes as $scope) {

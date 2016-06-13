@@ -1,6 +1,6 @@
 <?php
 
-namespace RTLer\Oauth2\Bearer;
+namespace RTLer\Oauth2\Bearers;
 
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\ResponseTypes\AbstractResponseType;

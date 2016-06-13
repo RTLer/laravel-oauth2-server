@@ -6,7 +6,7 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
-namespace RTLer\Oauth2\Bearer;
+namespace RTLer\Oauth2\Bearers;
 
 use Carbon\Carbon;
 use League\OAuth2\Server\AuthorizationValidators\AuthorizationValidatorInterface;

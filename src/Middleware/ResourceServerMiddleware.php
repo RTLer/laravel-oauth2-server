@@ -14,8 +14,8 @@ class ResourceServerMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
-     * @param \Closure                 $next
+     * @param Request  $request
+     * @param \Closure $next
      *
      * @return mixed
      */
@@ -74,7 +74,7 @@ class ResourceServerMiddleware
     /**
      * auth user.
      *
-     * @param Request $request
+     * @param Request                $request
      * @param ServerRequestInterface $serverRequest
      */
     protected function authUser(Request $request, ServerRequestInterface $serverRequest)

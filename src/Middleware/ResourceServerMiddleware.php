@@ -3,8 +3,10 @@
 namespace RTLer\Oauth2\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Psr\Http\Message\ServerRequestInterface;
 use RTLer\Oauth2\Oauth2Server;
 
 class ResourceServerMiddleware
@@ -12,7 +14,7 @@ class ResourceServerMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param \Closure                 $next
      *
      * @return mixed
@@ -20,6 +22,8 @@ class ResourceServerMiddleware
     public function handle($request, Closure $next)
     {
         $psrRequest = app()->make('Psr\Http\Message\ServerRequestInterface');
+
+        /** @var \League\OAuth2\Server\ResourceServer $resourceServer */
         $resourceServer = app()->make(Oauth2Server::class)
             ->makeResourceServer();
 
@@ -70,15 +74,16 @@ class ResourceServerMiddleware
     /**
      * auth user.
      *
-     * @param $request
-     * @param $serverRequest
-     * @param $environment
+     * @param Request $request
+     * @param ServerRequestInterface $serverRequest
      */
-    protected function authUser($request, $serverRequest)
+    protected function authUser(Request $request, ServerRequestInterface $serverRequest)
     {
         $userVerifier = app()->make(Oauth2Server::class)
             ->getOptions()['user_verifier'];
-        $user = (new $userVerifier())
+        /** @var \RTLer\Oauth2\Authorize\UserVerifierInterface $userVerifierObj */
+        $userVerifierObj = new $userVerifier();
+        $user = $userVerifierObj
             ->getUserByIdentifier($serverRequest->getAttribute('oauth_user_id'));
         Auth::setUser($user);
         $request->setUserResolver(function () use ($user) {

@@ -25,6 +25,7 @@ class JsonRespondManipulator
      * edit Respond body.
      *
      * @param $callback
+     *
      * @return $this
      */
     public function editBody($callback)
@@ -45,6 +46,7 @@ class JsonRespondManipulator
      * edit response it self (edit header and etc.).
      *
      * @param $callback
+     *
      * @return $this
      */
     public function editResponse($callback)

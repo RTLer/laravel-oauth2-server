@@ -60,8 +60,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         }
         $driver = get_class($accessTokenModel::getConnectionResolver()->connection());
         if ($accessTokenEntity->getScopes() !== []) {
-
-            $scopes = array_map(function ($item){
+            $scopes = array_map(function ($item) {
                 return $item->getIdentifier();
             }, $accessTokenEntity->getScopes());
 

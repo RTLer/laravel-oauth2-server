@@ -75,7 +75,7 @@ class ResourceServerMiddleware
     /**
      * auth user.
      *
-     * @param Request $request
+     * @param Request                $request
      * @param ServerRequestInterface $serverRequest
      */
     protected function authUser(Request $request, ServerRequestInterface $serverRequest)

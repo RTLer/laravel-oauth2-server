@@ -14,11 +14,12 @@ class ResourceServerMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
+     * @param Request  $request
      * @param \Closure $next
      *
-     * @return mixed
      * @throws OAuthServerException
+     *
+     * @return mixed
      */
     public function handle($request, Closure $next)
     {

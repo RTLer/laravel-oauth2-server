@@ -131,8 +131,8 @@ class AuthorizationServerTest extends OauthTestCase
         ]);
 
         Oauth2Server::revokeAccessToken();
-
     }
+
     public function testJsonRespondManipulator()
     {
         Oauth2Server::makeAuthorizationServer();
@@ -156,13 +156,10 @@ class AuthorizationServerTest extends OauthTestCase
             $data['test'] = 'testing';
         });
         $responseEditor->editResponse(function ($res) {
-            /** @var ResponseInterface $res */
+            /* @var ResponseInterface $res */
             return $res->withHeader('test', 'testing');
         });
-        
+
         $this->assertInstanceOf('Zend\Diactoros\Response', $responseEditor->getResponse());
-
     }
-
-
 }

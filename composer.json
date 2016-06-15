@@ -12,7 +12,8 @@
     "require-dev": {
         "phpunit/phpunit": "^5.3",
         "orchestra/testbench": "~3.2",
-        "jenssegers/mongodb": "3.*"
+        "jenssegers/mongodb": "3.*",
+        "satooshi/php-coveralls": "^1.0"
     },
     "authors": [
         {

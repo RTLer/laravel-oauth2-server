@@ -4,11 +4,18 @@
     <php>
         <env name="DB_DRIVER" value="mongodb"/>
     </php>
-
-
     <testsuites>
         <testsuite name="TestsMongo">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <directory suffix=".php">src/publish</directory>
+                <directory suffix=".php">src/Bearer</directory>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>

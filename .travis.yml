@@ -13,8 +13,8 @@ matrix:
 sudo: false
 
 script:
-    - phpunit -c phpunit.mongo.xml
-    - phpunit -c phpunit.mysql.xml
+    - phpunit -c phpunit.mongo.xml --coverage-clover build/logs/clover.xml
+    - phpunit -c phpunit.mysql.xml --coverage-clover build/logs/clover.xml
 
 
 services:
@@ -34,3 +34,5 @@ before_script:
   - travis_retry composer install --no-interaction
   - mysql -e 'create database testbench;'
 
+after_success:
+  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php vendor/bin/coveralls -v; fi;'

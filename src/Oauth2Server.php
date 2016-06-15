@@ -3,6 +3,7 @@
 namespace RTLer\Oauth2;
 
 use Carbon\CarbonInterval;
+use Illuminate\Support\Arr;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\AuthorizationValidators\BearerTokenValidator;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
@@ -139,20 +140,25 @@ class Oauth2Server
      * enable ClientCredentialsGrant.
      *
      * @param $options
+     * @return ClientCredentialsGrant
      */
     public function enableClientCredentialsGrant($options)
     {
+        $grant = new ClientCredentialsGrant();
         // Enable the client credentials grant on the server
         $this->authorizationServer->enableGrantType(
-            new ClientCredentialsGrant(),
+            $grant,
             $this->getDateInterval($options['access_token_ttl']) // access tokens will expire after 1 hour
         );
+
+        return $grant;
     }
 
     /**
      * enable AuthCodeGrant.
      *
      * @param $options
+     * @return AuthCodeGrant
      */
     public function enableAuthCodeGrant($options)
     {
@@ -174,12 +180,15 @@ class Oauth2Server
             $grant,
             $this->getDateInterval($options['access_token_ttl']) // access tokens will expire after 1 hour
         );
+
+        return $grant;
     }
 
     /**
      * enable PasswordGrant.
      *
      * @param $options
+     * @return PasswordGrant
      */
     public function enablePasswordGrant($options)
     {
@@ -201,12 +210,15 @@ class Oauth2Server
             $grant,
             $this->getDateInterval($options['access_token_ttl']) // access tokens will expire after 1 hour
         );
+
+        return $grant;
     }
 
     /**
      * enable ImplicitGrant.
      *
      * @param $options
+     * @return ImplicitGrant
      */
     public function enableImplicitGrant($options)
     {
@@ -219,12 +231,15 @@ class Oauth2Server
             $grant,
             $this->getDateInterval($options['access_token_ttl']) // access tokens will expire after 1 hour
         );
+
+        return $grant;
     }
 
     /**
      * enable RefreshTokenGrant.
      *
      * @param $options
+     * @return RefreshTokenGrant
      */
     public function enableRefreshTokenGrant($options)
     {
@@ -241,6 +256,8 @@ class Oauth2Server
             $grant,
             $this->getDateInterval($options['access_token_ttl']) // new access tokens will expire after an hour
         );
+
+        return $grant;
     }
 
     /**
@@ -277,10 +294,14 @@ class Oauth2Server
     /**
      * get Options (configs).
      *
+     * @param null $key
      * @return mixed
      */
-    public function getOptions()
+    public function getOptions($key = null)
     {
+        if(!is_null($key)){
+            return Arr::get($this->options, $key, null);
+        }
         return $this->options;
     }
 

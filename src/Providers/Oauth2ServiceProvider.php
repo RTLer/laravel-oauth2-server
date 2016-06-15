@@ -12,7 +12,9 @@ class Oauth2ServiceProvider extends ServiceProvider
     public function __construct($app)
     {
         if (method_exists($app, 'configure')) {
+            // @codeCoverageIgnoreStart
             $app->configure('oauth2');
+            // @codeCoverageIgnoreEnd
         }
 
         $this->options = $app->make('config')->get('oauth2');

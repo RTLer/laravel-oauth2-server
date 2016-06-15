@@ -51,8 +51,8 @@ return [
     | you can set them here
     |
     */
-//    'bearer_token_response' => RTLer\Oauth2\Bearer\BearerTokenResponse::class,
-//    'bearer_token_validator' => RTLer\Oauth2\Bearer\BearerTokenValidator::class,
+//    'bearer_token_response' => RTLer\Oauth2\Bearers\BearerTokenResponse::class,
+//    'bearer_token_validator' => RTLer\Oauth2\Bearers\BearerTokenValidator::class,
 
 
     /*

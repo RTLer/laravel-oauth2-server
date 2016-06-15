@@ -11,6 +11,7 @@ use Oauth2Tests\Stubs\CryptTraitStub;
 use Oauth2Tests\Stubs\StubResponseType;
 use RTLer\Oauth2\Entities\ClientEntity;
 use RTLer\Oauth2\Entities\UserEntity;
+use RTLer\Oauth2\Facade\Oauth2Server;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
 use Zend\Diactoros\ServerRequest;
@@ -77,7 +78,8 @@ class ImplicitGrantTest extends OauthTestCase
     public function testValidateAuthorizationRequest()
     {
         $clientRepositoryMock = new ClientRepository();
-        $grant = new ImplicitGrant(new \DateInterval('PT10M'));
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableImplicitGrant(Oauth2Server::getOptions('grants.implicit'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
             [],
@@ -99,7 +101,8 @@ class ImplicitGrantTest extends OauthTestCase
     public function testValidateAuthorizationRequestRedirectUriArray()
     {
         $clientRepositoryMock = new ClientRepository();
-        $grant = new ImplicitGrant(new \DateInterval('PT10M'));
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableImplicitGrant(Oauth2Server::getOptions('grants.implicit'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
             [],
@@ -125,7 +128,8 @@ class ImplicitGrantTest extends OauthTestCase
     public function testValidateAuthorizationRequestMissingClientId()
     {
         $clientRepositoryMock = new ClientRepository();
-        $grant = new ImplicitGrant(new \DateInterval('PT10M'));
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableImplicitGrant(Oauth2Server::getOptions('grants.implicit'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
             [],
@@ -149,7 +153,8 @@ class ImplicitGrantTest extends OauthTestCase
     public function testValidateAuthorizationRequestInvalidClientId()
     {
         $clientRepositoryMock = new ClientRepository();
-        $grant = new ImplicitGrant(new \DateInterval('PT10M'));
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableImplicitGrant(Oauth2Server::getOptions('grants.implicit'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
             [],
@@ -174,7 +179,8 @@ class ImplicitGrantTest extends OauthTestCase
     public function testValidateAuthorizationRequestBadRedirectUriString()
     {
         $clientRepositoryMock = new ClientRepository();
-        $grant = new ImplicitGrant(new \DateInterval('PT10M'));
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableImplicitGrant(Oauth2Server::getOptions('grants.implicit'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
             [],
@@ -200,7 +206,8 @@ class ImplicitGrantTest extends OauthTestCase
     public function testValidateAuthorizationRequestBadRedirectUriArray()
     {
         $clientRepositoryMock = new ClientRepository();
-        $grant = new ImplicitGrant(new \DateInterval('PT10M'));
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableImplicitGrant(Oauth2Server::getOptions('grants.implicit'));
         $grant->setClientRepository($clientRepositoryMock);
         $request = new ServerRequest(
             [],

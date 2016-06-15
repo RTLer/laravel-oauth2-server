@@ -9,6 +9,7 @@ use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use Oauth2Tests\OauthTestCase;
 use Oauth2Tests\Stubs\CryptTraitStub;
 use Oauth2Tests\Stubs\StubResponseType;
+use RTLer\Oauth2\Facade\Oauth2Server;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
 use RTLer\Oauth2\Repositories\RefreshTokenRepository;
@@ -39,14 +40,8 @@ class RefreshTokenGrantTest extends OauthTestCase
 
     public function testRespondToRequest()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $scopeRepositoryMock = new ScopeRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-        $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setScopeRepository($scopeRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableRefreshTokenGrant(Oauth2Server::getOptions('grants.refresh_token'));
         $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
         $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(
@@ -77,15 +72,8 @@ class RefreshTokenGrantTest extends OauthTestCase
 
     public function testRespondToReducedScopes()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $scopeRepositoryMock = new ScopeRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-
-        $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
-        $grant->setScopeRepository($scopeRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableRefreshTokenGrant(Oauth2Server::getOptions('grants.refresh_token'));
         $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
         $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(
@@ -121,15 +109,8 @@ class RefreshTokenGrantTest extends OauthTestCase
      */
     public function testRespondToUnexpectedScope()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $scopeRepositoryMock = new ScopeRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-
-        $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
-        $grant->setScopeRepository($scopeRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableRefreshTokenGrant(Oauth2Server::getOptions('grants.refresh_token'));
         $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
         $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(
@@ -163,12 +144,8 @@ class RefreshTokenGrantTest extends OauthTestCase
      */
     public function testRespondToRequestMissingOldToken()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-        $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableRefreshTokenGrant(Oauth2Server::getOptions('grants.refresh_token'));
         $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
         $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $serverRequest = new ServerRequest();
@@ -188,12 +165,8 @@ class RefreshTokenGrantTest extends OauthTestCase
      */
     public function testRespondToRequestInvalidOldToken()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-        $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableRefreshTokenGrant(Oauth2Server::getOptions('grants.refresh_token'));
         $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
         $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = 'foobar';
@@ -215,12 +188,8 @@ class RefreshTokenGrantTest extends OauthTestCase
      */
     public function testRespondToRequestClientMismatch()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-        $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableRefreshTokenGrant(Oauth2Server::getOptions('grants.refresh_token'));
         $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
         $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(
@@ -253,13 +222,8 @@ class RefreshTokenGrantTest extends OauthTestCase
      */
     public function testRespondToRequestExpiredToken()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-
-        $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableRefreshTokenGrant(Oauth2Server::getOptions('grants.refresh_token'));
         $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
         $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(
@@ -292,13 +256,8 @@ class RefreshTokenGrantTest extends OauthTestCase
      */
     public function testRespondToRequestRevokedToken()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-
-        $grant = new RefreshTokenGrant($refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableRefreshTokenGrant(Oauth2Server::getOptions('grants.refresh_token'));
         $grant->setPublicKey(new CryptKey('file://'.__DIR__.'/../Stubs/public.key'));
         $grant->setPrivateKey(new CryptKey('file://'.__DIR__.'/../Stubs/private.key'));
         $oldRefreshToken = $this->cryptStub->doEncrypt(

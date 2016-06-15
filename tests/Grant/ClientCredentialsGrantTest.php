@@ -6,6 +6,7 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use Oauth2Tests\OauthTestCase;
 use Oauth2Tests\Stubs\StubResponseType;
+use RTLer\Oauth2\Facade\Oauth2Server;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
 use RTLer\Oauth2\Repositories\ScopeRepository;
@@ -24,7 +25,9 @@ class ClientCredentialsGrantTest extends OauthTestCase
         $clientRepositoryMock = new ClientRepository();
         $accessTokenRepositoryMock = new AccessTokenRepository();
         $scopeRepositoryMock = new ScopeRepository();
-        $grant = new ClientCredentialsGrant();
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableClientCredentialsGrant(Oauth2Server::getOptions('grants.client_credentials'));
+        $grant->setClientRepository($clientRepositoryMock);
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setScopeRepository($scopeRepositoryMock);

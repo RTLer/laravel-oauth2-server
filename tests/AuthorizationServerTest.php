@@ -4,9 +4,12 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 use Oauth2Tests\OauthTestCase;
+use Oauth2Tests\Stubs\StubResponseType;
 use Psr\Http\Message\ResponseInterface;
 use RTLer\Oauth2\Entities\ClientEntity;
 use RTLer\Oauth2\Entities\UserEntity;
+use RTLer\Oauth2\Facade\Oauth2Server;
+use RTLer\Oauth2\JsonRespondManipulator;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\ServerRequestFactory;
@@ -104,4 +107,62 @@ class AuthorizationServerTest extends OauthTestCase
         Oauth2::makeAuthorizationServer()
             ->validateAuthorizationRequest($request);
     }
+
+    public function testRevokeAccessToken()
+    {
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enablePasswordGrant(Oauth2Server::getOptions('grants.password'));
+        $serverRequest = new ServerRequest();
+        $serverRequest = $serverRequest->withParsedBody(
+            [
+                'client_id'     => 'foo',
+                'client_secret' => 'bar',
+                'username'      => 'foo',
+                'password'      => 'bar',
+            ]
+        );
+        $responseType = new StubResponseType();
+
+        $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
+
+
+        Oauth2Server::setAuthInfo([
+            'access_token_id' => $responseType->getAccessToken()->getIdentifier(),
+        ]);
+
+        Oauth2Server::revokeAccessToken();
+
+    }
+    public function testJsonRespondManipulator()
+    {
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enablePasswordGrant(Oauth2Server::getOptions('grants.password'));
+        $serverRequest = new ServerRequest();
+        $serverRequest = $serverRequest->withParsedBody(
+            [
+                'client_id'     => 'foo',
+                'client_secret' => 'bar',
+                'username'      => 'foo',
+                'password'      => 'bar',
+            ]
+        );
+        $responseType = new StubResponseType();
+
+        $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
+        $response = app('\Psr\Http\Message\ResponseInterface');
+        $responseEditor = new JsonRespondManipulator($responseType->generateHttpResponse($response));
+
+        $responseEditor->editBody(function ($data) {
+            $data['test'] = 'testing';
+        });
+        $responseEditor->editResponse(function ($res) {
+            /** @var ResponseInterface $res */
+            return $res->withHeader('test', 'testing');
+        });
+        
+        $this->assertInstanceOf('Zend\Diactoros\Response', $responseEditor->getResponse());
+
+    }
+
+
 }

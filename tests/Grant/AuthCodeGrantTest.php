@@ -14,6 +14,7 @@ use Oauth2Tests\Stubs\CryptTraitStub;
 use Oauth2Tests\Stubs\StubResponseType;
 use RTLer\Oauth2\Entities\ClientEntity;
 use RTLer\Oauth2\Entities\UserEntity;
+use RTLer\Oauth2\Facade\Oauth2Server;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\AuthCodeRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
@@ -38,22 +39,16 @@ class AuthCodeGrantTest extends OauthTestCase
 
     public function testGetIdentifier()
     {
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
 
         $this->assertEquals('authorization_code', $grant->getIdentifier());
     }
 
     public function testCanRespondToAuthorizationRequest()
     {
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
 
         $request = new ServerRequest(
             [],
@@ -76,11 +71,8 @@ class AuthCodeGrantTest extends OauthTestCase
     {
         $clientRepositoryMock = new ClientRepository();
 
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepositoryMock);
 
         $request = new ServerRequest(
@@ -105,11 +97,8 @@ class AuthCodeGrantTest extends OauthTestCase
     {
         $clientRepositoryMock = new ClientRepository();
 
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepositoryMock);
 
         $request = new ServerRequest(
@@ -138,11 +127,8 @@ class AuthCodeGrantTest extends OauthTestCase
     {
         $clientRepositoryMock = new ClientRepository();
 
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepositoryMock);
 
         $request = new ServerRequest(
@@ -169,11 +155,8 @@ class AuthCodeGrantTest extends OauthTestCase
     {
         $clientRepositoryMock = new ClientRepository();
 
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepositoryMock);
 
         $request = new ServerRequest(
@@ -201,11 +184,8 @@ class AuthCodeGrantTest extends OauthTestCase
     {
         $clientRepositoryMock = new ClientRepository();
 
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepositoryMock);
 
         $request = new ServerRequest(
@@ -234,11 +214,8 @@ class AuthCodeGrantTest extends OauthTestCase
     {
         $clientRepositoryMock = new ClientRepository();
 
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepositoryMock);
 
         $request = new ServerRequest(
@@ -313,11 +290,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $scopeRepositoryMock = new ScopeRepository();
         $accessTokenRepositoryMock = new AccessTokenRepository();
         $refreshTokenRepositoryMock = new RefreshTokenRepository();
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepository);
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
@@ -369,11 +343,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $refreshTokenRepositoryMock = new RefreshTokenRepository();
 
 
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepository);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
@@ -411,11 +382,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $accessTokenRepositoryMock = new AccessTokenRepository();
         $refreshTokenRepositoryMock = new RefreshTokenRepository();
 
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
@@ -453,11 +421,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $accessTokenRepositoryMock = new AccessTokenRepository();
         $refreshTokenRepositoryMock = new RefreshTokenRepository();
 
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
@@ -568,11 +533,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $accessTokenRepositoryMock = new AccessTokenRepository();
         $refreshTokenRepositoryMock = new RefreshTokenRepository();
 
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
@@ -626,11 +588,8 @@ class AuthCodeGrantTest extends OauthTestCase
         $accessTokenRepositoryMock = new AccessTokenRepository();
         $refreshTokenRepositoryMock = new RefreshTokenRepository();
 
-        $grant = new AuthCodeGrant(
-            new AuthCodeRepository(),
-            new RefreshTokenRepository(),
-            new \DateInterval('PT10M')
-        );
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);

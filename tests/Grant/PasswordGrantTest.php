@@ -7,6 +7,7 @@ use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use Oauth2Tests\OauthTestCase;
 use Oauth2Tests\Stubs\StubResponseType;
+use RTLer\Oauth2\Facade\Oauth2Server;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
 use RTLer\Oauth2\Repositories\RefreshTokenRepository;
@@ -20,21 +21,16 @@ class PasswordGrantTest extends OauthTestCase
     {
         $userRepositoryMock = new UserRepository();
         $refreshTokenRepositoryMock = new RefreshTokenRepository();
+        Oauth2Server::makeAuthorizationServer();
         $grant = new PasswordGrant($userRepositoryMock, $refreshTokenRepositoryMock);
         $this->assertEquals('password', $grant->getIdentifier());
     }
 
     public function testRespondToRequest()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $userRepositoryMock = new UserRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-        $scopeRepositoryMock = new ScopeRepository();
-        $grant = new PasswordGrant($userRepositoryMock, $refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
-        $grant->setScopeRepository($scopeRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enablePasswordGrant(Oauth2Server::getOptions('grants.password'));
+
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
@@ -45,6 +41,7 @@ class PasswordGrantTest extends OauthTestCase
             ]
         );
         $responseType = new StubResponseType();
+
         $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
         $this->assertTrue($responseType->getAccessToken() instanceof AccessTokenEntityInterface);
         $this->assertTrue($responseType->getRefreshToken() instanceof RefreshTokenEntityInterface);
@@ -55,13 +52,8 @@ class PasswordGrantTest extends OauthTestCase
      */
     public function testRespondToRequestMissingUsername()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $userRepositoryMock = new UserRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-        $grant = new PasswordGrant($userRepositoryMock, $refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enablePasswordGrant(Oauth2Server::getOptions('grants.password'));
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
@@ -78,13 +70,8 @@ class PasswordGrantTest extends OauthTestCase
      */
     public function testRespondToRequestMissingPassword()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $userRepositoryMock = new UserRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-        $grant = new PasswordGrant($userRepositoryMock, $refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enablePasswordGrant(Oauth2Server::getOptions('grants.password'));
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
@@ -102,13 +89,8 @@ class PasswordGrantTest extends OauthTestCase
      */
     public function testRespondToRequestBadCredentials()
     {
-        $clientRepositoryMock = new ClientRepository();
-        $accessTokenRepositoryMock = new AccessTokenRepository();
-        $userRepositoryMock = new UserRepository();
-        $refreshTokenRepositoryMock = new RefreshTokenRepository();
-        $grant = new PasswordGrant($userRepositoryMock, $refreshTokenRepositoryMock);
-        $grant->setClientRepository($clientRepositoryMock);
-        $grant->setAccessTokenRepository($accessTokenRepositoryMock);
+        Oauth2Server::makeAuthorizationServer();
+        $grant = Oauth2Server::enablePasswordGrant(Oauth2Server::getOptions('grants.password'));
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [

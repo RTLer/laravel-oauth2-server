@@ -35,11 +35,11 @@ return [
     | database type
     |--------------------------------------------------------------------------
     |
-    | it use to set models to make it use mongo or mysql
-    | it can be set mongo ro mysql
+    | it use to set models to make it use mongodb or mysql
+    | it can be set mongodb ro mysql
     |
     */
-    'database_type' => 'mysql', // or mongo
+    'database_type' => 'mysql', // or mongodb
 
     /*
     |--------------------------------------------------------------------------

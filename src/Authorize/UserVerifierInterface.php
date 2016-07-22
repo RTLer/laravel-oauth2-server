@@ -20,7 +20,7 @@ interface UserVerifierInterface
      *
      * @param string $identifier
      *
-     * @return null|User
+     * @return null|\Illuminate\Database\Eloquent\Model
      */
     public function getUserByIdentifier($identifier);
 }

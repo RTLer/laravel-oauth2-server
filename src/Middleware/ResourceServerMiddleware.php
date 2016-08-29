@@ -54,14 +54,14 @@ class ResourceServerMiddleware
      * @param $neededScopes
      * @param $requestedScopes
      *
-     * @return bool
      * @throws OAuthServerException
+     *
+     * @return bool
      */
     protected function validateScopes($neededScopes, $requestedScopes)
     {
         foreach ($requestedScopes as $requestedScope) {
-
-            if(in_array($requestedScope->getIdentifier(), $neededScopes)){
+            if (in_array($requestedScope->getIdentifier(), $neededScopes)) {
                 return true;
             }
         }

@@ -17,8 +17,6 @@ class ResourceServerMiddleware
      * @param Request  $request
      * @param \Closure $next
      *
-     * @throws OAuthServerException
-     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -56,21 +54,20 @@ class ResourceServerMiddleware
      * @param $neededScopes
      * @param $requestedScopes
      *
+     * @return bool
      * @throws OAuthServerException
      */
     protected function validateScopes($neededScopes, $requestedScopes)
     {
-        $haveRightScope = true;
-        foreach ($neededScopes as $neededScope) {
-            if (!in_array($neededScope, $requestedScopes)) {
-                $haveRightScope = false;
+        foreach ($requestedScopes as $requestedScope) {
+
+            if(in_array($requestedScope->getIdentifier(), $neededScopes)){
+                return true;
             }
         }
-        if (!$haveRightScope) {
-            throw OAuthServerException::accessDenied(
-                'you need right scope to access this resource'
-            );
-        }
+        throw OAuthServerException::accessDenied(
+            'you need right scope to access this resource'
+        );
     }
 
     /**

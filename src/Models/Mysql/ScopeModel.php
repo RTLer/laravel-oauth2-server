@@ -29,4 +29,20 @@ class ScopeModel extends Model
         'id',
         'description',
     ];
+
+    public static $canHandleArray = false;
+
+    public static $identifierKey = 'id';
+
+    /**
+     * Scope a query to only include users of a given type.
+     *
+     * @param $query
+     * @param $identifier
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByIdentifier($query, $identifier)
+    {
+        return $query->where(self::$identifierKey, $identifier);
+    }
 }

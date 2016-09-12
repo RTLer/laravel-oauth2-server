@@ -33,4 +33,20 @@ class ClientModel extends Model
         'redirect_uri',
         'scopes',
     ];
+
+    public static $canHandleArray = true;
+
+    public static $identifierKey = '_id';
+
+    /**
+     * Scope a query to only include users of a given type.
+     *
+     * @param $query
+     * @param $identifier
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByIdentifier($query, $identifier)
+    {
+        return $query->where(self::$identifierKey, $identifier);
+    }
 }

@@ -42,4 +42,6 @@ class AccessTokenModel extends Model
         'user_id',
         'scopes',
     ];
+
+    public static $canHandleArray = true;
 }

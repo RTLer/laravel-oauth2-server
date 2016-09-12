@@ -39,7 +39,7 @@ class ClientModel extends Model
     public static $identifierKey = '_id';
 
     /**
-     * Scope a query to only include users of a given type.
+     * Scope a query.
      *
      * @param $query
      * @param $identifier

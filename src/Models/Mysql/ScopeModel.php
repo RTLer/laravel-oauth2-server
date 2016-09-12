@@ -35,7 +35,7 @@ class ScopeModel extends Model
     public static $identifierKey = 'id';
 
     /**
-     * Scope a query to only include users of a given type.
+     * Scope a query.
      *
      * @param $query
      * @param $identifier
@@ -45,5 +45,17 @@ class ScopeModel extends Model
     public function scopeByIdentifier($query, $identifier)
     {
         return $query->where(self::$identifierKey, $identifier);
+    }
+
+    /**
+     * Scope a query.
+     *
+     * @param $query
+     * @param $identifier
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByIdentifierIn($query, $identifier)
+    {
+        return $query->whereIn(self::$identifierKey, $identifier);
     }
 }

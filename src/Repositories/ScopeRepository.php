@@ -76,7 +76,7 @@ class ScopeRepository implements ScopeRepositoryInterface
             return $scopes->getIdentifier();
         }, $scopes);
 
-        $validScopes = $scopeModel::byIdentifier($scopes)->get()->pluck($scopeModel::$identifierKey);
+        $validScopes = $scopeModel::byIdentifierIn($scopes)->get()->pluck($scopeModel::$identifierKey);
 
         $validScopes = collect($validScopes);
 

@@ -52,6 +52,7 @@ class ScopeModel extends Model
      *
      * @param $query
      * @param $identifier
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeByIdentifierIn($query, $identifier)

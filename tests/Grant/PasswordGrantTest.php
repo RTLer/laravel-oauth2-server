@@ -8,10 +8,7 @@ use League\OAuth2\Server\Grant\PasswordGrant;
 use Oauth2Tests\OauthTestCase;
 use Oauth2Tests\Stubs\StubResponseType;
 use RTLer\Oauth2\Facade\Oauth2Server;
-use RTLer\Oauth2\Repositories\AccessTokenRepository;
-use RTLer\Oauth2\Repositories\ClientRepository;
 use RTLer\Oauth2\Repositories\RefreshTokenRepository;
-use RTLer\Oauth2\Repositories\ScopeRepository;
 use RTLer\Oauth2\Repositories\UserRepository;
 use Zend\Diactoros\ServerRequest;
 

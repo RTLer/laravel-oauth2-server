@@ -24,6 +24,7 @@ class ResourceServerTest extends OauthTestCase
             $this->assertEquals('Missing "Authorization" header', $e->getHint());
         }
     }
+
     public function testMakeResourceServer()
     {
         $server = Oauth2Server::makeResourceServer();

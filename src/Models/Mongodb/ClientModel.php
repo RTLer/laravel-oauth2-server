@@ -43,6 +43,7 @@ class ClientModel extends Model
      *
      * @param $query
      * @param $identifier
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeByIdentifier($query, $identifier)

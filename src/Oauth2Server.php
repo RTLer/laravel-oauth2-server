@@ -140,6 +140,7 @@ class Oauth2Server
      * enable ClientCredentialsGrant.
      *
      * @param $options
+     *
      * @return ClientCredentialsGrant
      */
     public function enableClientCredentialsGrant($options)
@@ -158,6 +159,7 @@ class Oauth2Server
      * enable AuthCodeGrant.
      *
      * @param $options
+     *
      * @return AuthCodeGrant
      */
     public function enableAuthCodeGrant($options)
@@ -188,6 +190,7 @@ class Oauth2Server
      * enable PasswordGrant.
      *
      * @param $options
+     *
      * @return PasswordGrant
      */
     public function enablePasswordGrant($options)
@@ -218,6 +221,7 @@ class Oauth2Server
      * enable ImplicitGrant.
      *
      * @param $options
+     *
      * @return ImplicitGrant
      */
     public function enableImplicitGrant($options)
@@ -239,6 +243,7 @@ class Oauth2Server
      * enable RefreshTokenGrant.
      *
      * @param $options
+     *
      * @return RefreshTokenGrant
      */
     public function enableRefreshTokenGrant($options)
@@ -296,13 +301,15 @@ class Oauth2Server
      * get Options (configs).
      *
      * @param null $key
+     *
      * @return mixed
      */
     public function getOptions($key = null)
     {
-        if(!is_null($key)){
+        if (!is_null($key)) {
             return Arr::get($this->options, $key, null);
         }
+
         return $this->options;
     }
 

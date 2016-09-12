@@ -10,10 +10,7 @@ use Oauth2Tests\OauthTestCase;
 use Oauth2Tests\Stubs\CryptTraitStub;
 use Oauth2Tests\Stubs\StubResponseType;
 use RTLer\Oauth2\Facade\Oauth2Server;
-use RTLer\Oauth2\Repositories\AccessTokenRepository;
-use RTLer\Oauth2\Repositories\ClientRepository;
 use RTLer\Oauth2\Repositories\RefreshTokenRepository;
-use RTLer\Oauth2\Repositories\ScopeRepository;
 use Zend\Diactoros\ServerRequest;
 
 class RefreshTokenGrantTest extends OauthTestCase

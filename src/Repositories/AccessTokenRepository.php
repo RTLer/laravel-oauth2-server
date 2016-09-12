@@ -58,13 +58,12 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         if (!is_null($accessTokenEntity->getUserIdentifier())) {
             $newAccessToken['user_id'] = $accessTokenEntity->getUserIdentifier();
         }
-        $driver = get_class($accessTokenModel::getConnectionResolver()->connection());
         if ($accessTokenEntity->getScopes() !== []) {
             $scopes = array_map(function ($item) {
                 return $item->getIdentifier();
             }, $accessTokenEntity->getScopes());
 
-            if ($driver == 'Jenssegers\Mongodb\Connection') {
+            if ($accessTokenModel::$canHandleArray) {
                 $newAccessToken['scopes'] = $scopes;
             } else {
                 $newAccessToken['scopes'] = json_encode($scopes);

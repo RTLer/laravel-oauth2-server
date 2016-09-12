@@ -246,7 +246,7 @@ class AbstractGrantTest extends OauthTestCase
 
     public function testIssueRefreshToken()
     {
-        $refreshTokenRepoMock = $this->getMock(RefreshTokenRepositoryInterface::class);
+        $refreshTokenRepoMock = $this->createMock(RefreshTokenRepositoryInterface::class);
         $refreshTokenRepoMock
             ->expects($this->once())
             ->method('getNewRefreshToken')
@@ -271,7 +271,7 @@ class AbstractGrantTest extends OauthTestCase
 
     public function testIssueAccessToken()
     {
-        $accessTokenRepoMock = $this->getMock(AccessTokenRepositoryInterface::class);
+        $accessTokenRepoMock = $this->createMock(AccessTokenRepositoryInterface::class);
         $accessTokenRepoMock->method('getNewToken')->willReturn(new AccessTokenEntity());
 
         /** @var AbstractGrant $grantMock */
@@ -296,7 +296,7 @@ class AbstractGrantTest extends OauthTestCase
 
     public function testIssueAuthCode()
     {
-        $authCodeRepoMock = $this->getMock(AuthCodeRepositoryInterface::class);
+        $authCodeRepoMock = $this->createMock(AuthCodeRepositoryInterface::class);
         $authCodeRepoMock->expects($this->once())->method('getNewAuthCode')->willReturn(new AuthCodeEntity());
 
         /** @var AbstractGrant $grantMock */

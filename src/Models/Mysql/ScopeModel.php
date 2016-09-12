@@ -29,4 +29,34 @@ class ScopeModel extends Model
         'id',
         'description',
     ];
+
+    public static $canHandleArray = false;
+
+    public static $identifierKey = 'id';
+
+    /**
+     * Scope a query.
+     *
+     * @param $query
+     * @param $identifier
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByIdentifier($query, $identifier)
+    {
+        return $query->where(self::$identifierKey, $identifier);
+    }
+
+    /**
+     * Scope a query.
+     *
+     * @param $query
+     * @param $identifier
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByIdentifierIn($query, $identifier)
+    {
+        return $query->whereIn(self::$identifierKey, $identifier);
+    }
 }

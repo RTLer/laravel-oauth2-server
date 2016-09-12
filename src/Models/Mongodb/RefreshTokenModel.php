@@ -39,4 +39,6 @@ class RefreshTokenModel extends Model
         'access_token_id',
         'expire_time',
     ];
+
+    public static $canHandleArray = true;
 }

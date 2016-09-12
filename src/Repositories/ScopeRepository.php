@@ -37,18 +37,12 @@ class ScopeRepository implements ScopeRepositoryInterface
     {
         $scopeModel = $this->modelResolver->getModel('ScopeModel');
 
-        $driver = get_class($scopeModel::getConnectionResolver()->connection());
-        $idKey = 'id';
-        if ($driver == 'Jenssegers\Mongodb\Connection') {
-            $idKey = '_id';
-        }
-
-        $scopeModel = $scopeModel::where($idKey, $identifier)->first();
+        $scopeModel = $scopeModel::byIdentifier($identifier)->first();
         if (is_null($scopeModel)) {
             return;
         }
         $scopeEntity = new ScopeEntity();
-        $scopeEntity->setIdentifier($scopeModel->{$idKey});
+        $scopeEntity->setIdentifier($scopeModel->{$scopeModel::$identifierKey});
 
         return $scopeEntity;
     }
@@ -73,13 +67,7 @@ class ScopeRepository implements ScopeRepositoryInterface
         $scopeModel = $this->modelResolver->getModel('ScopeModel');
         $clientModel = $this->modelResolver->getModel('ClientModel');
 
-        $driver = get_class($clientModel::getConnectionResolver()->connection());
-        $idKey = 'id';
-        if ($driver == 'Jenssegers\Mongodb\Connection') {
-            $idKey = '_id';
-        }
-
-        $clientModel = $clientModel::where($idKey, $clientEntity->getIdentifier())->first();
+        $clientModel = $clientModel::byIdentifier($clientEntity->getIdentifier())->first();
         if (is_null($clientModel)) {
             return [];
         }
@@ -88,13 +76,13 @@ class ScopeRepository implements ScopeRepositoryInterface
             return $scopes->getIdentifier();
         }, $scopes);
 
-        $validScopes = $scopeModel::whereIn($idKey, $scopes)->get()->pluck($idKey);
+        $validScopes = $scopeModel::byIdentifierIn($scopes)->get()->pluck($scopeModel::$identifierKey);
 
         $validScopes = collect($validScopes);
 
         if (!empty($clientModel->scopes)) {
             $clientScopes = $clientModel->scopes;
-            if ($driver != 'Jenssegers\Mongodb\Connection') {
+            if (!$clientModel::$canHandleArray) {
                 $clientScopes = json_decode($clientScopes);
             }
             $validScopes = $validScopes->intersect($clientScopes);

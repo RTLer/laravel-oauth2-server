@@ -40,4 +40,6 @@ class AuthCodeModel extends Model
         'expire_time',
         'user_id',
     ];
+
+    public static $canHandleArray = true;
 }

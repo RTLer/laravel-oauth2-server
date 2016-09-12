@@ -1,6 +1,6 @@
 {
     "name": "rtler/laravel-oauth2-server",
-    "description": "thephpleague oauth2 integration for laravel and mongo",
+    "description": "thephpleague oauth2 integration for laravel",
     "license": "MIT",
     "type": "project",
     "require": {
@@ -10,7 +10,7 @@
         "zendframework/zend-diactoros": "^1.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.3",
+        "phpunit/phpunit": "^5.4",
         "orchestra/testbench": "~3.2",
         "jenssegers/mongodb": "3.*",
         "satooshi/php-coveralls": "^1.0"

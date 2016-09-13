@@ -111,9 +111,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $accessTokenEntity->setIdentifier($accessToken->token);
         $accessTokenEntity->setExpiryDateTime($accessToken->expire_time);
 
-        $driver = get_class($accessTokenModel::getConnectionResolver()->connection());
         $scopes = $accessToken->scopes;
-        if ($driver != 'Jenssegers\Mongodb\Connection') {
+        if (!$accessTokenModel::$canHandleArray) {
             $scopes = json_decode($scopes);
         }
         if (!empty($scopes)) {

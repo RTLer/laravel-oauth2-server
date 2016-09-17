@@ -33,10 +33,11 @@ class PersonalAccessClientCommand extends Command
             ->getOptions()['database_type'];
         $modelResolver = new ModelResolver($type);
         $clientModel = $modelResolver->getModel('ClientModel');
-        $clientModel->create([
+        $clientModel::create([
+            $clientModel::$identifierKey => 'personal_access',
+            'name'       => 'personal_access_client',
+            'secret'     => 'secret',
             'grant_type' => 'personal_access',
-            'name' => 'personal_access_client',
-            'secret' => 'secret',
         ]);
 
         $this->info('Personal access client created successfully.');

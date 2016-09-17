@@ -13,6 +13,7 @@ use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
 use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
+use RTLer\Oauth2\Grants\PersonalAccessGrant;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\AuthCodeRepository;
 use RTLer\Oauth2\Repositories\ClientRepository;
@@ -175,7 +176,7 @@ class Oauth2Server
 
         $grant->setRefreshTokenTTL(
             $this->getDateInterval($options['refresh_token_ttl'])
-        ); // refresh tokens will expire after 1 month
+        );
 
         // Enable the authentication code grant on the server
         $this->authorizationServer->enableGrantType(
@@ -206,13 +207,30 @@ class Oauth2Server
 
         $grant->setRefreshTokenTTL(
             $this->getDateInterval($options['refresh_token_ttl'])
-        ); // refresh tokens will expire after 1 month
+        );
 
         // Enable the password grant on the server
         $this->authorizationServer->enableGrantType(
             $grant,
-            $this->getDateInterval($options['access_token_ttl']) // access tokens will expire after 1 hour
+            $this->getDateInterval($options['access_token_ttl'])
         );
+
+        return $grant;
+    }
+
+    /**
+     * enable PasswordGrant.
+     *
+     * @param $options
+     *
+     * @return PersonalAccessGrant
+     */
+    public function enablePersonalAccessGrant($options)
+    {
+        $grant = new PersonalAccessGrant();
+
+        // Enable the password grant on the server
+        $this->authorizationServer->enableGrantType($grant);
 
         return $grant;
     }
@@ -233,7 +251,7 @@ class Oauth2Server
         // Enable the implicit grant on the server
         $this->authorizationServer->enableGrantType(
             $grant,
-            $this->getDateInterval($options['access_token_ttl']) // access tokens will expire after 1 hour
+            $this->getDateInterval($options['access_token_ttl'])
         );
 
         return $grant;
@@ -254,12 +272,12 @@ class Oauth2Server
         $grant = new RefreshTokenGrant($refreshTokenRepository);
         $grant->setRefreshTokenTTL(
             $this->getDateInterval($options['refresh_token_ttl'])
-        ); // new refresh tokens will expire after 1 month
+        );
 
         // Enable the refresh token grant on the server
         $this->authorizationServer->enableGrantType(
             $grant,
-            $this->getDateInterval($options['access_token_ttl']) // new access tokens will expire after an hour
+            $this->getDateInterval($options['access_token_ttl'])
         );
 
         return $grant;

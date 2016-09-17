@@ -25,7 +25,6 @@ class UserRepository implements UserRepositoryInterface
         $grantType,
         ClientEntityInterface $clientEntity
     ) {
-        $userEntity = new UserEntity();
         $userVerifier = app()->make(Oauth2Server::class)
             ->getOptions()['user_verifier'];
         $identifier = (new $userVerifier())
@@ -35,7 +34,32 @@ class UserRepository implements UserRepositoryInterface
             return;
         }
 
+        $userEntity = new UserEntity();
         $userEntity->setIdentifier($identifier);
+
+        return $userEntity;
+    }
+
+    /**
+     * Get a user entity.
+     *
+     * @param string $identifier
+     *
+     * @return \League\OAuth2\Server\Entities\UserEntityInterface
+     */
+    public function getUserEntityByIdentifier($identifier)
+    {
+        $userVerifier = app()->make(Oauth2Server::class)
+            ->getOptions()['user_verifier'];
+        $user = (new $userVerifier())
+            ->getUserByIdentifier($identifier);
+
+        if (is_null($identifier)) {
+            return;
+        }
+
+        $userEntity = new UserEntity();
+        $userEntity->setIdentifier((string) $user->id);
 
         return $userEntity;
     }

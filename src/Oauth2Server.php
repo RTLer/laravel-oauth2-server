@@ -13,6 +13,7 @@ use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
 use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
+use Psr\Http\Message\ResponseInterface;
 use RTLer\Oauth2\Grants\PersonalAccessGrant;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\AuthCodeRepository;
@@ -20,6 +21,7 @@ use RTLer\Oauth2\Repositories\ClientRepository;
 use RTLer\Oauth2\Repositories\RefreshTokenRepository;
 use RTLer\Oauth2\Repositories\ScopeRepository;
 use RTLer\Oauth2\Repositories\UserRepository;
+use Zend\Diactoros\ServerRequest;
 
 class Oauth2Server
 {
@@ -132,7 +134,7 @@ class Oauth2Server
      */
     public function enableGrant($name)
     {
-        $methodName = camel_case('enable_'.$name.'_grant');
+        $methodName = camel_case('enable_' . $name . '_grant');
 
         $this->{$methodName}($this->options['grants'][$name]);
     }
@@ -400,5 +402,31 @@ class Oauth2Server
         }
 
         return new $this->options['bearer_token_validator']($accessTokenRepository);
+    }
+
+    /**
+     * get getPersonalAccessToken.
+     *
+     * @param $userId
+     * @param array $scopes
+     * @param string $personalClientId
+     * @param string $personalClientSecret
+     *
+     * @return \Psr\Http\Message\ServerRequestInterface
+     */
+    public function getPersonalAccessToken($userId, array $scopes = [], $personalClientId = 'personal_access_client', $personalClientSecret = 'secret')
+    {
+        $request = (new ServerRequest)->withParsedBody([
+            'grant_type' => 'personal_access',
+            'client_id' => $personalClientId,
+            'client_secret' => $personalClientSecret,
+            'user_id' => $userId,
+            'scope' => implode(' ', $scopes),
+        ]);
+
+        $response = Oauth2Server::makeAuthorizationServer(['personal_access'])
+            ->respondToAccessTokenRequest($request, app(ResponseInterface::class));
+        $accessTokenData = json_decode((string) $response->getBody(), true);
+        return $accessTokenData;
     }
 }

@@ -30,9 +30,9 @@ class PersonalAccessGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
-                'user_id' => 1,
+                'user_id'       => 1,
             ]
         );
 
@@ -53,12 +53,11 @@ class PersonalAccessGrantTest extends OauthTestCase
         $serverRequest = new ServerRequest();
         $serverRequest = $serverRequest->withParsedBody(
             [
-                'client_id' => 'foo',
+                'client_id'     => 'foo',
                 'client_secret' => 'bar',
             ]
         );
         $responseType = new StubResponseType();
         $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
     }
-
 }

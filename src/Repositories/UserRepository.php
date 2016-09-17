@@ -12,9 +12,9 @@ class UserRepository implements UserRepositoryInterface
     /**
      * Get a user entity.
      *
-     * @param string $username
-     * @param string $password
-     * @param string $grantType The grant type used
+     * @param string                                               $username
+     * @param string                                               $password
+     * @param string                                               $grantType    The grant type used
      * @param \League\OAuth2\Server\Entities\ClientEntityInterface $clientEntity
      *
      * @return \League\OAuth2\Server\Entities\UserEntityInterface
@@ -24,15 +24,14 @@ class UserRepository implements UserRepositoryInterface
         $password,
         $grantType,
         ClientEntityInterface $clientEntity
-    )
-    {
+    ) {
         $userVerifier = app()->make(Oauth2Server::class)
             ->getOptions()['user_verifier'];
         $identifier = (new $userVerifier())
             ->getUserIdentifierByUserCredentials($username, $password, $grantType);
 
         if (is_null($identifier)) {
-            return null;
+            return;
         }
 
         $userEntity = new UserEntity();
@@ -56,11 +55,11 @@ class UserRepository implements UserRepositoryInterface
             ->getUserByIdentifier($identifier);
 
         if (is_null($identifier)) {
-            return null;
+            return;
         }
 
         $userEntity = new UserEntity();
-        $userEntity->setIdentifier((string)$user->id);
+        $userEntity->setIdentifier((string) $user->id);
 
         return $userEntity;
     }

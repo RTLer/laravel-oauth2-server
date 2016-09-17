@@ -39,4 +39,28 @@ class UserRepository implements UserRepositoryInterface
 
         return $userEntity;
     }
+
+    /**
+     * Get a user entity.
+     *
+     * @param string $identifier
+     *
+     * @return \League\OAuth2\Server\Entities\UserEntityInterface
+     */
+    public function getUserEntityByIdentifier($identifier)
+    {
+        $userVerifier = app()->make(Oauth2Server::class)
+            ->getOptions()['user_verifier'];
+        $user = (new $userVerifier())
+            ->getUserByIdentifier($identifier);
+
+        if (is_null($identifier)) {
+            return null;
+        }
+
+        $userEntity = new UserEntity();
+        $userEntity->setIdentifier((string)$user->id);
+
+        return $userEntity;
+    }
 }

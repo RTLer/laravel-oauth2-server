@@ -38,6 +38,10 @@ class Oauth2ServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../publish/migrations/2016_05_30_155444_CreateOauth2Tables.php' => base_path('database/migrations/2016_05_30_155444_CreateOauth2Tables.php'),
         ]);
+
+        $this->commands([
+            \RTLer\Oauth2\Commands\PersonalAccessClientCommand::class,
+        ]);
     }
 
     /**

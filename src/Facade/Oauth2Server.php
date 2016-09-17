@@ -15,6 +15,7 @@ use RTLer\Oauth2\Oauth2Server as Oauth2ServerClass;
  * @method static \League\OAuth2\Server\Grant\ClientCredentialsGrant enableClientCredentialsGrant($options)
  * @method static \League\OAuth2\Server\Grant\AuthCodeGrant enableAuthCodeGrant($options)
  * @method static \League\OAuth2\Server\Grant\PasswordGrant enablePasswordGrant($options)
+ * @method static \RTLer\Oauth2\Grants\PersonalAccessGrant enablePersonalAccessGrant($options)
  * @method static \League\OAuth2\Server\Grant\ImplicitGrant enableImplicitGrant($options)
  * @method static \League\OAuth2\Server\Grant\RefreshTokenGrant enableRefreshTokenGrant($options)
  * @method static \League\OAuth2\Server\AuthorizationServer getAuthorizationServer()

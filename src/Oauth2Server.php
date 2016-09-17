@@ -134,7 +134,7 @@ class Oauth2Server
      */
     public function enableGrant($name)
     {
-        $methodName = camel_case('enable_' . $name . '_grant');
+        $methodName = camel_case('enable_'.$name.'_grant');
 
         $this->{$methodName}($this->options['grants'][$name]);
     }
@@ -408,7 +408,7 @@ class Oauth2Server
      * get getPersonalAccessToken.
      *
      * @param $userId
-     * @param array $scopes
+     * @param array  $scopes
      * @param string $personalClientId
      * @param string $personalClientSecret
      *
@@ -416,17 +416,18 @@ class Oauth2Server
      */
     public function getPersonalAccessToken($userId, array $scopes = [], $personalClientId = 'personal_access_client', $personalClientSecret = 'secret')
     {
-        $request = (new ServerRequest)->withParsedBody([
-            'grant_type' => 'personal_access',
-            'client_id' => $personalClientId,
+        $request = (new ServerRequest())->withParsedBody([
+            'grant_type'    => 'personal_access',
+            'client_id'     => $personalClientId,
             'client_secret' => $personalClientSecret,
-            'user_id' => $userId,
-            'scope' => implode(' ', $scopes),
+            'user_id'       => $userId,
+            'scope'         => implode(' ', $scopes),
         ]);
 
-        $response = Oauth2Server::makeAuthorizationServer(['personal_access'])
+        $response = self::makeAuthorizationServer(['personal_access'])
             ->respondToAccessTokenRequest($request, app(ResponseInterface::class));
         $accessTokenData = json_decode((string) $response->getBody(), true);
+
         return $accessTokenData;
     }
 }

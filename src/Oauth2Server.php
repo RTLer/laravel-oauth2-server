@@ -218,6 +218,23 @@ class Oauth2Server
     }
 
     /**
+     * enable PasswordGrant.
+     *
+     * @param $options
+     *
+     * @return PersonalAccessGrant
+     */
+    public function enablePersonalAccessGrant($options)
+    {
+        $grant = new PersonalAccessGrant();
+
+        // Enable the password grant on the server
+        $this->authorizationServer->enableGrantType($grant);
+
+        return $grant;
+    }
+
+    /**
      * enable ImplicitGrant.
      *
      * @param $options

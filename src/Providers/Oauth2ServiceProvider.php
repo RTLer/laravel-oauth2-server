@@ -42,7 +42,6 @@ class Oauth2ServiceProvider extends ServiceProvider
         $this->commands([
             \RTLer\Oauth2\Commands\PersonalAccessClientCommand::class,
         ]);
-
     }
 
     /**

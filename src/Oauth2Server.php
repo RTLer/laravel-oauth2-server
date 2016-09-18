@@ -380,10 +380,10 @@ class Oauth2Server
      */
     public function revokeAccessTokenByPublicIdentifier($identifier)
     {
-            $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
+        $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
             $accessTokenRepository->revokeAccessTokenByPublicIdentifier($identifier);
 
-            return true;
+        return true;
     }
 
     /**

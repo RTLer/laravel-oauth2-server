@@ -14,6 +14,7 @@ use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
 use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 use Psr\Http\Message\ResponseInterface;
+use RTLer\Oauth2\Entities\UserEntity;
 use RTLer\Oauth2\Grants\PersonalAccessGrant;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\AuthCodeRepository;
@@ -432,5 +433,19 @@ class Oauth2Server
         return $accessTokenData;
     }
 
-    
+    /**
+     * get getAccessTokensForUser.
+     *
+     * @param $userId
+     * @return \Psr\Http\Message\ServerRequestInterface
+     */
+    public function getAccessTokensForUser($userId)
+    {
+        $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
+        $user = new UserEntity(); // instance of AccessTokenRepositoryInterface
+        $user->setIdentifier($userId);
+        return $accessTokenRepository->findAccessTokensByUser($user);
+    }
+
+
 }

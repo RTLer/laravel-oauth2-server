@@ -13,6 +13,8 @@ class AccessTokenEntity implements AccessTokenEntityInterface
 
     protected $name = null;
 
+    protected $publicIdentifier = null;
+
     /**
      * Set the name for the token.
      * it's use to name the token in personal access tokens.
@@ -32,5 +34,26 @@ class AccessTokenEntity implements AccessTokenEntityInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set the name for the token.
+     * it's use to name the token in personal access tokens.
+     *
+     * @param string $publicIdentifier The name of the token
+     */
+    public function setPublicIdentifier($publicIdentifier)
+    {
+        $this->publicIdentifier = (string) $publicIdentifier;
+    }
+
+    /**
+     * get the name of the token.
+     *
+     * @return string
+     **/
+    public function getPublicIdentifier()
+    {
+        return $this->publicIdentifier;
     }
 }

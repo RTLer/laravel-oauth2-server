@@ -25,6 +25,7 @@ use RTLer\Oauth2\Oauth2Server as Oauth2ServerClass;
  * @method static mixed getAuthInfo()
  * @method static void setAuthInfo($authInfo)
  * @method static bool revokeAccessToken()
+ * @method static bool revokeAccessTokenByPublicIdentifier($identifier)
  * @method static \League\OAuth2\Server\ResponseTypes\BearerTokenResponse getBearerTokenResponse()
  * @method static \League\OAuth2\Server\AuthorizationValidators\BearerTokenValidator getBearerTokenValidator(\RTLer\Oauth2\Repositories\AccessTokenRepository $accessTokenRepository)
  * @method static array getPersonalAccessToken($userId, $tokenName, array $scopes = [], $personalClientId = 'personal_access_client', $personalClientSecret = 'secret')

@@ -2,10 +2,13 @@
 
 namespace RTLer\Oauth2\Repositories;
 
+use Illuminate\Database\Eloquent\Collection;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use RTLer\Oauth2\Entities\AccessTokenEntity;
+use RTLer\Oauth2\Entities\ScopeEntity;
+use RTLer\Oauth2\Entities\UserEntity;
 use RTLer\Oauth2\Models\ModelResolver;
 use RTLer\Oauth2\Oauth2Server;
 
@@ -43,7 +46,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     /**
      * Persists a new access token to permanent storage.
      *
-     * @param \League\OAuth2\Server\Entities\AccessTokenEntityInterface $accessTokenEntity
+     * @param \League\OAuth2\Server\Entities\AccessTokenEntityInterface|AccessTokenEntity $accessTokenEntity
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
@@ -58,9 +61,13 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         if (!is_null($accessTokenEntity->getUserIdentifier())) {
             $newAccessToken['user_id'] = $accessTokenEntity->getUserIdentifier();
         }
+        if (!is_null($accessTokenEntity->getName())) {
+            $newAccessToken['name'] = $accessTokenEntity->getName();
+        }
         if ($accessTokenEntity->getScopes() !== []) {
-            $scopes = array_map(function ($item) {
-                return $item->getIdentifier();
+            $scopes = array_map(function ($Scope) {
+                /** @var ScopeEntity $Scope */
+                return $Scope->getIdentifier();
             }, $accessTokenEntity->getScopes());
 
             if ($accessTokenModel::$canHandleArray) {
@@ -98,8 +105,60 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $accessToken = $accessTokenModel::where('token', $tokenId)->first();
 
         if (is_null($accessToken)) {
-            return;
+            return null;
         }
+
+        return $this->getAccessTokenEntity($accessToken);
+    }
+
+    /**
+     * find an access token.
+     *
+     * @param UserEntity $user
+     *
+     * @return array|null
+     */
+    public function findAccessTokensByUser(UserEntity $user)
+    {
+        $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
+
+        /** @var Collection $accessTokens */
+        $accessTokens = $accessTokenModel::where('user_id', $user->getIdentifier())->get();
+
+        if ($accessTokens->isEmpty()) {
+            return null;
+        }
+
+        $accessTokens->map(function ($accessToken){
+            return $this->getAccessTokenEntity($accessToken);
+        });
+
+        return $accessTokens->toArray();
+
+    }
+
+    /**
+     * Check if the access token has been revoked.
+     *
+     * @param string $tokenId
+     *
+     * @return bool Return true if this token has been revoked
+     */
+    public function isAccessTokenRevoked($tokenId)
+    {
+        $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
+
+        return !(bool) $accessTokenModel::where('token', $tokenId)->exists();
+    }
+
+    /**
+     * @param $accessToken
+     *
+     * @return AccessTokenEntity
+     */
+    protected function getAccessTokenEntity($accessToken)
+    {
+        $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
 
         $accessTokenEntity = new AccessTokenEntity();
 
@@ -126,19 +185,5 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         }
 
         return $accessTokenEntity;
-    }
-
-    /**
-     * Check if the access token has been revoked.
-     *
-     * @param string $tokenId
-     *
-     * @return bool Return true if this token has been revoked
-     */
-    public function isAccessTokenRevoked($tokenId)
-    {
-        $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
-
-        return !(bool) $accessTokenModel::where('token', $tokenId)->exists();
     }
 }

@@ -30,6 +30,7 @@ class JsonRespondManipulator
      */
     public function editBody($callback)
     {
+        /** @var \Zend\Diactoros\Stream $bodyObject */
         $bodyObject = $this->response->getBody();
         $responseBody = json_decode((string) $bodyObject, true);
 

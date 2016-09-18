@@ -224,11 +224,9 @@ class Oauth2Server
     /**
      * enable PasswordGrant.
      *
-     * @param $options
-     *
      * @return PersonalAccessGrant
      */
-    public function enablePersonalAccessGrant($options)
+    public function enablePersonalAccessGrant()
     {
         $grant = new PersonalAccessGrant();
 
@@ -348,8 +346,6 @@ class Oauth2Server
      * set auth info.
      *
      * @param $authInfo
-     *
-     * @return mixed
      */
     public function setAuthInfo($authInfo)
     {
@@ -439,7 +435,7 @@ class Oauth2Server
      *
      * @param $userId
      *
-     * @return \Psr\Http\Message\ServerRequestInterface
+     * @return array|null
      */
     public function getAccessTokensForUser($userId)
     {

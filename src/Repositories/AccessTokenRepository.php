@@ -129,7 +129,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
             return;
         }
 
-        return $accessTokens->map(function ($accessToken){
+        return $accessTokens->map(function ($accessToken) {
             return $this->getAccessTokenEntity($accessToken);
         })->toArray();
     }

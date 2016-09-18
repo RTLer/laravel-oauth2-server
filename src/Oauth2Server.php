@@ -438,6 +438,7 @@ class Oauth2Server
      * get getAccessTokensForUser.
      *
      * @param $userId
+     *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     public function getAccessTokensForUser($userId)
@@ -445,6 +446,7 @@ class Oauth2Server
         $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
         $user = new UserEntity(); // instance of AccessTokenRepositoryInterface
         $user->setIdentifier($userId);
+
         return $accessTokenRepository->findAccessTokensByUser($user);
     }
 }

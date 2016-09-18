@@ -92,6 +92,18 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     }
 
     /**
+     * Revoke an access token.
+     *
+     * @param string $tokenId
+     */
+    public function revokeAccessTokenByPublicIdentifier($identifier)
+    {
+        $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
+
+        $accessTokenModel::where($accessTokenModel::$identifierKey, $identifier)->delete();
+    }
+
+    /**
      * find an access token.
      *
      * @param string $tokenId

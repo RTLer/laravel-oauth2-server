@@ -66,7 +66,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         }
         if ($accessTokenEntity->getScopes() !== []) {
             $scopes = array_map(function ($Scope) {
-                /** @var ScopeEntity $Scope */
+                /* @var ScopeEntity $Scope */
                 return $Scope->getIdentifier();
             }, $accessTokenEntity->getScopes());
 
@@ -105,7 +105,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $accessToken = $accessTokenModel::where('token', $tokenId)->first();
 
         if (is_null($accessToken)) {
-            return null;
+            return;
         }
 
         return $this->getAccessTokenEntity($accessToken);
@@ -126,13 +126,12 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $accessTokens = $accessTokenModel::where('user_id', $user->getIdentifier())->get();
 
         if ($accessTokens->isEmpty()) {
-            return null;
+            return;
         }
 
         return $accessTokens->map(function ($accessToken){
             return $this->getAccessTokenEntity($accessToken);
         })->toArray();
-
     }
 
     /**

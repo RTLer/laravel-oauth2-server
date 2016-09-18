@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 
 class AddNameToAccessToken extends Migration
 {
@@ -16,6 +15,7 @@ class AddNameToAccessToken extends Migration
             $table->string('name')->nullable();
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -26,7 +26,5 @@ class AddNameToAccessToken extends Migration
         Schema::table('oauth_access_tokens', function ($table) {
             $table->dropColumn(['name']);
         });
-
-
     }
 }

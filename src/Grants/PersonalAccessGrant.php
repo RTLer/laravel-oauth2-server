@@ -13,6 +13,7 @@ use RTLer\Oauth2\Entities\AccessTokenEntity;
 class PersonalAccessGrant extends AbstractGrant
 {
     protected $tokenName;
+
     /**
      * {@inheritdoc}
      */
@@ -20,8 +21,7 @@ class PersonalAccessGrant extends AbstractGrant
         ServerRequestInterface $request,
         ResponseTypeInterface $responseType,
         DateInterval $accessTokenTTL
-    )
-    {
+    ) {
         // Validate request
         $client = $this->validateClient($request);
         $scopes = $this->validateScopes($this->getRequestParameter('scope', $request));
@@ -57,9 +57,9 @@ class PersonalAccessGrant extends AbstractGrant
     /**
      * Issue an access token.
      *
-     * @param \DateInterval $accessTokenTTL
-     * @param \League\OAuth2\Server\Entities\ClientEntityInterface $client
-     * @param string $userIdentifier
+     * @param \DateInterval                                         $accessTokenTTL
+     * @param \League\OAuth2\Server\Entities\ClientEntityInterface  $client
+     * @param string                                                $userIdentifier
      * @param \League\OAuth2\Server\Entities\ScopeEntityInterface[] $scopes
      * @param $name
      *
@@ -70,8 +70,7 @@ class PersonalAccessGrant extends AbstractGrant
         ClientEntityInterface $client,
         $userIdentifier,
         array $scopes = []
-    )
-    {
+    ) {
         /** @var AccessTokenEntity $accessToken */
         $accessToken = $this->accessTokenRepository->getNewToken($client, $scopes, $userIdentifier);
         $accessToken->setClient($client);
@@ -88,7 +87,6 @@ class PersonalAccessGrant extends AbstractGrant
 
         return $accessToken;
     }
-
 
     /**
      * {@inheritdoc}

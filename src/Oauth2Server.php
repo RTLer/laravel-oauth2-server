@@ -410,9 +410,10 @@ class Oauth2Server
      *
      * @param $userId
      * @param $tokenName
-     * @param array $scopes
+     * @param array  $scopes
      * @param string $personalClientId
      * @param string $personalClientSecret
+     *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     public function getPersonalAccessToken($userId, $tokenName, array $scopes = [], $personalClientId = 'personal_access_client', $personalClientSecret = 'secret')
@@ -446,6 +447,4 @@ class Oauth2Server
         $user->setIdentifier($userId);
         return $accessTokenRepository->findAccessTokensByUser($user);
     }
-
-
 }

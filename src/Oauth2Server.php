@@ -14,6 +14,7 @@ use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
 use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 use Psr\Http\Message\ResponseInterface;
+use RTLer\Oauth2\Entities\UserEntity;
 use RTLer\Oauth2\Grants\PersonalAccessGrant;
 use RTLer\Oauth2\Repositories\AccessTokenRepository;
 use RTLer\Oauth2\Repositories\AuthCodeRepository;
@@ -223,11 +224,9 @@ class Oauth2Server
     /**
      * enable PasswordGrant.
      *
-     * @param $options
-     *
      * @return PersonalAccessGrant
      */
-    public function enablePersonalAccessGrant($options)
+    public function enablePersonalAccessGrant()
     {
         $grant = new PersonalAccessGrant();
 
@@ -347,8 +346,6 @@ class Oauth2Server
      * set auth info.
      *
      * @param $authInfo
-     *
-     * @return mixed
      */
     public function setAuthInfo($authInfo)
     {
@@ -408,18 +405,20 @@ class Oauth2Server
      * get getPersonalAccessToken.
      *
      * @param $userId
+     * @param $tokenName
      * @param array  $scopes
      * @param string $personalClientId
      * @param string $personalClientSecret
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    public function getPersonalAccessToken($userId, array $scopes = [], $personalClientId = 'personal_access_client', $personalClientSecret = 'secret')
+    public function getPersonalAccessToken($userId, $tokenName, array $scopes = [], $personalClientId = 'personal_access_client', $personalClientSecret = 'secret')
     {
         $request = (new ServerRequest())->withParsedBody([
             'grant_type'    => 'personal_access',
             'client_id'     => $personalClientId,
             'client_secret' => $personalClientSecret,
+            'token_name'    => $tokenName,
             'user_id'       => $userId,
             'scope'         => implode(' ', $scopes),
         ]);
@@ -429,5 +428,21 @@ class Oauth2Server
         $accessTokenData = json_decode((string) $response->getBody(), true);
 
         return $accessTokenData;
+    }
+
+    /**
+     * get getAccessTokensForUser.
+     *
+     * @param $userId
+     *
+     * @return array|null
+     */
+    public function getAccessTokensForUser($userId)
+    {
+        $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
+        $user = new UserEntity(); // instance of AccessTokenRepositoryInterface
+        $user->setIdentifier($userId);
+
+        return $accessTokenRepository->findAccessTokensByUser($user);
     }
 }

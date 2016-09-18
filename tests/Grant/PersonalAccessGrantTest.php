@@ -32,6 +32,7 @@ class PersonalAccessGrantTest extends OauthTestCase
             [
                 'client_id'     => 'foo',
                 'client_secret' => 'bar',
+                'token_name'    => 'baz',
                 'user_id'       => 1,
             ]
         );

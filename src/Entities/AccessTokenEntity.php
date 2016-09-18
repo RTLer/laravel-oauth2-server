@@ -15,13 +15,13 @@ class AccessTokenEntity implements AccessTokenEntityInterface
 
     /**
      * Set the name for the token.
-     * it's use to name the token in personal access tokens
+     * it's use to name the token in personal access tokens.
      *
      * @param string $name The name of the token
      */
     public function setName($name)
     {
-        $this->name = (string)$name;
+        $this->name = (string) $name;
     }
 
     /**

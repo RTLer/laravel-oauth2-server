@@ -38,4 +38,5 @@ class AccessTokenModel extends Model
     ];
 
     public static $canHandleArray = false;
+    public static $identifierKey = 'id';
 }

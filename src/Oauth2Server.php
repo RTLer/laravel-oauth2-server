@@ -372,6 +372,21 @@ class Oauth2Server
     }
 
     /**
+     * revoke access token.
+     *
+     * @param $identifier
+     *
+     * @return bool
+     */
+    public function revokeAccessTokenByPublicIdentifier($identifier)
+    {
+            $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
+            $accessTokenRepository->revokeAccessTokenByPublicIdentifier($identifier);
+
+            return true;
+    }
+
+    /**
      * get BearerTokenResponse.
      *
      * @return BearerTokenResponse

@@ -408,18 +408,19 @@ class Oauth2Server
      * get getPersonalAccessToken.
      *
      * @param $userId
-     * @param array  $scopes
+     * @param $tokenName
+     * @param array $scopes
      * @param string $personalClientId
      * @param string $personalClientSecret
-     *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    public function getPersonalAccessToken($userId, array $scopes = [], $personalClientId = 'personal_access_client', $personalClientSecret = 'secret')
+    public function getPersonalAccessToken($userId, $tokenName, array $scopes = [], $personalClientId = 'personal_access_client', $personalClientSecret = 'secret')
     {
         $request = (new ServerRequest())->withParsedBody([
             'grant_type'    => 'personal_access',
             'client_id'     => $personalClientId,
             'client_secret' => $personalClientSecret,
+            'token_name'    => $tokenName,
             'user_id'       => $userId,
             'scope'         => implode(' ', $scopes),
         ]);
@@ -430,4 +431,6 @@ class Oauth2Server
 
         return $accessTokenData;
     }
+
+    
 }

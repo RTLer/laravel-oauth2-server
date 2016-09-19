@@ -60,6 +60,9 @@ class ResourceServerMiddleware
      */
     protected function validateScopes($neededScopes, $requestedScopes)
     {
+        if(empty($neededScopes)){
+            return true;
+        }
         foreach ($requestedScopes as $requestedScope) {
             if (in_array($requestedScope->getIdentifier(), $neededScopes)) {
                 return true;

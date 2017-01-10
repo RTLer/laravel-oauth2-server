@@ -54,7 +54,6 @@ return [
 //    'bearer_token_response' => RTLer\Oauth2\Bearers\BearerTokenResponse::class,
 //    'bearer_token_validator' => RTLer\Oauth2\Bearers\BearerTokenValidator::class,
 
-
     /*
     |--------------------------------------------------------------------------
     | grants

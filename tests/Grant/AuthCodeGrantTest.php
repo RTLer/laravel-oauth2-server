@@ -342,7 +342,6 @@ class AuthCodeGrantTest extends OauthTestCase
         $accessTokenRepositoryMock = new AccessTokenRepository();
         $refreshTokenRepositoryMock = new RefreshTokenRepository();
 
-
         Oauth2Server::makeAuthorizationServer();
         $grant = Oauth2Server::enableAuthCodeGrant(Oauth2Server::getOptions('grants.auth_code'));
         $grant->setClientRepository($clientRepository);

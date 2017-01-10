@@ -6,6 +6,7 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+
 namespace RTLer\Oauth2\Bearers;
 
 use Carbon\Carbon;

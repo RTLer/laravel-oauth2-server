@@ -170,7 +170,6 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
 
         $accessTokenEntity = new AccessTokenEntity();
 
-
         $clientRepository = new ClientRepository();
         $client = $clientRepository->findClientEntity($accessToken->client_id, null, null, false);
         $accessTokenEntity->setName($accessToken->name);

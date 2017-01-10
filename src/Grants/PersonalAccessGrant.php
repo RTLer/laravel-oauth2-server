@@ -39,7 +39,6 @@ class PersonalAccessGrant extends AbstractGrant
             throw OAuthServerException::invalidRequest('token_name');
         }
 
-
         // Issue and persist access token
         $accessToken = $this->issueAccessToken(
             new DateInterval('P5Y'),

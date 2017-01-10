@@ -80,7 +80,6 @@ class AuthorizationServerTest extends OauthTestCase
         $oauth2Request = Oauth2::makeAuthorizationServer(['auth_code'])
             ->validateAuthorizationRequest($request);
 
-
         $this->assertTrue($oauth2Request instanceof AuthorizationRequest);
     }
 
@@ -124,7 +123,6 @@ class AuthorizationServerTest extends OauthTestCase
         $responseType = new StubResponseType();
 
         $grant->respondToAccessTokenRequest($serverRequest, $responseType, new \DateInterval('PT5M'));
-
 
         Oauth2Server::setAuthInfo([
             'access_token_id' => $responseType->getAccessToken()->getIdentifier(),

@@ -100,7 +100,6 @@ class Oauth2Server
         // init bearer
         $bearerTokenValidator = $this->getBearerTokenValidator($accessTokenRepository);
 
-
         // Setup the authorization server
         $this->resourceServer = new ResourceServer(
             $accessTokenRepository,

@@ -2,6 +2,7 @@
 
 namespace RTLer\Oauth2\Repositories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -135,11 +136,9 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $accessTokenModel = $this->modelResolver->getModel('AccessTokenModel');
 
         /** @var Collection $accessTokens */
-        $accessTokens = $accessTokenModel::where('user_id', $user->getIdentifier())->get();
-
-        if ($accessTokens->isEmpty()) {
-            return;
-        }
+        $accessTokens = $accessTokenModel::where('user_id', $user->getIdentifier())
+            ->where('expire_time', '>=', Carbon::now())
+            ->get();
 
         return $accessTokens->map(function ($accessToken) {
             return $this->getAccessTokenEntity($accessToken);

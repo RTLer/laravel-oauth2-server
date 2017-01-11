@@ -371,6 +371,10 @@ class Oauth2Server
             $accessTokenRepository->revokeAccessToken(
                 $this->getAuthInfo()['access_token_id']
             );
+            $accessTokenRepository = new RefreshTokenRepository(); // instance of RefreshTokenRepository
+            $refreshTokenEntity = $accessTokenRepository->findRefreshTokenByAccessTokenId($this->getAuthInfo()['access_token_id']);
+            $accessTokenRepository->revokeRefreshToken($refreshTokenEntity->getIdentifier());
+
 
             return true;
         }
@@ -388,7 +392,12 @@ class Oauth2Server
     public function revokeAccessTokenByPublicIdentifier($identifier)
     {
         $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
-        $accessTokenRepository->revokeAccessTokenByPublicIdentifier($identifier);
+        $accessTokenEntity = $accessTokenRepository->findAccessTokenByPublicIdentifier($identifier);
+        $accessTokenRepository->revokeAccessToken($accessTokenEntity->getIdentifier());
+
+        $accessTokenRepository = new RefreshTokenRepository(); // instance of RefreshTokenRepository
+        $refreshTokenEntity = $accessTokenRepository->findRefreshTokenByAccessTokenId($accessTokenEntity->getIdentifier());
+        $accessTokenRepository->revokeRefreshToken($refreshTokenEntity->getIdentifier());
 
         return true;
     }

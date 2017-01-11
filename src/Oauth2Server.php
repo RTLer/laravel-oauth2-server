@@ -375,7 +375,6 @@ class Oauth2Server
             $refreshTokenEntity = $accessTokenRepository->findRefreshTokenByAccessTokenId($this->getAuthInfo()['access_token_id']);
             $accessTokenRepository->revokeRefreshToken($refreshTokenEntity->getIdentifier());
 
-
             return true;
         }
 

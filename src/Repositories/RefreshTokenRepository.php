@@ -70,6 +70,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      * find refreshToken by accessToken identifier.
      *
      * @param string $accessTokenId
+     *
      * @return RefreshTokenEntity
      */
     public function findRefreshTokenByAccessTokenId($accessTokenId)
@@ -77,13 +78,12 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
         $refreshTokenModel = $this->modelResolver->getModel('RefreshTokenModel');
 
         $refreshToken = $refreshTokenModel::where('access_token_id', $accessTokenId)->first();
-        if(!is_null($refreshToken)){
-            $refreshTokenEntity =  new RefreshTokenEntity();
+        if (!is_null($refreshToken)) {
+            $refreshTokenEntity = new RefreshTokenEntity();
             $refreshTokenEntity->setIdentifier($refreshToken->token);
 
             return $refreshTokenEntity;
         }
-        return null;
     }
 
     /**

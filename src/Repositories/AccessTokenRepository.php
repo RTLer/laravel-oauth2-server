@@ -96,6 +96,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      * find AccessToken By Public Identifier.
      *
      * @param string $identifier
+     *
      * @return AccessTokenEntity
      */
     public function findAccessTokenByPublicIdentifier($identifier)
